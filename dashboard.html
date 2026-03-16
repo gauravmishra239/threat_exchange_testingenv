@@ -473,7 +473,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 </div>
 
 <!-- ═══════ COMPLIANCE ═══════ -->
-<div class="page" id="page-compliance">
+<div class="page" id="page-compliance" style="padding:0;">
 
 <!-- ═══ COMPLIANCE SUB-NAV ═══ -->
 <div style="display:flex;align-items:center;border-bottom:1px solid var(--border);padding:0 26px;margin-bottom:0;background:var(--bg-surface);flex-shrink:0">
@@ -1286,7 +1286,6 @@ window.toast = function(msg, type) {
     loadDashboardKPIs();
     renderAuditLog();
     renderAssets();
-    loadComplianceSummary();
     loadTeamMembers();
 
     addAuditEntry('Login', 'User signed in', 'Login');
@@ -1319,7 +1318,7 @@ window.nav = function(page) {
 
   // Page-specific load actions
   if (page === 'dashboard') loadDashboardKPIs();
-  if (page === 'compliance') navCmp('overview');
+  // navCmp handles compliance page rendering
   if (page === 'team') loadTeamMembers();
   if (page === 'auditlog') renderAuditLog();
   if (page === 'assets') renderAssets();
@@ -1717,42 +1716,54 @@ const CMP = {
 
 // ── NAVIGATION ────────────────────────────────────────────
 window.navCmp = function(tab) {
-  // Show compliance page
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-compliance')?.classList.add('active');
-  currentPage = 'compliance';
-  closeDD();
+  try {
+    // 1. Hide all pages, show compliance
+    document.querySelectorAll('.page').forEach(p => {
+      p.classList.remove('active');
+    });
+    const cmpPage = document.getElementById('page-compliance');
+    if (cmpPage) cmpPage.classList.add('active');
+    currentPage = 'compliance';
+    if (typeof closeDD === 'function') closeDD();
 
-  // Switch panel
-  ['overview','frameworks','controls'].forEach(t=>{
-    const el = document.getElementById('cmp-'+t);
-    if(el) el.style.display = t===tab?'block':'none';
-  });
+    // 2. Switch panel - hide all three, show the requested one
+    ['overview','frameworks','controls'].forEach(t => {
+      const el = document.getElementById('cmp-' + t);
+      if (el) el.style.display = (t === tab) ? 'block' : 'none';
+    });
 
-  // Update subnav
-  document.querySelectorAll('.cmp-subnav').forEach(b=>b.classList.remove('active'));
-  document.getElementById('cmpnav-'+tab)?.classList.add('active');
+    // 3. Update top subnav buttons
+    document.querySelectorAll('.cmp-subnav').forEach(b => b.classList.remove('active'));
+    const navBtn = document.getElementById('cmpnav-' + tab);
+    if (navBtn) navBtn.classList.add('active');
 
-  // Update sidebar
-  ['sb-cmp-overview','sb-cmp-frameworks','sb-cmp-controls'].forEach(id=>{
-    document.getElementById(id)?.classList.remove('active');
-  });
-  const sbMap={overview:'sb-cmp-overview',frameworks:'sb-cmp-frameworks',controls:'sb-cmp-controls'};
-  document.getElementById(sbMap[tab])?.classList.add('active');
+    // 4. Update sidebar highlights
+    ['sb-cmp-overview','sb-cmp-frameworks','sb-cmp-controls'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('active');
+    });
+    const sbIds = {overview:'sb-cmp-overview', frameworks:'sb-cmp-frameworks', controls:'sb-cmp-controls'};
+    const sbEl = document.getElementById(sbIds[tab]);
+    if (sbEl) sbEl.classList.add('active');
 
-  // Update fw badge
-  const ct = CMP.activeFws.length;
-  const b1 = document.getElementById('sbFwBadge');
-  const b2 = document.getElementById('cmpNavFwCount');
-  if(b1){b1.textContent=ct;b1.style.display=ct?'inline-flex':'none';}
-  if(b2){b2.textContent=ct;b2.style.display=ct?'inline':'none';}
+    // 5. Update framework count badges
+    const ct = (typeof CMP !== 'undefined') ? CMP.activeFws.length : 0;
+    ['sbFwBadge','cmpNavFwCount'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) { el.textContent = ct; el.style.display = ct ? 'inline-flex' : 'none'; }
+    });
 
-  // Load
-  if(tab==='overview') renderCmpOverview();
-  if(tab==='frameworks') renderFwGrid();
-  if(tab==='controls') renderCtrlsPanel();
+    // 6. Load content for the tab
+    if (tab === 'overview' && typeof renderCmpOverview === 'function') renderCmpOverview();
+    if (tab === 'frameworks' && typeof renderFwGrid === 'function') renderFwGrid();
+    if (tab === 'controls' && typeof renderCtrlsPanel === 'function') renderCtrlsPanel();
 
-  document.getElementById('mainContent')?.scrollTo(0,0);
+    const mc = document.getElementById('mainContent');
+    if (mc) mc.scrollTop = 0;
+
+  } catch(e) {
+    console.error('navCmp error:', e);
+  }
 };
 
 function loadComplianceSummary() { navCmp('overview'); }
