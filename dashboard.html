@@ -272,10 +272,6 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       <span class="sb-item-label">Dashboard</span>
     </div>
-    <div class="sb-item" id="sb-compliance" onclick="nav('compliance')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      <span class="sb-item-label">Compliance</span>
-    </div>
     <div class="sb-item" id="sb-adversaries" onclick="nav('adversaries')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
       <span class="sb-item-label">Adversary Intel</span>
@@ -288,6 +284,25 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
     <div class="sb-item" id="sb-reports" onclick="nav('reports')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       <span class="sb-item-label">Reports</span>
+    </div>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-section">
+    <div class="sb-section-label">Compliance Management</div>
+    <div class="sb-item" id="sb-compliance" onclick="nav('compliance');cmpTab('dashboard',document.getElementById('ctab-dashboard'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      <span class="sb-item-label">Overview</span>
+    </div>
+    <div class="sb-item" id="sb-cmp-frameworks" onclick="nav('compliance');cmpTab('frameworks',document.getElementById('ctab-frameworks'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <span class="sb-item-label">Frameworks</span>
+      <span class="sb-badge" id="sbFwCount" style="display:none">0</span>
+    </div>
+    <div class="sb-item" id="sb-cmp-controls" onclick="nav('compliance');cmpTab('controls',document.getElementById('ctab-controls'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      <span class="sb-item-label">Controls</span>
     </div>
   </div>
 
@@ -1282,8 +1297,10 @@ window.nav = function(page) {
 
   // Show target page
   const pageEl = document.getElementById('page-' + page);
-  const sbEl = document.getElementById('sb-' + page);
   if (pageEl) pageEl.classList.add('active');
+
+  // Sidebar active — compliance sub-items handled separately
+  const sbEl = document.getElementById('sb-' + page);
   if (sbEl) sbEl.classList.add('active');
 
   currentPage = page;
@@ -1299,6 +1316,24 @@ window.nav = function(page) {
   // Scroll to top
   document.getElementById('mainContent').scrollTop = 0;
 };
+
+// highlight the right compliance sub-item when switching tabs
+function highlightCmpSbItem(tab) {
+  ['sb-compliance','sb-cmp-frameworks','sb-cmp-controls'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('active');
+  });
+  const map = { dashboard:'sb-compliance', frameworks:'sb-cmp-frameworks', controls:'sb-cmp-controls' };
+  const el = document.getElementById(map[tab]);
+  if (el) el.classList.add('active');
+  // Update framework badge
+  const badge = document.getElementById('sbFwCount');
+  if (badge) {
+    const count = CMP_ACTIVE_FWS?.length || 0;
+    badge.textContent = count;
+    badge.style.display = count ? 'inline-flex' : 'none';
+  }
+}
 
 // ── SIDEBAR ───────────────────────────────────────────────
 window.toggleSidebar = function() {
@@ -1685,6 +1720,7 @@ window.cmpTab = function(tab, btn) {
   });
   document.querySelectorAll('.cmp-tab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
+  highlightCmpSbItem(tab);
   if (tab === 'dashboard') renderCmpDashboard();
   if (tab === 'frameworks') renderFwLibrary();
   if (tab === 'controls') renderCtrlsPanel();
@@ -2202,6 +2238,17 @@ window.removeCmpEvidence = function(idx) {
 };
 
 function loadComplianceSummary() {
+  // Default to dashboard tab when navigating to compliance
+  const dashPanel = document.getElementById('cpanel-dashboard');
+  const fwPanel = document.getElementById('cpanel-frameworks');
+  const ctrlPanel = document.getElementById('cpanel-controls');
+  if (dashPanel) dashPanel.style.display = 'block';
+  if (fwPanel) fwPanel.style.display = 'none';
+  if (ctrlPanel) ctrlPanel.style.display = 'none';
+  document.querySelectorAll('.cmp-tab').forEach(b => b.classList.remove('active'));
+  const dashTab = document.getElementById('ctab-dashboard');
+  if (dashTab) dashTab.classList.add('active');
+  highlightCmpSbItem('dashboard');
   renderCmpDashboard();
 }
 
