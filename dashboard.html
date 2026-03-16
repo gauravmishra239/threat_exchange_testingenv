@@ -145,6 +145,51 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 /* ── TOAST ── */
 .toast-el{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--bg-raised);border:1px solid var(--border-strong);color:var(--text-primary);padding:11px 16px;border-radius:var(--radius-md);font-size:13px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;max-width:360px;animation:toastIn .25s ease;}
 @keyframes toastIn{from{transform:translateX(100%);opacity:0;}to{transform:none;opacity:1;}}
+/* ── COMPLIANCE HUB ── */
+.cmp-tab{display:inline-flex;align-items:center;gap:6px;padding:9px 16px;font-size:12.5px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;}
+.cmp-tab:hover{color:var(--text-primary);}
+.cmp-tab.active{color:#ff4d6d;border-bottom-color:var(--brand);}
+.fw-lib-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;transition:all .2s;cursor:pointer;border-top:3px solid;}
+.fw-lib-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.fw-lib-card.active-fw{border-color:var(--brand-muted);}
+.fw-lib-card-body{padding:16px;}
+.fw-lib-name{font-size:15px;font-weight:800;font-family:'Syne',sans-serif;letter-spacing:-.3px;margin-bottom:2px;}
+.fw-lib-full{font-size:11.5px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;}
+.fw-lib-desc{font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.fw-lib-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.fw-chip{font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);color:var(--text-muted);background:var(--bg-sunken);}
+.fw-add-btn{font-size:12px;font-weight:600;padding:5px 12px;border-radius:6px;cursor:pointer;border:1px solid;transition:all .15s;font-family:inherit;}
+.fw-add-btn.add{background:var(--brand);color:white;border-color:var(--brand);}
+.fw-add-btn.add:hover{background:var(--brand-hover);}
+.fw-add-btn.remove{background:var(--low-bg);color:var(--low);border-color:var(--low-border);}
+.fw-add-btn.remove:hover{background:var(--low-border);}
+.fw-score-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:8px;}
+.fw-score-fill{height:100%;border-radius:2px;transition:width .4s;}
+.ctrl-play-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);cursor:pointer;transition:all .2s;overflow:hidden;border-top:3px solid;}
+.ctrl-play-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
+.ctrl-play-card-hd{padding:13px 15px 8px;}
+.ctrl-code{font-size:10.5px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;}
+.ctrl-title{font-size:13px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif;line-height:1.3;}
+.ctrl-play-card-body{padding:0 15px 13px;}
+.ctrl-desc{font-size:12px;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.ctrl-footer{display:flex;align-items:center;justify-content:space-between;}
+.ctrl-reqs{font-size:11px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;}
+.ctrl-status-pill{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid;font-family:'IBM Plex Mono',monospace;}
+.ctrl-list-item{display:flex;align-items:center;gap:14px;padding:11px 14px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:6px;cursor:pointer;transition:all .15s;border-left:3px solid;}
+.ctrl-list-item:hover{box-shadow:var(--shadow-xs);border-color:var(--border-strong);}
+.ctrl-list-code{font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;width:68px;flex-shrink:0;}
+.ctrl-list-title{flex:1;font-size:12.5px;font-weight:600;color:var(--text-primary);}
+.ctrl-list-fw{font-size:11px;color:var(--text-muted);width:100px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ctrl-list-reqs{font-size:11px;font-family:'IBM Plex Mono',monospace;color:var(--text-muted);width:50px;flex-shrink:0;text-align:right;}
+.drawer-dtab{padding:8px 14px;font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;background:none;border-top:none;border-left:none;border-right:none;}
+.drawer-dtab:hover{color:var(--text-primary);}
+.drawer-dtab.active{color:#ff4d6d;border-bottom-color:var(--brand);}
+.req-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.req-row:last-child{border-bottom:none;}
+.req-cb{width:17px;height:17px;border:1.5px solid var(--border-strong);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;margin-top:1px;}
+.req-cb.on{background:var(--brand);border-color:var(--brand);}
+.req-text{font-size:12.5px;color:var(--text-secondary);line-height:1.6;flex:1;}
+
 </style>
 </head>
 <body>
@@ -414,32 +459,198 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   </div>
 </div>
 
-<!-- ═══════ COMPLIANCE ═══════ -->
+<!-- ═══════ COMPLIANCE MANAGEMENT ═══════ -->
 <div class="page" id="page-compliance">
-  <div class="page-hd">
-    <div class="page-hd-left">
-      <div class="breadcrumb"><span class="crumb">Threat Exchange</span> / NIST SP 800-53</div>
-      <div class="page-title">Compliance Tracker</div>
-      <div class="page-subtitle">NIST SP 800-53 Rev 5 — Full control catalog with requirements checklists and evidence management</div>
+
+  <!-- sub-nav tabs -->
+  <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;gap:0">
+    <button class="cmp-tab active" id="ctab-dashboard" onclick="cmpTab('dashboard',this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Overview
+    </button>
+    <button class="cmp-tab" id="ctab-frameworks" onclick="cmpTab('frameworks',this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      Frameworks
+    </button>
+    <button class="cmp-tab" id="ctab-controls" onclick="cmpTab('controls',this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      Controls
+    </button>
+    <div id="ctab-active-fw-label" style="display:none;margin-left:auto;align-items:center;padding:0 12px;font-size:12px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace"></div>
+  </div>
+
+  <!-- ── TAB: ORG DASHBOARD ── -->
+  <div id="cpanel-dashboard">
+    <div class="page-hd" style="margin-bottom:18px">
+      <div class="page-hd-left">
+        <div class="breadcrumb"><span class="crumb">Compliance</span> / Overview</div>
+        <div class="page-title">Compliance Overview</div>
+        <div class="page-subtitle">Organisation-wide posture across all active frameworks</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn btn-secondary btn-sm" onclick="exportComplianceReport()">Export CSV</button>
+        <button class="btn btn-primary btn-sm" onclick="cmpTab('frameworks',document.getElementById('ctab-frameworks'))">+ Add Framework</button>
+      </div>
     </div>
-    <div class="page-actions">
-      <button class="btn btn-secondary btn-sm" onclick="exportComplianceReport()">Export Report</button>
-      <button class="btn btn-primary btn-sm" onclick="location.href='compliance.html'">Open Full View</button>
+
+    <!-- org score hero -->
+    <div id="cmpOrgHero" style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:22px;margin-bottom:16px;display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+      <div style="text-align:center;flex-shrink:0">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="44" fill="none" stroke="var(--border)" stroke-width="8"/>
+          <circle cx="50" cy="50" r="44" fill="none" id="heroRingFill" stroke="var(--brand)" stroke-width="8"
+            stroke-dasharray="276.46" stroke-dashoffset="276.46"
+            transform="rotate(-90 50 50)" stroke-linecap="round" style="transition:stroke-dashoffset .8s ease"/>
+          <text x="50" y="55" text-anchor="middle" font-size="22" font-weight="700" fill="var(--text-primary)" font-family="Syne,sans-serif" id="heroRingPct">0%</text>
+        </svg>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;font-family:'IBM Plex Mono',monospace">OVERALL SCORE</div>
+      </div>
+      <div style="flex:1;min-width:220px">
+        <div style="font-size:18px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif;margin-bottom:14px" id="heroTitle">No frameworks active</div>
+        <div id="heroFrameworkBars" style="display:flex;flex-direction:column;gap:10px"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:260px" id="heroKpis">
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center">
+          <div style="font-size:22px;font-weight:700;font-family:'Syne',sans-serif;color:var(--low)" id="heroImpl">0</div>
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px">Implemented</div>
+        </div>
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center">
+          <div style="font-size:22px;font-weight:700;font-family:'Syne',sans-serif;color:var(--critical)" id="heroGaps">0</div>
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px">Gaps</div>
+        </div>
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center">
+          <div style="font-size:22px;font-weight:700;font-family:'Syne',sans-serif;color:var(--info)" id="heroInProg">0</div>
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px">In Progress</div>
+        </div>
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:var(--radius);padding:12px;text-align:center">
+          <div style="font-size:22px;font-weight:700;font-family:'Syne',sans-serif;color:var(--brand)" id="heroFws">0</div>
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px">Frameworks</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- per-framework breakdown cards -->
+    <div id="cmpFwCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:16px">
+      <div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-muted)">
+        <div style="font-size:32px;margin-bottom:12px;opacity:.25">🛡️</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text-secondary);font-family:'Syne',sans-serif;margin-bottom:6px">No frameworks added yet</div>
+        <div style="font-size:13px;margin-bottom:18px">Add compliance frameworks to start tracking your organisation's posture</div>
+        <button class="btn btn-primary btn-sm" onclick="cmpTab('frameworks',document.getElementById('ctab-frameworks'))">Browse Frameworks →</button>
+      </div>
+    </div>
+
+    <!-- status distribution chart -->
+    <div class="grid-2" style="gap:14px">
+      <div class="card">
+        <div class="card-hd"><div class="card-title">Status Distribution</div><div class="card-subtitle">Across all active frameworks</div></div>
+        <div class="card-bd" id="cmpStatusChart"></div>
+      </div>
+      <div class="card">
+        <div class="card-hd"><div class="card-title">Priority Gaps</div><div class="card-subtitle">Critical controls not yet started</div></div>
+        <div style="padding:0" id="cmpPriorityGaps">
+          <div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px">Add frameworks to see priority gaps</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="grid-2" style="gap:12px;margin-bottom:16px" id="compStatsRow">
-    <div class="card"><div class="card-bd" style="text-align:center;padding:20px"><div style="font-size:32px;font-weight:700;color:var(--low);font-family:'Syne',sans-serif" id="cmpPct">0%</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px">Overall compliance score</div></div></div>
-    <div class="card"><div class="card-bd"><div id="cmpStatusBars" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
+  <!-- ── TAB: FRAMEWORK LIBRARY ── -->
+  <div id="cpanel-frameworks" style="display:none">
+    <div class="page-hd" style="margin-bottom:18px">
+      <div class="page-hd-left">
+        <div class="breadcrumb"><span class="crumb">Compliance</span> / Frameworks</div>
+        <div class="page-title">Framework Library</div>
+        <div class="page-subtitle">Search and add global compliance standards to your workspace</div>
+      </div>
+    </div>
+
+    <!-- search + filters -->
+    <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+      <div style="position:relative;flex:1;min-width:220px">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted)" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input class="input" id="fwSearch" placeholder="Search frameworks — ISO 27001, GDPR, SOC 2…" style="padding-left:32px" oninput="renderFwLibrary()"/>
+      </div>
+      <select class="select" id="fwCatFilter" style="width:auto" onchange="renderFwLibrary()">
+        <option value="">All Categories</option>
+        <option>Security</option><option>Privacy</option><option>Financial</option><option>Healthcare</option>
+      </select>
+      <select class="select" id="fwRegionFilter" style="width:auto" onchange="renderFwLibrary()">
+        <option value="">All Regions</option>
+        <option>Global</option><option>US</option><option>EU</option><option>UK</option>
+      </select>
+    </div>
+    <div id="fwLibraryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px"></div>
   </div>
 
-  <div class="card">
-    <div class="card-hd">
-      <div class="card-title">Control Families Overview</div>
-      <a href="compliance.html" class="btn btn-primary btn-sm">Open Full Compliance Tracker →</a>
+  <!-- ── TAB: CONTROLS TRACKER ── -->
+  <div id="cpanel-controls" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px">
+      <div>
+        <div class="breadcrumb"><span class="crumb">Compliance</span> / <span id="ctrlFwName">Controls</span></div>
+        <div class="page-title" id="ctrlPageTitle">Controls</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:3px" id="ctrlPageSub"></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary btn-sm" onclick="exportComplianceReport()">Export CSV</button>
+      </div>
     </div>
-    <div id="compFamilyList" style="padding:0"></div>
+
+    <!-- framework selector pills -->
+    <div id="activeFwPills" style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap"></div>
+
+    <!-- stats row -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px">
+      <div class="kpi"><div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg></div><div class="kpi-label">Total</div><div class="kpi-value" id="csTotal">0</div><div class="kpi-bar" style="background:var(--brand)"></div></div>
+      <div class="kpi"><div class="kpi-icon" style="background:var(--low-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--low)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="kpi-label">Implemented</div><div class="kpi-value" id="csImpl" style="color:var(--low)">0</div><div class="kpi-bar" style="background:var(--low)"></div></div>
+      <div class="kpi"><div class="kpi-icon" style="background:var(--info-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="kpi-label">In Progress</div><div class="kpi-value" id="csInProg" style="color:var(--info)">0</div><div class="kpi-bar" style="background:var(--info)"></div></div>
+      <div class="kpi"><div class="kpi-icon" style="background:var(--critical-bg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--critical)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><div class="kpi-label">Not Started</div><div class="kpi-value" id="csGaps" style="color:var(--critical)">0</div><div class="kpi-bar" style="background:var(--critical)"></div></div>
+      <div class="kpi"><div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div><div class="kpi-label">Score</div><div class="kpi-value" id="csScore" style="color:var(--brand)">0%</div><div class="kpi-bar" style="background:var(--brand)"></div></div>
+    </div>
+
+    <!-- filter bar -->
+    <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center">
+      <div style="position:relative;flex:1;min-width:180px">
+        <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted)" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input class="input" id="ctrlSearch" placeholder="Search controls…" style="padding-left:30px;font-size:12.5px" oninput="renderControls()"/>
+      </div>
+      <select class="select" id="ctrlStatusFilter" style="width:auto;font-size:12.5px" onchange="renderControls()">
+        <option value="">All Statuses</option>
+        <option value="not_started">Not Started</option>
+        <option value="in_progress">In Progress</option>
+        <option value="partially_implemented">Partially Implemented</option>
+        <option value="implemented">Implemented</option>
+        <option value="verified">Verified</option>
+        <option value="not_applicable">Not Applicable</option>
+      </select>
+      <div style="display:flex;gap:4px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;padding:3px">
+        <button id="viewGrid" onclick="setCmpView('grid')" style="width:28px;height:24px;border:none;background:var(--bg-surface);cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--text-primary)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></button>
+        <button id="viewList" onclick="setCmpView('list')" style="width:28px;height:24px;border:none;background:transparent;cursor:pointer;border-radius:4px;display:flex;align-items:center;justify-content:center;color:var(--text-muted)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+      </div>
+      <span id="ctrlCount" style="font-size:11.5px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;white-space:nowrap"></span>
+    </div>
+
+    <!-- controls output -->
+    <div id="ctrlsGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px"></div>
+    <div id="ctrlsList" style="display:none"></div>
   </div>
+
+  <!-- ── CONTROL DETAIL DRAWER ── -->
+  <div id="cmpDrawerMask" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none" onclick="closeCmpDrawer()"></div>
+  <div id="cmpDrawer" style="position:fixed;right:0;top:0;bottom:0;width:560px;max-width:95vw;background:var(--bg-surface);border-left:1px solid var(--border);z-index:401;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;overflow:hidden">
+    <div style="padding:16px 20px;border-bottom:1px solid var(--border);flex-shrink:0;background:var(--bg-surface)">
+      <div style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--brand);margin-bottom:4px" id="drawerCode"></div>
+      <div style="font-size:16px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif;padding-right:32px" id="drawerTitle"></div>
+      <button onclick="closeCmpDrawer()" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border:none;background:var(--bg-sunken);cursor:pointer;border-radius:6px;color:var(--text-muted);font-size:18px;display:flex;align-items:center;justify-content:center">×</button>
+    </div>
+    <div style="display:flex;border-bottom:1px solid var(--border);flex-shrink:0">
+      <button class="drawer-dtab active" onclick="switchDTab('overview',this)">Overview</button>
+      <button class="drawer-dtab" onclick="switchDTab('checklist',this)">Checklist</button>
+      <button class="drawer-dtab" onclick="switchDTab('tracking',this)">Tracking</button>
+      <button class="drawer-dtab" onclick="switchDTab('evidence',this)">Evidence</button>
+    </div>
+    <div style="overflow-y:auto;flex:1;padding:20px" id="drawerBody"></div>
+  </div>
+
 </div>
 
 <!-- ═══════ ADVERSARIES ═══════ -->
@@ -1041,11 +1252,7 @@ window.toast = function(msg, type) {
       document.getElementById('sb-auditlog').style.display = 'none';
     }
 
-    // Show onboarding wizard for new users
-    const hasOnboarded = localStorage.getItem('te_onboarded');
-    if (!hasOnboarded) {
-      document.getElementById('wizardMask').classList.add('open');
-    }
+    // Onboarding wizard only shown when user explicitly triggers it
 
     // Load dashboard data
     loadDashboardKPIs();
@@ -1376,41 +1583,642 @@ function buildStatusBars(items) {
 }
 
 // ── COMPLIANCE SUMMARY ────────────────────────────────────
-function loadComplianceSummary() {
-  const tracking = JSON.parse(localStorage.getItem('te_nist_v4_tracking') || localStorage.getItem('te_nist_tracking') || '{}');
-  const FAMILIES = ['AC','AT','AU','CA','CM','CP','IA','IR','MA','MP','PE','PL','PM','PS','PT','RA','SA','SC','SI','SR'];
-  const FAMILY_NAMES = {AC:'Access Control',AT:'Awareness & Training',AU:'Audit & Accountability',CA:'Assessment & Authorization',CM:'Configuration Mgmt',CP:'Contingency Planning',IA:'Identification & Auth',IR:'Incident Response',MA:'Maintenance',MP:'Media Protection',PE:'Physical & Environmental',PL:'Planning',PM:'Program Management',PS:'Personnel Security',PT:'PII Processing',RA:'Risk Assessment',SA:'System Acquisition',SC:'System & Comms Protection',SI:'System & Info Integrity',SR:'Supply Chain Risk'};
+// ═══════════════════════════════════════════════════════
+// COMPLIANCE MANAGEMENT HUB
+// ═══════════════════════════════════════════════════════
 
-  const pctEl = document.getElementById('cmpPct');
-  const allVals = Object.values(tracking);
-  const impl = allVals.filter(t => t.status === 'Implemented' || t.status === 'Verified').length;
-  const inprog = allVals.filter(t => t.status === 'In Progress').length;
-  const pct = Math.round((impl / 163) * 100);
-  if (pctEl) { pctEl.textContent = pct + '%'; pctEl.style.color = pct >= 80 ? 'var(--low)' : pct >= 50 ? 'var(--medium)' : 'var(--critical)'; }
+const CMP_TRACKING = JSON.parse(localStorage.getItem('te_compliance_tracking') || '{}');
+const CMP_EVIDENCE = JSON.parse(localStorage.getItem('te_compliance_evidence') || '{}');
+let CMP_ACTIVE_FWS = JSON.parse(localStorage.getItem('te_org_frameworks') || '[]');
+let CMP_CURRENT_FW = null;
+let CMP_CONTROLS = [];
+let CMP_VIEW = 'grid';
+let CMP_CURRENT_CTRL = null;
+let CMP_CURRENT_TAB = 'dashboard';
 
-  const barsEl = document.getElementById('cmpStatusBars');
-  if (barsEl) barsEl.innerHTML = buildStatusBars([
-    { label: 'Implemented / Verified', val: impl, total: 163, color: 'var(--low)' },
-    { label: 'In Progress', val: inprog, total: 163, color: 'var(--medium)' },
-    { label: 'Not Started', val: 163 - impl - inprog, total: 163, color: 'var(--critical)' },
-  ]);
+const FRAMEWORKS_DATA = [
+  { id:'nist-800-53', name:'NIST 800-53', full:'NIST SP 800-53 Rev 5', version:'Rev 5', desc:'Security and privacy controls for federal information systems and organisations', cat:'Security', region:'US', color:'#1a56db', total:1054, year:2020 },
+  { id:'iso-27001', name:'ISO 27001', full:'ISO/IEC 27001:2022', version:'2022', desc:'International standard for information security management systems', cat:'Security', region:'Global', color:'#0e9f6e', total:93, year:2022 },
+  { id:'soc2', name:'SOC 2', full:'SOC 2 Type II Trust Services Criteria', version:'2017', desc:'Security, availability, processing integrity, confidentiality and privacy controls', cat:'Security', region:'US', color:'#7e3af2', total:64, year:2017 },
+  { id:'pci-dss', name:'PCI DSS', full:'PCI DSS v4.0', version:'v4.0', desc:'Security standard for organisations handling cardholder data', cat:'Financial', region:'Global', color:'#ff5a1f', total:389, year:2022 },
+  { id:'hipaa', name:'HIPAA', full:'HIPAA Security Rule', version:'2013', desc:'US regulation for protected health information privacy and security', cat:'Healthcare', region:'US', color:'#e74694', total:54, year:1996 },
+  { id:'gdpr', name:'GDPR', full:'General Data Protection Regulation', version:'2018', desc:'EU regulation on data protection and privacy for all individuals', cat:'Privacy', region:'EU', color:'#3f83f8', total:99, year:2018 },
+  { id:'cis-v8', name:'CIS v8', full:'CIS Critical Security Controls v8', version:'v8', desc:'Prioritised actions to protect against the most common cyber attacks', cat:'Security', region:'Global', color:'#ff6700', total:153, year:2021 },
+  { id:'cyber-essentials', name:'Cyber Essentials', full:'UK Cyber Essentials Scheme', version:'2023', desc:'UK government-backed certification for basic cyber hygiene', cat:'Security', region:'UK', color:'#1c64f2', total:44, year:2014 },
+  { id:'fedramp', name:'FedRAMP', full:'Federal Risk and Authorization Management Program', version:'Rev 5', desc:'US government cloud security authorization framework', cat:'Security', region:'US', color:'#057a55', total:325, year:2011 },
+  { id:'cmmc', name:'CMMC 2.0', full:'Cybersecurity Maturity Model Certification 2.0', version:'2.0', desc:'US DoD cybersecurity requirements for defence contractors', cat:'Security', region:'US', color:'#723b13', total:110, year:2021 },
+  { id:'nis2', name:'NIS 2', full:'EU Network and Information Security Directive 2', version:'2022', desc:'EU directive on cybersecurity measures for essential and important entities', cat:'Security', region:'EU', color:'#6366f1', total:88, year:2022 },
+  { id:'dora', name:'DORA', full:'EU Digital Operational Resilience Act', version:'2022', desc:'EU regulation on digital operational resilience for financial sector', cat:'Financial', region:'EU', color:'#f59e0b', total:72, year:2022 }
+];
 
-  const listEl = document.getElementById('compFamilyList');
-  if (listEl) {
-    listEl.innerHTML = FAMILIES.map(fid => {
-      const famImpl = Object.entries(tracking).filter(([k, v]) => k.startsWith(fid + '-') && (v.status === 'Implemented' || v.status === 'Verified')).length;
-      const famTotal = fid === 'AT' ? 4 : fid === 'PT' ? 3 : fid === 'PM' ? 2 : fid === 'SR' ? 3 : fid === 'PL' ? 6 : fid === 'PS' ? 9 : fid === 'RA' ? 6 : 8;
-      const fpct = famTotal ? Math.round(famImpl / famTotal * 100) : 0;
-      const col = fpct === 100 ? 'var(--low)' : fpct > 50 ? 'var(--medium)' : 'var(--critical)';
-      return `<div style="display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s" onmouseover="this.style.background='rgba(255,255,255,.02)'" onmouseout="this.style.background=''" onclick="location.href='compliance.html'">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;font-weight:700;color:var(--brand);width:32px">${fid}</span>
-        <span style="flex:1;font-size:13px;color:var(--text-secondary)">${FAMILY_NAMES[fid]}</span>
-        <div style="width:80px;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden"><div style="width:${fpct}%;height:100%;background:${col};border-radius:2px"></div></div>
-        <span style="font-size:11px;font-family:'IBM Plex Mono',monospace;color:${col};width:36px;text-align:right">${fpct}%</span>
+const SAMPLE_CONTROLS = {
+  'nist-800-53': [
+    { id:'nist-AC-1', fw:'nist-800-53', domain:'Access Control', code:'AC-1', title:'Policy and Procedures', desc:'Develop, document, and disseminate an access control policy that addresses purpose, scope, roles, responsibilities, management commitment, and compliance.', reqs:['Develop access control policy','Obtain management approval','Review policy every 3 years','Distribute to relevant personnel','Document procedures for implementation'], type:'Preventive', baseline:'LOW' },
+    { id:'nist-AC-2', fw:'nist-800-53', domain:'Access Control', code:'AC-2', title:'Account Management', desc:'Manage information system accounts including establishing, activating, modifying, reviewing, disabling, and removing accounts.', reqs:['Define account types','Assign account managers','Review accounts every 6 months','Disable accounts within 1 day of termination','Notify account managers of role changes'], type:'Preventive', baseline:'LOW' },
+    { id:'nist-AC-3', fw:'nist-800-53', domain:'Access Control', code:'AC-3', title:'Access Enforcement', desc:'Enforce approved authorisations for logical access to information and system resources in accordance with applicable access control policies.', reqs:['Implement role-based access control','Enforce least privilege','Deny access by default','Log all access attempts'], type:'Preventive', baseline:'LOW' },
+    { id:'nist-IA-2', fw:'nist-800-53', domain:'Identification & Authentication', code:'IA-2', title:'Identification and Authentication', desc:'Uniquely identify and authenticate organisational users and associate that identification with processes acting on behalf of those users.', reqs:['Uniquely identify each user','Implement MFA for privileged accounts','Implement MFA for non-privileged accounts','Enforce authentication for all system access'], type:'Preventive', baseline:'LOW' },
+    { id:'nist-AU-2', fw:'nist-800-53', domain:'Audit & Accountability', code:'AU-2', title:'Event Logging', desc:'Identify the types of events that the system is capable of logging in support of the audit function and coordinate the event logging function with other organisations.', reqs:['Identify loggable event types','Review and update event types annually','Coordinate with other entities','Enable logging for all identified events'], type:'Detective', baseline:'LOW' },
+    { id:'nist-SI-2', fw:'nist-800-53', domain:'System & Info Integrity', code:'SI-2', title:'Flaw Remediation', desc:'Identify, report, and correct information system flaws; test software updates; and install security-relevant updates within defined timeframes.', reqs:['Identify system flaws','Report flaws to designated personnel','Test updates before installation','Install critical patches within 30 days'], type:'Corrective', baseline:'LOW' },
+  ],
+  'iso-27001': [
+    { id:'iso-A5.1', fw:'iso-27001', domain:'Organisational Controls', code:'A.5.1', title:'Policies for information security', desc:'Information security policy and topic-specific policies shall be defined, approved by management, published, communicated and reviewed at planned intervals.', reqs:['Define information security policy','Obtain management approval','Communicate to all relevant personnel','Review at planned intervals (annually)','Update based on changes in threats or legislation'], type:'Preventive', baseline:'ALL' },
+    { id:'iso-A5.2', fw:'iso-27001', domain:'Organisational Controls', code:'A.5.2', title:'Information security roles and responsibilities', desc:'Information security roles and responsibilities shall be defined and allocated.', reqs:['Define all security roles','Assign responsibilities to role holders','Document in job descriptions','Establish reporting lines'], type:'Preventive', baseline:'ALL' },
+    { id:'iso-A8.1', fw:'iso-27001', domain:'Technological Controls', code:'A.8.1', title:'User end point devices', desc:'Information stored on, processed by or accessible via user end point devices shall be protected.', reqs:['Implement device management policy','Enable full-disk encryption','Configure automatic screen lock','Implement remote wipe capability','Restrict unauthorised software'], type:'Preventive', baseline:'ALL' },
+    { id:'iso-A8.2', fw:'iso-27001', domain:'Technological Controls', code:'A.8.2', title:'Privileged access rights', desc:'The allocation and use of privileged access rights shall be restricted and managed.', reqs:['Maintain inventory of privileged accounts','Review quarterly','Implement just-in-time access','Log all privileged access','Separate privileged and standard accounts'], type:'Preventive', baseline:'ALL' },
+  ],
+  'gdpr': [
+    { id:'gdpr-5a', fw:'gdpr', domain:'Principles', code:'Art. 5(1)(a)', title:'Lawfulness, Fairness and Transparency', desc:'Personal data shall be processed lawfully, fairly and in a transparent manner in relation to the data subject.', reqs:['Identify lawful basis for each processing activity','Document lawful basis in records','Provide privacy notices to data subjects','Ensure processing is fair','Make privacy information accessible'], type:'Preventive', baseline:'ALL' },
+    { id:'gdpr-25', fw:'gdpr', domain:'Data Protection by Design', code:'Art. 25', title:'Data Protection by Design and by Default', desc:'Implement appropriate technical and organisational measures to implement data protection principles effectively.', reqs:['Conduct DPIAs for high-risk processing','Implement privacy by design','Apply data minimisation by default','Implement technical safeguards','Review and update measures regularly'], type:'Preventive', baseline:'ALL' },
+    { id:'gdpr-32', fw:'gdpr', domain:'Security of Processing', code:'Art. 32', title:'Security of Processing', desc:'Implement appropriate technical and organisational measures to ensure a level of security appropriate to the risk.', reqs:['Implement pseudonymisation and encryption','Ensure ongoing confidentiality, integrity and availability','Restore access after incidents','Test and evaluate security measures regularly'], type:'Preventive', baseline:'ALL' },
+  ],
+  'soc2': [
+    { id:'soc2-CC1.1', fw:'soc2', domain:'Control Environment', code:'CC1.1', title:'Commitment to Integrity and Ethical Values', desc:'The entity demonstrates a commitment to integrity and ethical values.', reqs:['Establish code of conduct','Communicate code to all personnel','Train staff on ethics','Monitor compliance','Address violations promptly'], type:'Preventive', baseline:'ALL' },
+    { id:'soc2-CC6.1', fw:'soc2', domain:'Logical Access Controls', code:'CC6.1', title:'Logical Access Security Measures', desc:'The entity implements logical access security software, infrastructure, and architectures to protect information assets.', reqs:['Implement access control systems','Define and enforce user access rights','Implement MFA','Monitor and review access regularly','Remove access when no longer required'], type:'Preventive', baseline:'ALL' },
+    { id:'soc2-CC7.1', fw:'soc2', domain:'System Operations', code:'CC7.1', title:'Threat and Vulnerability Management', desc:'The entity uses detection and monitoring procedures to identify changes that result in new vulnerabilities.', reqs:['Conduct regular vulnerability scans','Perform penetration testing annually','Remediate critical vulnerabilities within 30 days','Track remediation to completion'], type:'Detective', baseline:'ALL' },
+  ]
+};
+
+// Get controls for a framework (real data or generated)
+function getCmpControls(fwId) {
+  if (SAMPLE_CONTROLS[fwId]) return SAMPLE_CONTROLS[fwId];
+  const fw = FRAMEWORKS_DATA.find(f => f.id === fwId);
+  if (!fw) return [];
+  // Generate representative controls
+  const domains = ['Governance','Risk Management','Access Control','Asset Management','Incident Response','Business Continuity','Compliance','Data Protection'];
+  return domains.flatMap((d, di) =>
+    [1,2,3].map(i => ({
+      id: fwId+'-'+di+'-'+i, fw: fwId, domain: d,
+      code: (di+1)+'.'+i, title: d+' Control '+i,
+      desc: 'This control addresses '+d.toLowerCase()+' requirements for '+fw.name+'. Organisations shall implement appropriate measures to satisfy this requirement.',
+      reqs: ['Develop and document policy','Assign ownership','Implement controls','Monitor effectiveness','Report to management'],
+      type: di < 3 ? 'Preventive' : 'Detective', baseline: 'ALL'
+    }))
+  );
+}
+
+// Score helpers
+function getFwScore(fwId) {
+  const ctrls = getCmpControls(fwId);
+  if (!ctrls.length) return 0;
+  const impl = ctrls.filter(c => { const s = CMP_TRACKING[c.id]?.status; return s === 'implemented' || s === 'verified'; }).length;
+  return Math.round(impl / ctrls.length * 100);
+}
+
+function getFwStats(fwId) {
+  const ctrls = getCmpControls(fwId);
+  const statuses = ctrls.map(c => CMP_TRACKING[c.id]?.status || 'not_started');
+  return {
+    total: ctrls.length,
+    impl: statuses.filter(s => s==='implemented'||s==='verified').length,
+    inProg: statuses.filter(s => s==='in_progress'||s==='partially_implemented').length,
+    notStart: statuses.filter(s => s==='not_started').length,
+    pct: ctrls.length ? Math.round(statuses.filter(s=>s==='implemented'||s==='verified').length/ctrls.length*100) : 0
+  };
+}
+
+// ── TAB NAVIGATION ────────────────────────────────────────
+window.cmpTab = function(tab, btn) {
+  CMP_CURRENT_TAB = tab;
+  ['dashboard','frameworks','controls'].forEach(t => {
+    const p = document.getElementById('cpanel-'+t);
+    if (p) p.style.display = t === tab ? 'block' : 'none';
+  });
+  document.querySelectorAll('.cmp-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (tab === 'dashboard') renderCmpDashboard();
+  if (tab === 'frameworks') renderFwLibrary();
+  if (tab === 'controls') renderCtrlsPanel();
+};
+
+// ── ORG DASHBOARD ─────────────────────────────────────────
+function renderCmpDashboard() {
+  const activeFws = FRAMEWORKS_DATA.filter(f => CMP_ACTIVE_FWS.includes(f.id));
+
+  // Overall score
+  let totalImpl = 0, totalCtrls = 0, totalInProg = 0, totalGaps = 0;
+  activeFws.forEach(fw => {
+    const s = getFwStats(fw.id);
+    totalImpl += s.impl; totalCtrls += s.total; totalInProg += s.inProg; totalGaps += s.notStart;
+  });
+  const overallPct = totalCtrls ? Math.round(totalImpl / totalCtrls * 100) : 0;
+  const ringCircumference = 276.46;
+  const ringOffset = ringCircumference * (1 - overallPct / 100);
+
+  const ringFill = document.getElementById('heroRingFill');
+  const ringPct = document.getElementById('heroRingPct');
+  if (ringFill) { ringFill.setAttribute('stroke-dashoffset', ringOffset); ringFill.setAttribute('stroke', overallPct >= 80 ? 'var(--low)' : overallPct >= 50 ? 'var(--medium)' : 'var(--critical)'); }
+  if (ringPct) { ringPct.textContent = overallPct + '%'; ringPct.setAttribute('fill', overallPct >= 80 ? 'var(--low)' : overallPct >= 50 ? 'var(--medium)' : 'var(--critical)'); }
+
+  const heroTitle = document.getElementById('heroTitle');
+  if (heroTitle) heroTitle.textContent = activeFws.length ? activeFws.length + ' framework' + (activeFws.length > 1 ? 's' : '') + ' active' : 'No frameworks active';
+
+  const setEl = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  setEl('heroImpl', totalImpl); setEl('heroGaps', totalGaps); setEl('heroInProg', totalInProg); setEl('heroFws', activeFws.length);
+
+  // Framework bars in hero
+  const barsEl = document.getElementById('heroFrameworkBars');
+  if (barsEl) {
+    if (!activeFws.length) { barsEl.innerHTML = '<div style="font-size:13px;color:var(--text-muted)">Add frameworks from the Frameworks tab to start tracking</div>'; }
+    else barsEl.innerHTML = activeFws.map(fw => {
+      const pct = getFwScore(fw.id);
+      return `<div style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="cmpTab('controls',document.getElementById('ctab-controls'));loadCtrlsForFw('${fw.id}')">
+        <div style="width:10px;height:10px;border-radius:50%;background:${fw.color};flex-shrink:0"></div>
+        <div style="flex:1;font-size:12px;color:var(--text-secondary)">${fw.name}</div>
+        <div style="width:100px;height:5px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${fw.color};border-radius:3px"></div></div>
+        <div style="font-size:11.5px;font-family:'IBM Plex Mono',monospace;color:var(--text-secondary);width:30px;text-align:right">${pct}%</div>
       </div>`;
     }).join('');
   }
+
+  // Framework detail cards
+  const cardsEl = document.getElementById('cmpFwCards');
+  if (cardsEl) {
+    if (!activeFws.length) {
+      cardsEl.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-muted)">
+        <div style="font-size:32px;margin-bottom:12px;opacity:.25">🛡️</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text-secondary);font-family:'Syne',sans-serif;margin-bottom:6px">No frameworks added yet</div>
+        <div style="font-size:13px;margin-bottom:18px">Add compliance frameworks to start tracking your organisation's posture</div>
+        <button class="btn btn-primary btn-sm" onclick="cmpTab('frameworks',document.getElementById('ctab-frameworks'))">Browse Frameworks →</button>
+      </div>`;
+    } else {
+      cardsEl.innerHTML = activeFws.map(fw => {
+        const s = getFwStats(fw.id);
+        return `<div class="card" style="cursor:pointer;border-top:3px solid ${fw.color}" onclick="cmpTab('controls',document.getElementById('ctab-controls'));loadCtrlsForFw('${fw.id}')">
+          <div class="card-hd">
+            <div>
+              <div style="font-size:14px;font-weight:800;font-family:'Syne',sans-serif;color:${fw.color}">${fw.name}</div>
+              <div style="font-size:11px;color:var(--text-muted);margin-top:2px">${fw.total.toLocaleString()} controls · ${fw.region}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:20px;font-weight:700;font-family:'Syne',sans-serif;color:${s.pct>=80?'var(--low)':s.pct>=50?'var(--medium)':'var(--critical)'}">${s.pct}%</div>
+              <div style="font-size:10px;color:var(--text-muted)">compliant</div>
+            </div>
+          </div>
+          <div class="card-bd" style="padding:10px 16px 14px">
+            <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:12px"><div style="width:${s.pct}%;height:100%;background:${fw.color};border-radius:3px;transition:width .4s"></div></div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">
+              <span style="color:var(--low)">✓ ${s.impl} implemented</span>
+              <span style="color:var(--info)">${s.inProg} in progress</span>
+              <span style="color:var(--critical)">${s.notStart} gaps</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  // Status distribution chart
+  const chartEl = document.getElementById('cmpStatusChart');
+  if (chartEl) {
+    if (!activeFws.length) { chartEl.innerHTML = '<div style="text-align:center;padding:24px;color:var(--text-muted);font-size:13px">No data yet</div>'; }
+    else {
+      const bars = [
+        { label:'Implemented', val:totalImpl, color:'var(--low)' },
+        { label:'In Progress', val:totalInProg, color:'var(--info)' },
+        { label:'Partial', val:0, color:'var(--medium)' },
+        { label:'Not Started', val:totalGaps, color:'var(--critical)' }
+      ];
+      const max = Math.max(...bars.map(b => b.val), 1);
+      chartEl.innerHTML = `<div style="display:flex;align-items:flex-end;gap:10px;height:80px;margin-bottom:8px">${
+        bars.map(b => `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="font-size:11px;font-weight:700;color:${b.color}">${b.val}</div>
+          <div style="width:100%;background:${b.color};border-radius:3px 3px 0 0;height:${Math.max(4,b.val/max*60)}px;transition:height .4s"></div>
+        </div>`).join('')
+      }</div><div style="display:flex;gap:10px">${bars.map(b=>`<div style="flex:1;text-align:center;font-size:10px;color:var(--text-muted)">${b.label}</div>`).join('')}</div>`;
+    }
+  }
+
+  // Priority gaps
+  const gapsEl = document.getElementById('cmpPriorityGaps');
+  if (gapsEl) {
+    const allCtrls = activeFws.flatMap(fw => getCmpControls(fw.id).filter(c => !CMP_TRACKING[c.id] || CMP_TRACKING[c.id].status === 'not_started').slice(0, 3));
+    if (!allCtrls.length) { gapsEl.innerHTML = '<div style="text-align:center;padding:20px;color:var(--low);font-size:13px">✓ No critical gaps — great work!</div>'; }
+    else {
+      gapsEl.innerHTML = allCtrls.slice(0, 8).map(c => {
+        const fw = FRAMEWORKS_DATA.find(f => f.id === c.fw);
+        return `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .12s" onmouseover="this.style.background='rgba(255,255,255,.02)'" onmouseout="this.style.background=''" onclick="openCmpDrawer('${c.id}')">
+          <div style="width:3px;height:32px;border-radius:2px;background:${fw?.color||'var(--critical)'};flex-shrink:0"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:12px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.code} — ${c.title}</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:1px">${fw?.name} · ${c.domain}</div>
+          </div>
+          <span style="font-size:10px;padding:2px 6px;background:var(--critical-bg);color:var(--critical);border:1px solid var(--critical-border);border-radius:4px;white-space:nowrap;font-family:'IBM Plex Mono',monospace">Not Started</span>
+        </div>`;
+      }).join('');
+    }
+  }
 }
+
+// ── FRAMEWORK LIBRARY ─────────────────────────────────────
+window.renderFwLibrary = function() {
+  const q = (document.getElementById('fwSearch')?.value || '').toLowerCase();
+  const cat = document.getElementById('fwCatFilter')?.value || '';
+  const region = document.getElementById('fwRegionFilter')?.value || '';
+
+  let fws = FRAMEWORKS_DATA.filter(f => {
+    if (q && !f.name.toLowerCase().includes(q) && !f.full.toLowerCase().includes(q) && !f.desc.toLowerCase().includes(q)) return false;
+    if (cat && f.cat !== cat) return false;
+    if (region && f.region !== region) return false;
+    return true;
+  });
+
+  const grid = document.getElementById('fwLibraryGrid');
+  if (!grid) return;
+  if (!fws.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No frameworks match your search</div>'; return; }
+
+  grid.innerHTML = fws.map(fw => {
+    const active = CMP_ACTIVE_FWS.includes(fw.id);
+    const pct = active ? getFwScore(fw.id) : null;
+    return `<div class="fw-lib-card ${active?'active-fw':''}" style="border-top-color:${fw.color}">
+      <div class="fw-lib-card-body">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+          <div>
+            <div class="fw-lib-name" style="color:${fw.color}">${fw.name}</div>
+            <div class="fw-lib-full">${fw.full}</div>
+          </div>
+          ${active ? `<span style="font-size:10px;font-weight:700;padding:2px 7px;background:var(--low-bg);color:var(--low);border:1px solid var(--low-border);border-radius:20px;font-family:'IBM Plex Mono',monospace;white-space:nowrap">✓ Active</span>` : ''}
+        </div>
+        <div class="fw-lib-desc">${fw.desc}</div>
+        ${active ? `<div class="fw-score-bar"><div class="fw-score-fill" style="width:${pct}%;background:${fw.color}"></div></div>` : ''}
+        <div class="fw-lib-footer" style="margin-top:${active?'10px':'0'}">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <span class="fw-chip">${fw.cat}</span>
+            <span class="fw-chip">${fw.region}</span>
+            <span class="fw-chip">${fw.total.toLocaleString()} controls</span>
+            <span class="fw-chip">${fw.year}</span>
+          </div>
+          <button class="fw-add-btn ${active?'remove':'add'}" onclick="event.stopPropagation();toggleFw('${fw.id}',this)">
+            ${active ? '✓ Monitoring' : '+ Add to workspace'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+};
+
+window.toggleFw = function(fwId, btn) {
+  const idx = CMP_ACTIVE_FWS.indexOf(fwId);
+  if (idx === -1) {
+    CMP_ACTIVE_FWS.push(fwId);
+    toast('Framework added to workspace', 'success');
+    addAuditEntry('Framework added', fwId, 'Compliance');
+  } else {
+    if (!confirm('Remove this framework from your workspace?')) return;
+    CMP_ACTIVE_FWS.splice(idx, 1);
+    toast('Framework removed', 'info');
+  }
+  localStorage.setItem('te_org_frameworks', JSON.stringify(CMP_ACTIVE_FWS));
+  renderFwLibrary();
+};
+
+// ── CONTROLS PANEL ────────────────────────────────────────
+window.loadCtrlsForFw = function(fwId) {
+  CMP_CURRENT_FW = FRAMEWORKS_DATA.find(f => f.id === fwId);
+  CMP_CONTROLS = getCmpControls(fwId);
+  renderCtrlsPanel();
+};
+
+function renderCtrlsPanel() {
+  const activeFws = FRAMEWORKS_DATA.filter(f => CMP_ACTIVE_FWS.includes(f.id));
+
+  // Pill selectors
+  const pillsEl = document.getElementById('activeFwPills');
+  if (pillsEl) pillsEl.innerHTML = activeFws.length ? activeFws.map(fw => {
+    const isActive = CMP_CURRENT_FW?.id === fw.id;
+    return `<button onclick="loadCtrlsForFw('${fw.id}')" style="padding:5px 13px;border-radius:20px;border:1px solid ${isActive?fw.color:'var(--border)'};background:${isActive?fw.color+'22':'transparent'};color:${isActive?fw.color:'var(--text-secondary)'};font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;font-family:inherit">${fw.name}</button>`;
+  }).join('') : '<span style="font-size:13px;color:var(--text-muted)">Add frameworks first</span>';
+
+  if (!CMP_CURRENT_FW && activeFws.length) { CMP_CURRENT_FW = activeFws[0]; CMP_CONTROLS = getCmpControls(CMP_CURRENT_FW.id); }
+
+  // Page header
+  const titleEl = document.getElementById('ctrlPageTitle');
+  const subEl = document.getElementById('ctrlPageSub');
+  const nameEl = document.getElementById('ctrlFwName');
+  if (CMP_CURRENT_FW) {
+    if (titleEl) titleEl.textContent = CMP_CURRENT_FW.full;
+    if (subEl) subEl.textContent = CMP_CURRENT_FW.name + ' · ' + CMP_CURRENT_FW.total.toLocaleString() + ' controls · ' + CMP_CURRENT_FW.region;
+    if (nameEl) nameEl.textContent = CMP_CURRENT_FW.name;
+  }
+
+  renderControls();
+}
+
+window.renderControls = function() {
+  if (!CMP_CONTROLS.length) {
+    const noFws = !CMP_ACTIVE_FWS.length;
+    ['ctrlsGrid','ctrlsList'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-muted)"><div style="font-size:28px;margin-bottom:12px;opacity:.25">📋</div><div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:6px">${noFws?'No frameworks added':'Select a framework'}</div><div style="font-size:13px;margin-bottom:18px">${noFws?'Add frameworks to start tracking controls':'Click a framework above to view its controls'}</div>${noFws?'<button class="btn btn-primary btn-sm" onclick="cmpTab('frameworks',document.getElementById('ctab-frameworks'))">Browse Frameworks →</button>':''}</div>`;
+    });
+    return;
+  }
+
+  const q = (document.getElementById('ctrlSearch')?.value || '').toLowerCase();
+  const statusF = document.getElementById('ctrlStatusFilter')?.value || '';
+
+  let ctrls = CMP_CONTROLS.filter(c => {
+    if (q && !c.code.toLowerCase().includes(q) && !c.title.toLowerCase().includes(q) && !c.desc?.toLowerCase().includes(q)) return false;
+    if (statusF && (CMP_TRACKING[c.id]?.status || 'not_started') !== statusF) return false;
+    return true;
+  });
+
+  // KPIs
+  const all = CMP_CONTROLS;
+  const statuses = all.map(c => CMP_TRACKING[c.id]?.status || 'not_started');
+  const impl = statuses.filter(s=>s==='implemented'||s==='verified').length;
+  const inProg = statuses.filter(s=>s==='in_progress'||s==='partially_implemented').length;
+  const gaps = statuses.filter(s=>s==='not_started').length;
+  const pct = all.length ? Math.round(impl/all.length*100) : 0;
+  const set = (id, v) => { const e = document.getElementById(id); if(e) e.textContent = v; };
+  set('csTotal', all.length.toLocaleString()); set('csImpl', impl); set('csInProg', inProg); set('csGaps', gaps); set('csScore', pct+'%');
+  const scoreEl = document.getElementById('csScore');
+  if (scoreEl) scoreEl.style.color = pct>=80?'var(--low)':pct>=50?'var(--medium)':'var(--critical)';
+
+  const countEl = document.getElementById('ctrlCount');
+  if (countEl) countEl.textContent = ctrls.length.toLocaleString() + ' controls';
+
+  const STATUS_COLORS = { not_started:'#6b7280', in_progress:'var(--info)', partially_implemented:'var(--medium)', implemented:'var(--low)', verified:'var(--low)', not_applicable:'#6b7280' };
+  const STATUS_LABELS = { not_started:'Not Started', in_progress:'In Progress', partially_implemented:'Partial', implemented:'Implemented', verified:'Verified', not_applicable:'N/A' };
+
+  if (CMP_VIEW === 'grid') {
+    document.getElementById('ctrlsGrid').style.display = 'grid';
+    document.getElementById('ctrlsList').style.display = 'none';
+    if (!ctrls.length) { document.getElementById('ctrlsGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No controls match filters</div>'; return; }
+    const fwColor = CMP_CURRENT_FW?.color || 'var(--brand)';
+    document.getElementById('ctrlsGrid').innerHTML = ctrls.map(c => {
+      const status = CMP_TRACKING[c.id]?.status || 'not_started';
+      const color = STATUS_COLORS[status];
+      const checked = (CMP_TRACKING[c.id]?.requirements_checked || []).length;
+      const total = (c.reqs||[]).length;
+      const pct = total ? Math.round(checked/total*100) : 0;
+      const circumference = 2 * Math.PI * 16;
+      const offset = circumference * (1 - pct/100);
+      return `<div class="ctrl-play-card" onclick="openCmpDrawer('${c.id}')" style="border-top-color:${color}">
+        <div class="ctrl-play-card-hd">
+          <div class="ctrl-code" style="color:${fwColor}">${c.code}</div>
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+            <div class="ctrl-title">${c.title}</div>
+            <svg width="38" height="38" viewBox="0 0 38 38" style="flex-shrink:0">
+              <circle cx="19" cy="19" r="16" fill="none" stroke="var(--border)" stroke-width="3"/>
+              <circle cx="19" cy="19" r="16" fill="none" stroke="${color}" stroke-width="3"
+                stroke-dasharray="${circumference.toFixed(2)}" stroke-dashoffset="${offset.toFixed(2)}"
+                transform="rotate(-90 19 19)" stroke-linecap="round"/>
+              <text x="19" y="23" text-anchor="middle" font-size="9" font-weight="700" fill="${color}" font-family="monospace">${pct}%</text>
+            </svg>
+          </div>
+        </div>
+        <div class="ctrl-play-card-body">
+          <div class="ctrl-desc">${c.desc}</div>
+          <div class="ctrl-footer">
+            <span class="ctrl-reqs">${checked}/${total} reqs</span>
+            <span class="ctrl-status-pill" style="background:${color}18;color:${color};border-color:${color}40">${STATUS_LABELS[status]||'Not Started'}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    document.getElementById('ctrlsGrid').style.display = 'none';
+    document.getElementById('ctrlsList').style.display = 'block';
+    if (!ctrls.length) { document.getElementById('ctrlsList').innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted)">No controls match filters</div>'; return; }
+    const fwColor = CMP_CURRENT_FW?.color || 'var(--brand)';
+    document.getElementById('ctrlsList').innerHTML = ctrls.map(c => {
+      const status = CMP_TRACKING[c.id]?.status || 'not_started';
+      const color = STATUS_COLORS[status];
+      return `<div class="ctrl-list-item" onclick="openCmpDrawer('${c.id}')" style="border-left-color:${color}">
+        <div class="ctrl-list-code" style="color:${fwColor}">${c.code}</div>
+        <div class="ctrl-list-title">${c.title}</div>
+        <div class="ctrl-list-fw">${c.domain}</div>
+        <span class="ctrl-status-pill" style="background:${color}18;color:${color};border-color:${color}40">${STATUS_LABELS[status]||'Not Started'}</span>
+        <div class="ctrl-list-reqs">${(c.reqs||[]).length} reqs</div>
+      </div>`;
+    }).join('');
+  }
+};
+
+window.setCmpView = function(v) {
+  CMP_VIEW = v;
+  const grid = document.getElementById('viewGrid');
+  const list = document.getElementById('viewList');
+  if (grid) { grid.style.background = v==='grid'?'var(--bg-surface)':'transparent'; grid.style.color = v==='grid'?'var(--text-primary)':'var(--text-muted)'; }
+  if (list) { list.style.background = v==='list'?'var(--bg-surface)':'transparent'; list.style.color = v==='list'?'var(--text-primary)':'var(--text-muted)'; }
+  renderControls();
+};
+
+// ── CONTROL DRAWER ────────────────────────────────────────
+window.openCmpDrawer = function(controlId) {
+  const allCtrls = CMP_ACTIVE_FWS.flatMap(fwId => getCmpControls(fwId));
+  CMP_CURRENT_CTRL = allCtrls.find(c => c.id === controlId) || CMP_CONTROLS.find(c => c.id === controlId);
+  if (!CMP_CURRENT_CTRL) return;
+  const c = CMP_CURRENT_CTRL;
+  const fw = FRAMEWORKS_DATA.find(f => f.id === c.fw);
+  const trk = CMP_TRACKING[c.id] || {};
+
+  document.getElementById('drawerCode').textContent = c.code + (fw ? ' · ' + fw.name : '');
+  document.getElementById('drawerTitle').textContent = c.title;
+  document.getElementById('drawerCode').style.color = fw?.color || 'var(--brand)';
+  switchDTab('overview', document.querySelector('.drawer-dtab'));
+
+  document.getElementById('cmpDrawer').style.transform = 'none';
+  document.getElementById('cmpDrawerMask').style.display = 'block';
+};
+
+window.closeCmpDrawer = function() {
+  document.getElementById('cmpDrawer').style.transform = 'translateX(100%)';
+  document.getElementById('cmpDrawerMask').style.display = 'none';
+};
+
+window.switchDTab = function(tab, btn) {
+  document.querySelectorAll('.drawer-dtab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const c = CMP_CURRENT_CTRL;
+  const trk = CMP_TRACKING[c?.id] || {};
+  const ev = CMP_EVIDENCE[c?.id] || [];
+  const fw = FRAMEWORKS_DATA.find(f => f.id === c?.fw);
+  const body = document.getElementById('drawerBody');
+  if (!body || !c) return;
+
+  if (tab === 'overview') {
+    body.innerHTML = `
+      <div style="margin-bottom:16px">
+        <div style="font-size:10px;font-weight:700;font-family:'IBM Plex Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Description</div>
+        <div style="font-size:13px;color:var(--text-secondary);line-height:1.7">${c.desc||'—'}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;padding:10px">
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Control Type</div>
+          <div style="font-size:13px;color:var(--text-primary)">${c.type||'—'}</div>
+        </div>
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;padding:10px">
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Baseline</div>
+          <div style="font-size:13px;color:var(--text-primary)">${c.baseline||'—'}</div>
+        </div>
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;padding:10px">
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Domain</div>
+          <div style="font-size:13px;color:var(--text-primary)">${c.domain||'—'}</div>
+        </div>
+        <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;padding:10px">
+          <div style="font-size:10px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Framework</div>
+          <div style="font-size:13px;color:${fw?.color||'var(--brand)'}">${fw?.name||'—'}</div>
+        </div>
+      </div>
+      <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;padding:12px">
+        <div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px">Current Status</div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <select onchange="updateCmpStatus(this.value)" style="background:var(--bg-surface);border:1px solid var(--border);color:var(--text-primary);font-size:13px;padding:7px 10px;border-radius:6px;outline:none;font-family:inherit;cursor:pointer;flex:1">
+            ${['not_started','in_progress','partially_implemented','implemented','verified','not_applicable'].map(s =>
+              `<option value="${s}" ${(trk.status||'not_started')===s?'selected':''}>${{not_started:'Not Started',in_progress:'In Progress',partially_implemented:'Partially Implemented',implemented:'Implemented',verified:'Verified',not_applicable:'Not Applicable'}[s]}</option>`
+            ).join('')}
+          </select>
+        </div>
+      </div>`;
+  }
+
+  else if (tab === 'checklist') {
+    const reqs = c.reqs || [];
+    const checked = trk.requirements_checked || [];
+    const pct = reqs.length ? Math.round(checked.length/reqs.length*100) : 0;
+    body.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary)">${checked.length} of ${reqs.length} requirements met</div>
+        <div style="font-size:13px;font-weight:700;color:${pct>=80?'var(--low)':pct>=50?'var(--medium)':'var(--critical)'}">${pct}%</div>
+      </div>
+      <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:18px"><div style="width:${pct}%;height:100%;background:${pct>=80?'var(--low)':pct>=50?'var(--medium)':'var(--critical)'};border-radius:3px;transition:width .3s"></div></div>
+      ${reqs.map((req, i) => {
+        const isOn = checked.includes(i.toString());
+        return `<div class="req-row">
+          <div class="req-cb ${isOn?'on':''}" onclick="toggleCmpReq(${i})" id="rcb-${i}">
+            ${isOn?'<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>':''}
+          </div>
+          <div class="req-text" style="${isOn?'text-decoration:line-through;opacity:.5':''}">${req}</div>
+        </div>`;
+      }).join('')}`;
+  }
+
+  else if (tab === 'tracking') {
+    body.innerHTML = `
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;font-family:'IBM Plex Mono',monospace">Status</label>
+        <select id="trkStatus" style="width:100%;background:var(--bg-sunken);border:1px solid var(--border);color:var(--text-primary);font-size:13px;padding:9px 12px;border-radius:6px;outline:none;font-family:inherit;cursor:pointer">
+          ${['not_started','in_progress','partially_implemented','implemented','verified','not_applicable'].map(s=>
+            `<option value="${s}" ${(trk.status||'not_started')===s?'selected':''}>${{not_started:'Not Started',in_progress:'In Progress',partially_implemented:'Partially Implemented',implemented:'Implemented',verified:'Verified',not_applicable:'Not Applicable'}[s]}</option>`
+          ).join('')}
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div><label style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;font-family:'IBM Plex Mono',monospace">Owner</label><input id="trkOwner" class="input" placeholder="Full name" value="${trk.owner_name||''}"/></div>
+        <div><label style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;font-family:'IBM Plex Mono',monospace">Due Date</label><input id="trkDue" class="input" type="date" value="${trk.due_date||''}"/></div>
+      </div>
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-size:10.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;font-family:'IBM Plex Mono',monospace">Implementation Notes</label>
+        <textarea id="trkNotes" class="textarea" style="width:100%;background:var(--bg-sunken);border:1px solid var(--border);color:var(--text-primary);font-size:13px;padding:9px 12px;border-radius:6px;outline:none;font-family:inherit;resize:vertical;line-height:1.6" rows="4" placeholder="Describe how this control is implemented...">${trk.implementation_notes||''}</textarea>
+      </div>
+      <button class="btn btn-primary btn-sm" onclick="saveCmpTracking()">Save Changes</button>`;
+  }
+
+  else if (tab === 'evidence') {
+    body.innerHTML = `
+      <div id="evList">${ev.length ? ev.map((e,i)=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:8px">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <div style="flex:1">
+            <div style="font-size:12.5px;font-weight:600;color:var(--text-primary)">${e.title}</div>
+            ${e.url?`<a href="${e.url}" target="_blank" style="font-size:11px;color:var(--text-link)">${e.url}</a>`:''}
+          </div>
+          <button class="btn btn-ghost btn-xs" onclick="removeCmpEvidence(${i})">Remove</button>
+        </div>`).join('') : '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">No evidence attached yet</div>'}</div>
+      <div style="margin-top:12px;padding:14px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px">
+        <div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:10px">Add Evidence</div>
+        <input id="evTitle" class="input" placeholder="Document title" style="margin-bottom:8px"/>
+        <input id="evUrl" class="input" placeholder="URL or reference (optional)" style="margin-bottom:8px"/>
+        <button class="btn btn-primary btn-sm" onclick="addCmpEvidence()">Add</button>
+      </div>`;
+  }
+};
+
+window.updateCmpStatus = function(val) {
+  if (!CMP_CURRENT_CTRL) return;
+  if (!CMP_TRACKING[CMP_CURRENT_CTRL.id]) CMP_TRACKING[CMP_CURRENT_CTRL.id] = {};
+  CMP_TRACKING[CMP_CURRENT_CTRL.id].status = val;
+  CMP_TRACKING[CMP_CURRENT_CTRL.id].framework_id = CMP_CURRENT_CTRL.fw;
+  localStorage.setItem('te_compliance_tracking', JSON.stringify(CMP_TRACKING));
+  renderControls(); renderCmpDashboard();
+  toast('Status updated', 'success');
+};
+
+window.toggleCmpReq = function(idx) {
+  if (!CMP_CURRENT_CTRL) return;
+  if (!CMP_TRACKING[CMP_CURRENT_CTRL.id]) CMP_TRACKING[CMP_CURRENT_CTRL.id] = { status:'not_started', requirements_checked:[] };
+  const trk = CMP_TRACKING[CMP_CURRENT_CTRL.id];
+  const checked = [...(trk.requirements_checked || [])];
+  const pos = checked.indexOf(idx.toString());
+  if (pos === -1) checked.push(idx.toString()); else checked.splice(pos, 1);
+  trk.requirements_checked = checked;
+  const total = CMP_CURRENT_CTRL.reqs?.length || 0;
+  if (total > 0) {
+    const pct = checked.length / total;
+    if (pct === 0) trk.status = 'not_started';
+    else if (pct < 0.5) trk.status = 'in_progress';
+    else if (pct < 1) trk.status = 'partially_implemented';
+    else trk.status = 'implemented';
+  }
+  CMP_TRACKING[CMP_CURRENT_CTRL.id] = trk;
+  localStorage.setItem('te_compliance_tracking', JSON.stringify(CMP_TRACKING));
+  switchDTab('checklist', document.querySelectorAll('.drawer-dtab')[1]);
+  renderControls(); renderCmpDashboard();
+};
+
+window.saveCmpTracking = function() {
+  if (!CMP_CURRENT_CTRL) return;
+  if (!CMP_TRACKING[CMP_CURRENT_CTRL.id]) CMP_TRACKING[CMP_CURRENT_CTRL.id] = {};
+  const trk = CMP_TRACKING[CMP_CURRENT_CTRL.id];
+  trk.status = document.getElementById('trkStatus')?.value || trk.status;
+  trk.owner_name = document.getElementById('trkOwner')?.value || '';
+  trk.due_date = document.getElementById('trkDue')?.value || '';
+  trk.implementation_notes = document.getElementById('trkNotes')?.value || '';
+  trk.framework_id = CMP_CURRENT_CTRL.fw;
+  localStorage.setItem('te_compliance_tracking', JSON.stringify(CMP_TRACKING));
+  addAuditEntry('Control updated', CMP_CURRENT_CTRL.code + ' — ' + trk.status, 'Compliance');
+  toast('Saved', 'success');
+  renderControls(); renderCmpDashboard();
+};
+
+window.addCmpEvidence = function() {
+  if (!CMP_CURRENT_CTRL) return;
+  const title = document.getElementById('evTitle')?.value.trim();
+  if (!title) { toast('Enter a title', 'warning'); return; }
+  const url = document.getElementById('evUrl')?.value.trim();
+  if (!CMP_EVIDENCE[CMP_CURRENT_CTRL.id]) CMP_EVIDENCE[CMP_CURRENT_CTRL.id] = [];
+  CMP_EVIDENCE[CMP_CURRENT_CTRL.id].push({ title, url, addedAt: new Date().toISOString() });
+  localStorage.setItem('te_compliance_evidence', JSON.stringify(CMP_EVIDENCE));
+  switchDTab('evidence', document.querySelectorAll('.drawer-dtab')[3]);
+  toast('Evidence added', 'success');
+};
+
+window.removeCmpEvidence = function(idx) {
+  if (!CMP_CURRENT_CTRL) return;
+  CMP_EVIDENCE[CMP_CURRENT_CTRL.id]?.splice(idx, 1);
+  localStorage.setItem('te_compliance_evidence', JSON.stringify(CMP_EVIDENCE));
+  switchDTab('evidence', document.querySelectorAll('.drawer-dtab')[3]);
+};
+
+function loadComplianceSummary() {
+  renderCmpDashboard();
+}
+
+window.exportComplianceReport = function() {
+  const allCtrls = CMP_ACTIVE_FWS.flatMap(fwId => getCmpControls(fwId));
+  const rows = allCtrls.map(c => {
+    const trk = CMP_TRACKING[c.id] || {};
+    const fw = FRAMEWORKS_DATA.find(f=>f.id===c.fw);
+    return `"${fw?.name||''}","${c.code}","${c.title.replace(/"/g,'')}","${trk.status||'not_started'}","${trk.owner_name||''}","${trk.due_date||''}"`;
+  });
+  const csv = 'Framework,Code,Title,Status,Owner,Due Date
+' + rows.join('
+');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download = 'compliance-report.csv'; a.click();
+  toast('Report exported', 'success');
+};
 
 // ── ASSETS ────────────────────────────────────────────────
 window.addAsset = function() {
