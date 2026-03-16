@@ -145,6 +145,11 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 /* ── TOAST ── */
 .toast-el{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--bg-raised);border:1px solid var(--border-strong);color:var(--text-primary);padding:11px 16px;border-radius:var(--radius-md);font-size:13px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;max-width:360px;animation:toastIn .25s ease;}
 @keyframes toastIn{from{transform:translateX(100%);opacity:0;}to{transform:none;opacity:1;}}
+.sb-sub-item{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 32px;border-radius:var(--radius);color:var(--text-secondary);font-size:12.5px;font-weight:500;cursor:pointer;transition:all .15s;border-left:2px solid transparent;margin-bottom:1px;}
+.sb-sub-item:hover{background:var(--sidebar-hover);color:var(--text-primary);}
+.sb-sub-item.active{background:var(--sidebar-active-bg);color:var(--sidebar-active-text);border-left-color:var(--sidebar-active-border);}
+.sb-sub-item svg{flex-shrink:0;width:13px;height:13px;stroke-width:1.8;}
+.sidebar.collapsed .sb-sub-item{display:none;}
 .cmp-t{display:inline-flex;align-items:center;gap:6px;padding:11px 16px;font-size:12.5px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;transition:all .15s;white-space:nowrap;}
 .cmp-t:hover{color:var(--text-primary);}
 .cmp-t.active{color:#ff4d6d;border-bottom-color:var(--brand);}
@@ -245,9 +250,29 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       <span class="sb-item-label">Dashboard</span>
     </div>
-    <div class="sb-item" id="sb-compliance" onclick="nav('compliance')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-      <span class="sb-item-label">NIST 800-53</span>
+    <!-- Compliance expandable group -->
+    <div class="sb-item" id="sb-compliance" onclick="toggleCmpExpand()" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:9px;min-width:0">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:15px;height:15px;flex-shrink:0;stroke-width:1.8"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span class="sb-item-label">Compliance</span>
+        <span id="sbCmpBadge" style="display:none;font-size:9.5px;font-weight:700;padding:1px 5px;background:var(--brand);color:#fff;border-radius:8px;font-family:'IBM Plex Mono',monospace">0</span>
+      </div>
+      <svg id="cmpChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px;height:12px;flex-shrink:0;stroke-width:2;color:var(--text-muted);transition:transform .2s"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <!-- Compliance sub-items (hidden until expanded) -->
+    <div id="cmpSubItems" style="display:none;overflow:hidden">
+      <div class="sb-sub-item" id="sb-cmp-overview" onclick="navCmpSub('overview')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span class="sb-item-label">Overview</span>
+      </div>
+      <div class="sb-sub-item" id="sb-cmp-frameworks" onclick="navCmpSub('frameworks')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <span class="sb-item-label">Frameworks</span>
+      </div>
+      <div class="sb-sub-item" id="sb-cmp-controls" onclick="navCmpSub('controls')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+        <span class="sb-item-label">Controls &amp; Tracking</span>
+      </div>
     </div>
     <div class="sb-item" id="sb-adversaries" onclick="nav('adversaries')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
@@ -1582,6 +1607,59 @@ function buildStatusBars(items) {
 
 // ── COMPLIANCE SUMMARY ────────────────────────────────────
 
+
+// ── COMPLIANCE SIDEBAR EXPAND/COLLAPSE ───────────────────
+var cmpExpanded = false;
+
+window.toggleCmpExpand = function() {
+  cmpExpanded = !cmpExpanded;
+  var sub = document.getElementById('cmpSubItems');
+  var chev = document.getElementById('cmpChevron');
+  if (sub) sub.style.display = cmpExpanded ? 'block' : 'none';
+  if (chev) chev.style.transform = cmpExpanded ? 'rotate(180deg)' : '';
+  // If expanding and compliance page not active, navigate to it showing overview
+  if (cmpExpanded) {
+    navCmpSub('overview');
+  }
+};
+
+window.navCmpSub = function(tab) {
+  // 1. Make sure expanded
+  cmpExpanded = true;
+  var sub = document.getElementById('cmpSubItems');
+  var chev = document.getElementById('cmpChevron');
+  if (sub) sub.style.display = 'block';
+  if (chev) chev.style.transform = 'rotate(180deg)';
+
+  // 2. Show compliance page
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var pg = document.getElementById('page-compliance');
+  if (pg) pg.classList.add('active');
+  currentPage = 'compliance';
+  if (typeof closeDD === 'function') closeDD();
+
+  // 3. Highlight sidebar parent + correct sub-item
+  document.querySelectorAll('.sb-item').forEach(function(i){ i.classList.remove('active'); });
+  document.querySelectorAll('.sb-sub-item').forEach(function(i){ i.classList.remove('active'); });
+  document.getElementById('sb-compliance').classList.add('active');
+  var subEl = document.getElementById('sb-cmp-' + tab);
+  if (subEl) subEl.classList.add('active');
+
+  // 4. Switch inner tab
+  showCmpTab(tab);
+
+  // 5. Update badge
+  var b = document.getElementById('sbCmpBadge');
+  if (b) {
+    var ct = typeof CMP_FWS !== 'undefined' ? CMP_FWS.length : 0;
+    b.textContent = ct;
+    b.style.display = ct ? 'inline' : 'none';
+  }
+
+  var mc = document.getElementById('mainContent');
+  if (mc) mc.scrollTop = 0;
+};
+
 // ══════════════════════════════════════════════════════════
 // COMPLIANCE MANAGEMENT MODULE
 // Single nav('compliance') → tabs handle everything inside
@@ -1704,10 +1782,7 @@ window.showCmpTab = function(tab) {
 };
 
 // ── loadComplianceSummary — called by nav('compliance') ───
-function loadComplianceSummary() {
-  // Default to overview tab
-  showCmpTab('overview');
-}
+function loadComplianceSummary() { navCmpSub('overview'); }
 
 // ── OVERVIEW ─────────────────────────────────────────────
 function renderCmpOverview() {
@@ -1881,6 +1956,7 @@ window.toggleFw = function(id){
   }
   cmpSave();
   renderFwCards();
+  var b=document.getElementById('sbCmpBadge');if(b){b.textContent=CMP_FWS.length;b.style.display=CMP_FWS.length?'inline':'none';}
 };
 
 // ── CONTROLS TAB ──────────────────────────────────────────
