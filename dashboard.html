@@ -291,16 +291,16 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
   <div class="sb-section">
     <div class="sb-section-label">Compliance Management</div>
-    <div class="sb-item" id="sb-compliance" onclick="nav('compliance');cmpTab('dashboard',document.getElementById('ctab-dashboard'))">
+    <div class="sb-item" id="sb-compliance" onclick="navCmp('dashboard')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       <span class="sb-item-label">Overview</span>
     </div>
-    <div class="sb-item" id="sb-cmp-frameworks" onclick="nav('compliance');cmpTab('frameworks',document.getElementById('ctab-frameworks'))">
+    <div class="sb-item" id="sb-cmp-frameworks" onclick="navCmp('frameworks')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       <span class="sb-item-label">Frameworks</span>
-      <span class="sb-badge" id="sbFwCount" style="display:none">0</span>
+      <span class="sb-badge blue" id="sbFwCount" style="display:none">0</span>
     </div>
-    <div class="sb-item" id="sb-cmp-controls" onclick="nav('compliance');cmpTab('controls',document.getElementById('ctab-controls'))">
+    <div class="sb-item" id="sb-cmp-controls" onclick="navCmp('controls')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       <span class="sb-item-label">Controls</span>
     </div>
@@ -479,15 +479,15 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
   <!-- sub-nav tabs -->
   <div style="display:flex;border-bottom:1px solid var(--border);margin-bottom:20px;gap:0">
-    <button class="cmp-tab active" id="ctab-dashboard" onclick="cmpTab('dashboard',this)">
+    <button class="cmp-tab active" id="ctab-dashboard" onclick="navCmp('dashboard')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
       Overview
     </button>
-    <button class="cmp-tab" id="ctab-frameworks" onclick="cmpTab('frameworks',this)">
+    <button class="cmp-tab" id="ctab-frameworks" onclick="navCmp('frameworks')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
       Frameworks
     </button>
-    <button class="cmp-tab" id="ctab-controls" onclick="cmpTab('controls',this)">
+    <button class="cmp-tab" id="ctab-controls" onclick="navCmp('controls')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
       Controls
     </button>
@@ -1308,7 +1308,7 @@ window.nav = function(page) {
 
   // Page-specific load actions
   if (page === 'dashboard') loadDashboardKPIs();
-  if (page === 'compliance') loadComplianceSummary();
+  if (page === 'compliance') { /* tab handled by caller */ }
   if (page === 'team') loadTeamMembers();
   if (page === 'auditlog') renderAuditLog();
   if (page === 'assets') renderAssets();
@@ -1334,6 +1334,41 @@ function highlightCmpSbItem(tab) {
     badge.style.display = count ? 'inline-flex' : 'none';
   }
 }
+
+
+// ── COMPLIANCE NAV HELPER ─────────────────────────────────
+window.navCmp = function(tab) {
+  // 1. Show the compliance page
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pageEl = document.getElementById('page-compliance');
+  if (pageEl) pageEl.classList.add('active');
+  currentPage = 'compliance';
+  closeDD();
+
+  // 2. Switch to correct sub-tab
+  const panels = { dashboard:'cpanel-dashboard', frameworks:'cpanel-frameworks', controls:'cpanel-controls' };
+  Object.entries(panels).forEach(([t, id]) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+  });
+
+  // 3. Update tab buttons
+  document.querySelectorAll('.cmp-tab').forEach(b => b.classList.remove('active'));
+  const tabMap = { dashboard:'ctab-dashboard', frameworks:'ctab-frameworks', controls:'ctab-controls' };
+  const tabBtn = document.getElementById(tabMap[tab]);
+  if (tabBtn) tabBtn.classList.add('active');
+
+  // 4. Highlight sidebar item
+  highlightCmpSbItem(tab);
+
+  // 5. Load content
+  if (tab === 'dashboard') renderCmpDashboard();
+  if (tab === 'frameworks') renderFwLibrary();
+  if (tab === 'controls') renderCtrlsPanel();
+
+  // 6. Scroll to top
+  document.getElementById('mainContent').scrollTop = 0;
+};
 
 // ── SIDEBAR ───────────────────────────────────────────────
 window.toggleSidebar = function() {
