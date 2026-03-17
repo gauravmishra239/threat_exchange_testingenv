@@ -152,7 +152,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 .sidebar.collapsed .sb-sub-item{display:none;}
 .cmp-t{display:inline-flex;align-items:center;gap:6px;padding:11px 16px;font-size:12.5px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;transition:all .15s;white-space:nowrap;}
 .cmp-t:hover{color:var(--text-primary);}
-.cmp-t.active{color:#ff4d6d;border-bottom-color:var(--brand);}
+.cmp-t.active{color:#5c93f5;border-bottom-color:var(--brand);}
 .fw-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;border-top:3px solid transparent;overflow:hidden;transition:all .2s;}
 .fw-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);}
 .ctrl-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;border-top:3px solid;cursor:pointer;overflow:hidden;transition:all .2s;}
@@ -162,7 +162,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 .spill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;border:1px solid;font-family:'IBM Plex Mono',monospace;white-space:nowrap;}
 .dr-tab{padding:9px 14px;font-size:12px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;transition:all .15s;}
 .dr-tab:hover{color:var(--text-primary);}
-.dr-tab.active{color:#ff4d6d;border-bottom-color:var(--brand);}
+.dr-tab.active{color:#5c93f5;border-bottom-color:var(--brand);}
 .rq-row{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
 .rq-row:last-child{border-bottom:none;}
 .rq-cb{width:17px;height:17px;border:1.5px solid var(--border-strong);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;margin-top:1px;}
@@ -366,11 +366,11 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   <!-- KPI TILES -->
   <div class="kpi-grid">
     <div class="kpi">
-      <div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div class="kpi-label">Compliance Score</div>
       <div class="kpi-value" id="kCompliance">—</div>
       <div class="kpi-delta" id="kComplianceDelta">Click to view controls</div>
-      <div class="kpi-bar" style="background:linear-gradient(90deg,var(--brand),#ff4d6d)"></div>
+      <div class="kpi-bar" style="background:linear-gradient(90deg,var(--brand),#5c93f5)"></div>
     </div>
     <div class="kpi">
       <div class="kpi-icon" style="background:var(--critical-bg)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--critical)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
@@ -454,7 +454,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
         <div><div class="card-title">Recent Activity</div><div class="card-subtitle">Latest actions across your workspace</div></div>
       </div>
       <div id="recentActivity" style="padding:0">
-        <div class="audit-row"><div class="audit-icon" style="background:var(--brand-subtle)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1"><div class="audit-action">Compliance check completed</div><div class="audit-detail">NIST 800-53 — 163 controls reviewed</div></div><div class="audit-time">Just now</div></div>
+        <div class="audit-row"><div class="audit-icon" style="background:var(--brand-subtle)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div style="flex:1"><div class="audit-action">Compliance check completed</div><div class="audit-detail">NIST 800-53 — 163 controls reviewed</div></div><div class="audit-time">Just now</div></div>
         <div class="audit-row"><div class="audit-icon" style="background:var(--critical-bg)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--critical)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div><div style="flex:1"><div class="audit-action">Critical CVE alert</div><div class="audit-detail">CVE-2024-3400 added to watchlist</div></div><div class="audit-time">2h ago</div></div>
         <div class="audit-row"><div class="audit-icon" style="background:var(--info-bg)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--info)" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z"/></svg></div><div style="flex:1"><div class="audit-action">Team member invited</div><div class="audit-detail">Invite sent to <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="fa9b949b9683898eba9995978a9b9483d4999597">[email&#160;protected]</a></div></div><div class="audit-time">Yesterday</div></div>
       </div>
@@ -500,11 +500,11 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   <!-- KPIs -->
   <div class="kpi-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:20px">
     <div class="kpi" style="cursor:pointer" onclick="showCmpTab('controls')">
-      <div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <div class="kpi-label">Overall Score</div>
       <div class="kpi-value" id="ov-score">—</div>
       <div class="kpi-delta" id="ov-score-sub">No frameworks active</div>
-      <div class="kpi-bar" style="background:linear-gradient(90deg,var(--brand),#ff4d6d)"></div>
+      <div class="kpi-bar" style="background:linear-gradient(90deg,var(--brand),#5c93f5)"></div>
     </div>
     <div class="kpi">
       <div class="kpi-icon" style="background:var(--low-bg)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--low)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -694,7 +694,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
     </div>
   </div>
   <div style="background:var(--brand-subtle);border:1px solid var(--brand-muted);border-radius:var(--radius-md);padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
     <div><div style="font-size:13px;font-weight:600;color:var(--text-primary)">AI-Powered Intelligence Engine</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px">Threat actor profiles are generated by Claude AI and cached in your workspace. Click "Open Adversary Center" for full profiles, MITRE ATT&CK mappings, and live update functionality.</div></div>
     <a href="adversaries.html" class="btn btn-primary btn-sm" style="flex-shrink:0;white-space:nowrap">Open Full View →</a>
   </div>
@@ -722,12 +722,12 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
     </div>
   </div>
   <div style="background:var(--brand-subtle);border:1px solid var(--brand-muted);border-radius:var(--radius-md);padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
     <div><div style="font-size:13px;font-weight:600;color:var(--text-primary)">Full Asset Vulnerability Management</div><div style="font-size:12px;color:var(--text-secondary);margin-top:2px">Complete AVM with asset discovery, CVE mapping, CVSS scoring, risk prioritization, and patch tracking is available in the dedicated view.</div></div>
     <a href="assets.html" class="btn btn-primary btn-sm" style="flex-shrink:0;white-space:nowrap">Open AVM →</a>
   </div>
   <div class="kpi-grid" style="margin-bottom:16px">
-    <div class="kpi"><div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div><div class="kpi-label">Total Assets</div><div class="kpi-value" id="avmTotal">0</div><div class="kpi-delta">In inventory</div><div class="kpi-bar" style="background:var(--brand)"></div></div>
+    <div class="kpi"><div class="kpi-icon" style="background:var(--brand-subtle)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg></div><div class="kpi-label">Total Assets</div><div class="kpi-value" id="avmTotal">0</div><div class="kpi-delta">In inventory</div><div class="kpi-bar" style="background:var(--brand)"></div></div>
     <div class="kpi"><div class="kpi-icon" style="background:var(--critical-bg)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--critical)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div><div class="kpi-label">Critical CVEs</div><div class="kpi-value" id="avmCrit" style="color:var(--critical)">0</div><div class="kpi-delta down">Unpatched</div><div class="kpi-bar" style="background:var(--critical)"></div></div>
     <div class="kpi"><div class="kpi-icon" style="background:var(--medium-bg)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--medium)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div class="kpi-label">High Risk</div><div class="kpi-value" id="avmHigh" style="color:var(--high)">0</div><div class="kpi-delta down">Need patching</div><div class="kpi-bar" style="background:var(--high)"></div></div>
     <div class="kpi"><div class="kpi-icon" style="background:var(--low-bg)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--low)" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div><div class="kpi-label">Patched</div><div class="kpi-value" id="avmPatched" style="color:var(--low)">0</div><div class="kpi-delta up">Up to date</div><div class="kpi-bar" style="background:var(--low)"></div></div>
@@ -752,7 +752,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   </div>
   <div class="grid-3" style="gap:14px">
     <div class="report-card" onclick="generateReport('compliance')">
-      <div class="report-icon" style="background:var(--brand-subtle)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+      <div class="report-icon" style="background:var(--brand-subtle)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
       <div class="report-name">Compliance Report</div>
       <div class="report-desc">Full NIST 800-53 control status, evidence summary, and gap analysis</div>
       <div class="report-meta"><span class="badge badge-low">CSV</span><span>163 controls</span></div>
@@ -2167,7 +2167,7 @@ window.drTab=function(tab,btn){
       (!ev.length?'<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">No evidence attached yet</div>':
         ev.map(function(e,i){
           return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:8px">'+
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff4d6d" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+
             '<div style="flex:1"><div style="font-size:12.5px;font-weight:600;color:var(--text-primary)">'+e.title+'</div>'+
             (e.url?'<a href="'+e.url+'" target="_blank" style="font-size:11px;color:var(--text-link)">'+e.url+'</a>':'')+
             '</div><button class="btn btn-ghost btn-xs" onclick="removeEv('+i+')">×</button></div>';
