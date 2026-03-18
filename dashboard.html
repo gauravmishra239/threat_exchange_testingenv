@@ -268,7 +268,6 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   <div class="sb-divider"></div>
 
   <div class="sb-section">
-    <div class="sb-section-label">Compliance Management</div>
     <!-- Compliance expandable group -->
     <div class="sb-item" id="sb-compliance" onclick="toggleCmpExpand()" style="justify-content:space-between">
       <div style="display:flex;align-items:center;gap:9px;min-width:0">
@@ -491,7 +490,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
   <div class="page-hd" style="margin-bottom:20px">
     <div class="page-hd-left">
-      <div class="breadcrumb"><span class="crumb">Compliance</span> / Overview</div>
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> / <span class="crumb-current">Overview</span></div>
       <div class="page-title">Compliance Dashboard</div>
       <div class="page-subtitle">Organisation-wide posture across all active frameworks</div>
     </div>
@@ -594,21 +593,42 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 <div id="ctp-frameworks" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
   <div class="page-hd" style="margin-bottom:20px">
     <div class="page-hd-left">
-      <div class="breadcrumb"><span class="crumb">Compliance</span> / Frameworks</div>
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> / <span class="crumb-current">Frameworks</span></div>
       <div class="page-title">Framework Library</div>
       <div class="page-subtitle">Search and add global compliance standards to your workspace</div>
     </div>
   </div>
+  <!-- Library stats + Update button -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div style="font-size:12px;color:var(--text-muted)">📚 <span id="fw-total-count" style="font-weight:700;color:var(--text-primary)">0</span> frameworks in library</div>
+      <div style="font-size:12px;color:var(--text-muted)">✓ <span id="fw-active-count" style="font-weight:700;color:var(--low)">0</span> active in workspace</div>
+      <div style="font-size:12px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace">Last updated: <span id="fw-lib-version">2025-01</span></div>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="updateFwLibrary()" id="fw-update-btn" style="display:flex;align-items:center;gap:6px">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Update Library
+    </button>
+  </div>
+  <div id="fw-update-banner" style="display:none;padding:10px 14px;background:var(--low-bg);border:1px solid var(--low-border);border-radius:var(--radius);margin-bottom:14px;font-size:12.5px;color:var(--low);display:none;align-items:center;gap:10px">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    Library updated to latest version. All <span id="fw-update-count">0</span> frameworks refreshed.
+  </div>
   <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
     <div style="position:relative;flex:1;min-width:200px">
       <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input class="input" id="fw-search" placeholder="Search — ISO 27001, GDPR, SOC 2…" style="padding-left:32px" oninput="renderFwCards()"/>
+      <input class="input" id="fw-search" placeholder="Search — OWASP, NIST, ISO, GDPR, PCI DSS…" style="padding-left:32px" oninput="renderFwCards()"/>
     </div>
     <select class="select" id="fw-cat" onchange="renderFwCards()" style="width:auto">
-      <option value="">All Categories</option><option>Security</option><option>Privacy</option><option>Financial</option><option>Healthcare</option>
+      <option value="">All Categories</option>
+      <option>Security</option><option>Privacy</option><option>Financial</option>
+      <option>Healthcare</option><option>AppSec</option><option>Cloud</option>
+      <option>OT/ICS</option><option>Resilience</option>
     </select>
     <select class="select" id="fw-region" onchange="renderFwCards()" style="width:auto">
-      <option value="">All Regions</option><option>Global</option><option>US</option><option>EU</option><option>UK</option>
+      <option value="">All Regions</option>
+      <option>Global</option><option>US</option><option>EU</option>
+      <option>UK</option><option>APAC</option>
     </select>
   </div>
   <div id="fw-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px"></div>
@@ -618,7 +638,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 <div id="ctp-controls" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
   <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
     <div>
-      <div class="breadcrumb"><span class="crumb">Compliance</span> / <span id="ctrl-bread-fw">Controls</span></div>
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> / <span class="crumb-current" id="ctrl-bread-fw">Controls</span></div>
       <div class="page-title" id="ctrl-page-title">Controls &amp; Tracking</div>
       <div style="font-size:12px;color:var(--text-muted);margin-top:3px" id="ctrl-page-sub"></div>
     </div>
@@ -1286,7 +1306,6 @@ window.toast = function(msg, type) {
     loadDashboardKPIs();
     renderAuditLog();
     renderAssets();
-    loadComplianceSummary();
     loadTeamMembers();
 
     addAuditEntry('Login', 'User signed in', 'Login');
@@ -1319,7 +1338,7 @@ window.nav = function(page) {
 
   // Page-specific load actions
   if (page === 'dashboard') loadDashboardKPIs();
-  if (page === 'compliance') loadComplianceSummary();
+  if (page === 'compliance') { /* handled by navCmpSub */ }
   if (page === 'team') loadTeamMembers();
   if (page === 'auditlog') renderAuditLog();
   if (page === 'assets') renderAssets();
@@ -1678,19 +1697,56 @@ var CMP_FW   = null;  // currently selected framework id in controls tab
 var CMP_CTRL = null;  // currently open control
 var CMP_VIEW = 'grid';
 
+var FW_DATA_VERSION = '2025-01';
 var FW_DATA = [
-  {id:'nist-800-53',name:'NIST 800-53',full:'NIST SP 800-53 Rev 5',ver:'Rev 5',desc:'Security and privacy controls for federal information systems and organisations.',cat:'Security',region:'US',color:'#1a56db',total:1054,year:2020},
-  {id:'iso-27001',name:'ISO 27001',full:'ISO/IEC 27001:2022',ver:'2022',desc:'International standard for information security management systems.',cat:'Security',region:'Global',color:'#0e9f6e',total:93,year:2022},
-  {id:'soc2',name:'SOC 2',full:'SOC 2 Type II Trust Services Criteria',ver:'2017',desc:'Security, availability, processing integrity, confidentiality and privacy controls.',cat:'Security',region:'US',color:'#7e3af2',total:64,year:2017},
-  {id:'pci-dss',name:'PCI DSS',full:'PCI DSS v4.0',ver:'v4.0',desc:'Security standard for organisations that handle cardholder data.',cat:'Financial',region:'Global',color:'#ff5a1f',total:389,year:2022},
-  {id:'hipaa',name:'HIPAA',full:'HIPAA Security Rule',ver:'2013',desc:'US regulation for protected health information privacy and security.',cat:'Healthcare',region:'US',color:'#e74694',total:54,year:1996},
-  {id:'gdpr',name:'GDPR',full:'General Data Protection Regulation',ver:'2018',desc:'EU regulation on data protection and privacy for all individuals.',cat:'Privacy',region:'EU',color:'#3f83f8',total:99,year:2018},
-  {id:'cis-v8',name:'CIS v8',full:'CIS Critical Security Controls v8',ver:'v8',desc:'Prioritised actions to protect against the most common cyber attacks.',cat:'Security',region:'Global',color:'#ff6700',total:153,year:2021},
-  {id:'cyber-essentials',name:'Cyber Essentials',full:'UK Cyber Essentials Scheme',ver:'2023',desc:'UK government-backed certification for basic cyber hygiene.',cat:'Security',region:'UK',color:'#1c64f2',total:44,year:2014},
-  {id:'fedramp',name:'FedRAMP',full:'Federal Risk and Authorization Management Program',ver:'Rev 5',desc:'US government cloud security authorization framework.',cat:'Security',region:'US',color:'#057a55',total:325,year:2011},
-  {id:'cmmc',name:'CMMC 2.0',full:'Cybersecurity Maturity Model Certification 2.0',ver:'2.0',desc:'US DoD cybersecurity requirements for defence contractors.',cat:'Security',region:'US',color:'#723b13',total:110,year:2021},
-  {id:'nis2',name:'NIS 2',full:'EU NIS Directive 2',ver:'2022',desc:'EU directive on cybersecurity for essential and important entities.',cat:'Security',region:'EU',color:'#6366f1',total:88,year:2022},
-  {id:'dora',name:'DORA',full:'EU Digital Operational Resilience Act',ver:'2022',desc:'EU regulation on digital operational resilience for financial entities.',cat:'Financial',region:'EU',color:'#f59e0b',total:72,year:2022},
+  // ── INTERNATIONAL ──────────────────────────────────────
+  {id:'iso-27001',name:'ISO 27001',full:'ISO/IEC 27001:2022',ver:'2022',desc:'International standard for information security management systems. The most widely adopted global ISMS standard.',cat:'Security',region:'Global',color:'#0e9f6e',total:93,year:2022},
+  {id:'iso-27002',name:'ISO 27002',full:'ISO/IEC 27002:2022',ver:'2022',desc:'Code of practice providing guidelines for organisational information security controls.',cat:'Security',region:'Global',color:'#047857',total:93,year:2022},
+  {id:'iso-27017',name:'ISO 27017',full:'ISO/IEC 27017:2015',ver:'2015',desc:'Code of practice for information security controls for cloud services.',cat:'Security',region:'Global',color:'#065f46',total:37,year:2015},
+  {id:'iso-27018',name:'ISO 27018',full:'ISO/IEC 27018:2019',ver:'2019',desc:'Code of practice for protection of personally identifiable information (PII) in public clouds.',cat:'Privacy',region:'Global',color:'#064e3b',total:32,year:2019},
+  {id:'iso-22301',name:'ISO 22301',full:'ISO 22301:2019 Business Continuity',ver:'2019',desc:'International standard for business continuity management systems.',cat:'Resilience',region:'Global',color:'#1e40af',total:24,year:2019},
+  // ── US FEDERAL ─────────────────────────────────────────
+  {id:'nist-800-53',name:'NIST 800-53',full:'NIST SP 800-53 Rev 5',ver:'Rev 5',desc:'Security and privacy controls for federal information systems. The most comprehensive US federal security control catalog.',cat:'Security',region:'US',color:'#1a56db',total:1054,year:2020},
+  {id:'nist-csf',name:'NIST CSF',full:'NIST Cybersecurity Framework 2.0',ver:'2.0',desc:'Framework for improving critical infrastructure cybersecurity. Covers Govern, Identify, Protect, Detect, Respond, Recover.',cat:'Security',region:'US',color:'#1e3a8a',total:106,year:2024},
+  {id:'nist-800-171',name:'NIST 800-171',full:'NIST SP 800-171 Rev 3',ver:'Rev 3',desc:'Protecting controlled unclassified information in non-federal systems and organisations.',cat:'Security',region:'US',color:'#1d4ed8',total:110,year:2024},
+  {id:'nist-800-82',name:'NIST 800-82',full:'NIST SP 800-82 Rev 3',ver:'Rev 3',desc:'Guide to operational technology (OT) security for industrial control systems.',cat:'Security',region:'US',color:'#2563eb',total:94,year:2023},
+  {id:'fedramp',name:'FedRAMP',full:'Federal Risk and Authorization Management Program',ver:'Rev 5',desc:'US government cloud security authorization framework for cloud service providers.',cat:'Security',region:'US',color:'#057a55',total:325,year:2011},
+  {id:'cmmc',name:'CMMC 2.0',full:'Cybersecurity Maturity Model Certification 2.0',ver:'2.0',desc:'US DoD cybersecurity requirements for defence contractors handling federal contract information.',cat:'Security',region:'US',color:'#166534',total:110,year:2021},
+  {id:'fisma',name:'FISMA',full:'Federal Information Security Modernization Act',ver:'2022',desc:'US federal law requiring agencies to develop, document, and implement information security programs.',cat:'Security',region:'US',color:'#15803d',total:89,year:2022},
+  // ── INDUSTRY STANDARDS ─────────────────────────────────
+  {id:'soc2',name:'SOC 2',full:'SOC 2 Type II Trust Services Criteria',ver:'2017',desc:'Security, availability, processing integrity, confidentiality and privacy controls for service organisations.',cat:'Security',region:'US',color:'#7e3af2',total:64,year:2017},
+  {id:'pci-dss',name:'PCI DSS',full:'PCI DSS v4.0',ver:'v4.0',desc:'Security standard for organisations that store, process or transmit payment cardholder data.',cat:'Financial',region:'Global',color:'#c2410c',total:389,year:2022},
+  {id:'cis-v8',name:'CIS Controls',full:'CIS Critical Security Controls v8',ver:'v8',desc:'Prioritised set of 18 controls and 153 safeguards to protect against the most prevalent cyber attacks.',cat:'Security',region:'Global',color:'#ea580c',total:153,year:2021},
+  {id:'cis-benchmarks',name:'CIS Benchmarks',full:'CIS Configuration Benchmarks',ver:'2024',desc:'Consensus-based secure configuration guidelines for operating systems, software and cloud environments.',cat:'Security',region:'Global',color:'#dc2626',total:200,year:2024},
+  // ── EUROPEAN / UK ──────────────────────────────────────
+  {id:'gdpr',name:'GDPR',full:'General Data Protection Regulation',ver:'2018',desc:'EU regulation on data protection and privacy for all individuals within the European Union.',cat:'Privacy',region:'EU',color:'#1d4ed8',total:99,year:2018},
+  {id:'nis2',name:'NIS 2',full:'EU Network and Information Security Directive 2',ver:'2022',desc:'EU directive strengthening cybersecurity requirements for essential and important entities.',cat:'Security',region:'EU',color:'#6366f1',total:88,year:2022},
+  {id:'dora',name:'DORA',full:'EU Digital Operational Resilience Act',ver:'2022',desc:'EU regulation on digital operational resilience for financial sector entities.',cat:'Financial',region:'EU',color:'#7c3aed',total:72,year:2022},
+  {id:'cyber-essentials',name:'Cyber Essentials',full:'UK Cyber Essentials Scheme',ver:'2023',desc:'UK government-backed certification for basic cyber hygiene covering five key controls.',cat:'Security',region:'UK',color:'#1c64f2',total:44,year:2014},
+  {id:'uk-gdpr',name:'UK GDPR',full:'UK General Data Protection Regulation',ver:'2021',desc:'UK data protection framework post-Brexit, based on GDPR with UK-specific adaptations.',cat:'Privacy',region:'UK',color:'#2563eb',total:99,year:2021},
+  // ── HEALTHCARE ─────────────────────────────────────────
+  {id:'hipaa',name:'HIPAA',full:'HIPAA Security & Privacy Rules',ver:'2013',desc:'US regulations for protected health information privacy, security, and breach notification.',cat:'Healthcare',region:'US',color:'#be185d',total:54,year:1996},
+  {id:'hitrust',name:'HITRUST CSF',full:'HITRUST Common Security Framework v11',ver:'v11',desc:'Certifiable framework combining HIPAA, ISO, NIST and other standards for healthcare organisations.',cat:'Healthcare',region:'US',color:'#9d174d',total:156,year:2023},
+  {id:'hitech',name:'HITECH',full:'Health Information Technology for Economic and Clinical Health Act',ver:'2009',desc:'Strengthens HIPAA enforcement and expands privacy and security requirements for health data.',cat:'Healthcare',region:'US',color:'#831843',total:40,year:2009},
+  // ── SECTOR-SPECIFIC ────────────────────────────────────
+  {id:'swift-cscf',name:'SWIFT CSCF',full:'SWIFT Customer Security Controls Framework v2024',ver:'2024',desc:'Security controls for financial institutions using SWIFT network and messaging services.',cat:'Financial',region:'Global',color:'#0369a1',total:31,year:2024},
+  {id:'nerc-cip',name:'NERC CIP',full:'NERC Critical Infrastructure Protection Standards',ver:'v7',desc:'Mandatory cybersecurity standards for bulk electric system operators in North America.',cat:'OT/ICS',region:'US',color:'#0c4a6e',total:112,year:2024},
+  {id:'iec-62443',name:'IEC 62443',full:'IEC 62443 Industrial Automation & Control Security',ver:'2023',desc:'International standards series for security of industrial automation and control systems.',cat:'OT/ICS',region:'Global',color:'#164e63',total:97,year:2023},
+  // ── OWASP / SANS / BEST PRACTICES ─────────────────────
+  {id:'owasp-top10',name:'OWASP Top 10',full:'OWASP Top 10 Web Application Security Risks 2021',ver:'2021',desc:'Standard awareness document listing the ten most critical web application security risks.',cat:'AppSec',region:'Global',color:'#0f766e',total:10,year:2021},
+  {id:'owasp-asvs',name:'OWASP ASVS',full:'OWASP Application Security Verification Standard v4.0',ver:'v4.0',desc:'Comprehensive list of application security requirements for designing, developing and testing secure web apps.',cat:'AppSec',region:'Global',color:'#0d9488',total:286,year:2021},
+  {id:'owasp-samm',name:'OWASP SAMM',full:'OWASP Software Assurance Maturity Model v2.0',ver:'v2.0',desc:'Framework for integrating security practices into software development lifecycle.',cat:'AppSec',region:'Global',color:'#0f766e',total:72,year:2020},
+  {id:'sans-top20',name:'SANS CIS-20',full:'SANS/CIS Top 20 Critical Security Controls',ver:'v7.1',desc:'Prioritised set of actions to protect organisations and data from known cyber attack vectors.',cat:'Security',region:'Global',color:'#b45309',total:20,year:2019},
+  {id:'wasp',name:'WASP',full:'Web Application Security Project Best Practices',ver:'2024',desc:'Comprehensive web application security best practices including input validation, authentication, session management, and cryptography.',cat:'AppSec',region:'Global',color:'#0369a1',total:45,year:2024},
+  // ── CLOUD & EMERGING ───────────────────────────────────
+  {id:'csa-ccm',name:'CSA CCM',full:'Cloud Security Alliance Cloud Controls Matrix v4.0',ver:'v4.0',desc:'Framework providing fundamental security principles to guide cloud vendors and customers.',cat:'Cloud',region:'Global',color:'#0284c7',total:197,year:2021},
+  {id:'soc2-type1',name:'SOC 2 Type I',full:'SOC 2 Type I — Design of Controls',ver:'2023',desc:'Point-in-time assessment confirming controls are suitably designed for security objectives.',cat:'Security',region:'US',color:'#6d28d9',total:64,year:2023},
+  {id:'zero-trust',name:'Zero Trust',full:'NIST SP 800-207 Zero Trust Architecture',ver:'2020',desc:'Architecture eliminating implicit trust, requiring continuous validation for all users and systems.',cat:'Security',region:'Global',color:'#4f46e5',total:35,year:2020},
+  {id:'scf',name:'SCF',full:'Secure Controls Framework',ver:'2024',desc:'Meta-framework mapping 1000+ controls across 100+ laws, regulations and frameworks.',cat:'Security',region:'Global',color:'#7c3aed',total:1000,year:2024},
+  // ── PRIVACY ────────────────────────────────────────────
+  {id:'ccpa',name:'CCPA',full:'California Consumer Privacy Act',ver:'2023',desc:'California law giving consumers rights over personal information businesses collect about them.',cat:'Privacy',region:'US',color:'#0369a1',total:28,year:2023},
+  {id:'lgpd',name:'LGPD',full:'Lei Geral de Proteção de Dados (Brazil)',ver:'2020',desc:'Brazilian data protection law modelled on GDPR regulating the processing of personal data.',cat:'Privacy',region:'Global',color:'#059669',total:65,year:2020},
+  {id:'pdpa',name:'PDPA',full:'Personal Data Protection Act (Singapore/Thailand)',ver:'2022',desc:'Data protection legislation governing collection, use and disclosure of personal data.',cat:'Privacy',region:'APAC',color:'#0891b2',total:54,year:2022},
 ];
 
 var CTRL_DATA = {
@@ -1721,6 +1777,59 @@ var CTRL_DATA = {
     {id:'s-CC1.1',fw:'soc2',domain:'Control Environment',code:'CC1.1',title:'Commitment to Integrity and Ethical Values',desc:'The entity demonstrates a commitment to integrity and ethical values.',reqs:['Establish code of conduct','Communicate to all personnel','Train on ethics','Monitor compliance','Address violations promptly'],type:'Preventive',baseline:'ALL'},
     {id:'s-CC6.1',fw:'soc2',domain:'Logical Access',code:'CC6.1',title:'Logical Access Security',desc:'The entity implements logical access security to protect information assets.',reqs:['Implement access control systems','Define user access rights','Implement MFA','Monitor access regularly','Remove access promptly'],type:'Preventive',baseline:'ALL'},
     {id:'s-CC7.1',fw:'soc2',domain:'System Operations',code:'CC7.1',title:'Threat and Vulnerability Management',desc:'The entity uses detection and monitoring procedures to identify new vulnerabilities.',reqs:['Conduct regular vulnerability scans','Annual penetration testing','Remediate critical vulns within 30 days','Track remediation to completion'],type:'Detective',baseline:'ALL'},
+  ],
+  'owasp-top10':[
+    {id:'ow-A1',fw:'owasp-top10',domain:'Injection',code:'A01:2021',title:'Broken Access Control',desc:'Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorised information disclosure, modification, or destruction.',reqs:['Deny access by default except for public resources','Implement access control mechanisms once and reuse throughout the application','Enforce record ownership rather than accepting any user can CRUD any record','Disable web server directory listing','Log access control failures and alert admins','Rate limit API and controller access to minimise BOLA/IDOR attack tools'],type:'Preventive',baseline:'ALL'},
+    {id:'ow-A2',fw:'owasp-top10',domain:'Cryptography',code:'A02:2021',title:'Cryptographic Failures',desc:'Failures related to cryptography which often lead to exposure of sensitive data or system compromise.',reqs:['Classify data processed, stored or transmitted and identify sensitive data','Do not cache sensitive data unnecessarily','Encrypt all data at rest using strong algorithms','Enforce encryption in transit using TLS','Disable deprecated functions such as MD5 and SHA1','Use authenticated encryption instead of just encryption'],type:'Preventive',baseline:'ALL'},
+    {id:'ow-A3',fw:'owasp-top10',domain:'Injection',code:'A03:2021',title:'Injection',desc:'SQL, NoSQL, OS, and LDAP injection occurs when untrusted data is sent to an interpreter as part of a command or query.',reqs:['Use parameterised queries / prepared statements','Use positive server-side input validation','Escape special characters using specific syntax for that interpreter','Use LIMIT and other SQL controls to prevent mass disclosure','Use automated testing to identify injection flaws'],type:'Preventive',baseline:'ALL'},
+    {id:'ow-A4',fw:'owasp-top10',domain:'Design',code:'A04:2021',title:'Insecure Design',desc:'Insecure design represents missing or ineffective control design. Secure design cannot be bolted on after the fact.',reqs:['Use threat modelling for critical authentication, access control, and business logic','Integrate security language and controls into user stories','Write unit and integration tests to validate threat models','Limit resource consumption by user or service','Segregate tier layers on the system and network layers'],type:'Preventive',baseline:'ALL'},
+    {id:'ow-A5',fw:'owasp-top10',domain:'Configuration',code:'A05:2021',title:'Security Misconfiguration',desc:'The most commonly seen issue. Application, framework, container, and cloud misconfigurations.',reqs:['Implement a repeatable hardening process','Remove unused features, components, documentation and samples','Review and update configurations as part of patch management','Implement a segmented architecture','Send security directives to clients such as Security Headers','Automate verification of configurations in all environments'],type:'Preventive',baseline:'ALL'},
+    {id:'ow-A6',fw:'owasp-top10',domain:'Components',code:'A06:2021',title:'Vulnerable and Outdated Components',desc:'Components run with the same privileges as the application. Exploits can cause serious data loss or server takeover.',reqs:['Remove unused dependencies, unnecessary features, components, and files','Continuously inventory versions of client-side and server-side components','Monitor CVE and NVD for vulnerabilities','Only obtain components from official sources over secure links','Monitor for unmaintained libraries and apply virtual patch if no fix available'],type:'Detective',baseline:'ALL'},
+    {id:'ow-A7',fw:'owasp-top10',domain:'Authentication',code:'A07:2021',title:'Identification and Authentication Failures',desc:'Confirmation of the user's identity, authentication, and session management is critical to protect against authentication-related attacks.',reqs:['Implement MFA to prevent automated attacks','Do not ship or deploy with default credentials','Implement weak password checks against top 10000 passwords list','Use NIST 800-63b guidelines for password length and complexity','Limit or delay failed login attempts and log all failures','Use a server-side session manager that generates a new random session ID after login'],type:'Preventive',baseline:'ALL'},
+    {id:'ow-A8',fw:'owasp-top10',domain:'Integrity',code:'A08:2021',title:'Software and Data Integrity Failures',desc:'Software and data integrity failures relate to code and infrastructure that does not protect against integrity violations.',reqs:['Use digital signatures to verify software is from expected source','Ensure libraries and dependencies use trusted repositories','Use a software supply chain security tool to verify no known vulnerabilities','Review code and configuration changes to minimise risk of malicious code','Ensure unsigned or unencrypted serialised data is not sent to untrusted clients'],type:'Preventive',baseline:'ALL'},
+    {id:'ow-A9',fw:'owasp-top10',domain:'Logging',code:'A09:2021',title:'Security Logging and Monitoring Failures',desc:'Without logging and monitoring, breaches cannot be detected. Insufficient logging allows attackers to persist and pivot.',reqs:['Log all login, access control failures and server-side input validation failures','Ensure logs are generated in a format that log management solutions can consume','Encode log data correctly to prevent injections','Ensure high-value transactions have an audit trail','Establish effective monitoring and alerting to detect suspicious activity in timely fashion','Establish an incident response and recovery plan'],type:'Detective',baseline:'ALL'},
+    {id:'ow-A10',fw:'owasp-top10',domain:'SSRF',code:'A10:2021',title:'Server-Side Request Forgery',desc:'SSRF flaws occur when a web application fetches a remote resource without validating the user-supplied URL.',reqs:['Sanitise and validate all client-supplied input data','Enforce URL schema, port, and destination with a positive allow list','Do not send raw responses to clients','Disable HTTP redirections','Be aware of URL consistency to avoid DNS rebinding and TOCTOU attacks'],type:'Preventive',baseline:'ALL'},
+  ],
+  'owasp-asvs':[
+    {id:'asvs-1.1',fw:'owasp-asvs',domain:'Architecture',code:'V1.1',title:'Secure Software Development Lifecycle',desc:'Verify the use of a secure software development lifecycle that addresses security in all stages.',reqs:['Security is part of all project phases','Threat modelling performed for all significant feature changes','Security user stories and security acceptance criteria defined','All user stories contain functional security constraints','Define and document a secure coding checklist'],type:'Preventive',baseline:'ALL'},
+    {id:'asvs-2.1',fw:'owasp-asvs',domain:'Authentication',code:'V2.1',title:'Password Security Requirements',desc:'Verify all user-selected passwords are at least 12 characters and allow up to 128 characters.',reqs:['Minimum 12 character password length','Allow 128+ character passwords','Allow all Unicode characters including spaces','No periodic credential rotation requirement','No password composition rules','Password change does not require current and new passwords'],type:'Preventive',baseline:'ALL'},
+    {id:'asvs-3.1',fw:'owasp-asvs',domain:'Session Management',code:'V3.1',title:'Session Management Requirements',desc:'Ensure session tokens are created securely, transmitted only over TLS, and invalidated properly.',reqs:['Session tokens must not be sent in URL parameters','Session tokens must be regenerated after login','Session tokens must be revocable and invalidated after logout','Sessions must have an absolute maximum lifetime','Idle session timeout after period of inactivity'],type:'Preventive',baseline:'ALL'},
+    {id:'asvs-4.1',fw:'owasp-asvs',domain:'Access Control',code:'V4.1',title:'General Access Control',desc:'Verify that the principle of deny by default exists and that users can only access functions they are authorised for.',reqs:['Deny all access by default','Apply least privilege principle','Verify access control is enforced server-side','All access control failures logged and admins alerted','Directory browsing disabled'],type:'Preventive',baseline:'ALL'},
+    {id:'asvs-5.1',fw:'owasp-asvs',domain:'Validation',code:'V5.1',title:'Input Validation Requirements',desc:'Verify that inputs are validated using positive validation (allowlisting) with clear failure handling.',reqs:['Use positive validation on all inputs','Validate all HTTP request parts','Validate URL structure, length and content','Validate data from redirects','Input validation failures are logged'],type:'Preventive',baseline:'ALL'},
+    {id:'asvs-9.1',fw:'owasp-asvs',domain:'Communication',code:'V9.1',title:'Communication Security',desc:'Verify that TLS is used for all client connectivity and does not fall back to insecure communications.',reqs:['TLS used for all connections','Only TLS 1.2 or higher used','Strong cipher suites preferred','TLS certificate validity verified','HTTP Strict Transport Security enabled'],type:'Preventive',baseline:'ALL'},
+  ],
+  'sans-top20':[
+    {id:'sans-1',fw:'sans-top20',domain:'Inventory',code:'CSC-1',title:'Inventory and Control of Enterprise Assets',desc:'Actively manage all enterprise assets connected to infrastructure so only authorised devices are given access.',reqs:['Maintain detailed asset inventory','Actively discover unauthorised assets','Ensure all assets are managed','Remove unauthorised assets','Use DHCP logging to update asset inventory'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-2',fw:'sans-top20',domain:'Inventory',code:'CSC-2',title:'Inventory and Control of Software Assets',desc:'Actively manage all software on the network so only authorised software is installed and can execute.',reqs:['Maintain software inventory','Ensure only authorised software installed','Remove unauthorised software','Use application allowlisting','Manage software libraries'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-3',fw:'sans-top20',domain:'Data',code:'CSC-3',title:'Data Protection',desc:'Develop processes and technical controls to identify, classify, securely handle, retain and dispose of data.',reqs:['Establish data inventory','Classify data based on sensitivity','Configure data access controls','Encrypt data at rest and in transit','Document data flows','Establish data retention policy'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-4',fw:'sans-top20',domain:'Configuration',code:'CSC-4',title:'Secure Configuration of Enterprise Assets',desc:'Establish and maintain the secure configuration of enterprise assets and software.',reqs:['Establish configuration standards','Configure automatic session locking','Implement a secure configuration process','Manage default accounts','Implement host-based firewalls'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-5',fw:'sans-top20',domain:'Accounts',code:'CSC-5',title:'Account Management',desc:'Use processes and tools to assign and manage authorisation to credentials for user accounts.',reqs:['Establish account management process','Use unique passwords','Disable dormant accounts','Restrict administrator privileges','Centralise account management'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-6',fw:'sans-top20',domain:'Access',code:'CSC-6',title:'Access Control Management',desc:'Use processes and tools to create, assign, manage, and revoke access credentials and privileges.',reqs:['Establish access control policy','Implement MFA for all administrative access','Require MFA for externally-exposed applications','Maintain inventory of authentication systems','Use password managers for credentials'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-7',fw:'sans-top20',domain:'Vulnerability',code:'CSC-7',title:'Continuous Vulnerability Management',desc:'Develop a plan to continuously assess and track vulnerabilities on all enterprise assets.',reqs:['Establish and maintain vulnerability management process','Perform automated vulnerability scans','Remediate based on risk','Compare back-to-back vulnerability scans','Remediate penetration test findings'],type:'Detective',baseline:'ALL'},
+    {id:'sans-8',fw:'sans-top20',domain:'Logging',code:'CSC-8',title:'Audit Log Management',desc:'Collect, alert, review, and retain audit logs of events that could help detect, understand, or recover from an attack.',reqs:['Establish audit log management process','Collect audit logs','Ensure adequate storage for audit logs','Standardise time synchronisation','Collect detailed audit logs for enterprise assets'],type:'Detective',baseline:'ALL'},
+    {id:'sans-12',fw:'sans-top20',domain:'Network',code:'CSC-12',title:'Network Infrastructure Management',desc:'Establish, implement, and actively manage network devices to prevent attackers from exploiting vulnerable services.',reqs:['Ensure network infrastructure is up-to-date','Establish network infrastructure management process','Use secure network management and communication protocols','Ensure remote devices use VPN and connecting to enterprise AAA infrastructure','Monitor wirless access points'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-16',fw:'sans-top20',domain:'AppSec',code:'CSC-16',title:'Application Software Security',desc:'Manage the security lifecycle of in-house developed, hosted, or acquired software to prevent, detect, and remediate security weaknesses.',reqs:['Establish secure coding practices','Use vetted security libraries','Perform root cause analysis on security vulnerabilities','Establish processes to receive and act on software vulnerability reports','Use up-to-date and trusted third-party components'],type:'Preventive',baseline:'ALL'},
+    {id:'sans-18',fw:'sans-top20',domain:'Pen Testing',code:'CSC-18',title:'Penetration Testing',desc:'Test the effectiveness and resiliency of enterprise assets through identifying and exploiting weaknesses in controls.',reqs:['Establish penetration testing program','Perform periodic external penetration tests','Remediate penetration test findings','Perform periodic internal penetration tests based on program and roadmap','Include purple team exercises'],type:'Detective',baseline:'ALL'},
+  ],
+  'wasp':[
+    {id:'w-1',fw:'wasp',domain:'Input Validation',code:'WAS-1',title:'Input Validation and Sanitisation',desc:'All input from users, APIs and external systems must be validated, sanitised and encoded before processing or storage.',reqs:['Implement allowlist input validation on all inputs','Reject inputs that fail validation rather than sanitising','Validate data type, length, format and range','Sanitise output before rendering to prevent XSS','Apply context-specific encoding for HTML, SQL, LDAP, OS commands'],type:'Preventive',baseline:'ALL'},
+    {id:'w-2',fw:'wasp',domain:'Authentication',code:'WAS-2',title:'Authentication and Password Management',desc:'Robust authentication controls must be implemented to verify user identity and protect credentials.',reqs:['Enforce strong password policy (minimum 12 characters)','Implement MFA for all privileged and sensitive functions','Use secure password hashing (bcrypt, Argon2, scrypt)','Implement account lockout after failed attempts','Never store passwords in plain text','Use secure password reset mechanisms with short-lived tokens'],type:'Preventive',baseline:'ALL'},
+    {id:'w-3',fw:'wasp',domain:'Session',code:'WAS-3',title:'Session Management',desc:'Secure session management must be implemented to prevent session hijacking, fixation and related attacks.',reqs:['Generate new session ID after authentication','Set secure and HttpOnly flags on session cookies','Set appropriate session timeout (15-30 mins idle)','Invalidate sessions on logout','Use cryptographically random session identifiers','Implement CSRF protection for state-changing operations'],type:'Preventive',baseline:'ALL'},
+    {id:'w-4',fw:'wasp',domain:'Access Control',code:'WAS-4',title:'Access Control',desc:'Enforce authorisation controls to ensure users can only access resources and perform actions they are permitted to.',reqs:['Implement role-based access control (RBAC)','Enforce access control checks on every request server-side','Deny access by default','Apply principle of least privilege','Validate direct object references (prevent IDOR)','Implement proper separation of duties'],type:'Preventive',baseline:'ALL'},
+    {id:'w-5',fw:'wasp',domain:'Cryptography',code:'WAS-5',title:'Cryptographic Practices',desc:'Use strong, up-to-date cryptographic algorithms and proper key management to protect sensitive data.',reqs:['Use TLS 1.2+ for all data in transit','Encrypt sensitive data at rest using AES-256','Use approved cryptographic libraries only','Implement proper key management lifecycle','Never use custom or deprecated cryptographic algorithms','Use HSTS to enforce HTTPS connections'],type:'Preventive',baseline:'ALL'},
+    {id:'w-6',fw:'wasp',domain:'Error Handling',code:'WAS-6',title:'Error Handling and Logging',desc:'Implement proper error handling to prevent information leakage and comprehensive logging to detect attacks.',reqs:['Never expose stack traces or system information to users','Log all authentication attempts, access control failures and input validation failures','Protect logs from unauthorised access and modification','Implement centralised logging solution','Set up alerting for suspicious patterns','Include sufficient context in logs without logging sensitive data'],type:'Detective',baseline:'ALL'},
+    {id:'w-7',fw:'wasp',domain:'Data Protection',code:'WAS-7',title:'Data Protection',desc:'Protect sensitive data throughout its lifecycle including collection, processing, storage and deletion.',reqs:['Classify all data by sensitivity level','Apply appropriate controls based on classification','Minimise data collection to what is necessary','Implement secure data deletion procedures','Apply masking/tokenisation for sensitive data in non-production environments','Encrypt backups containing sensitive data'],type:'Preventive',baseline:'ALL'},
+    {id:'w-8',fw:'wasp',domain:'Communication',code:'WAS-8',title:'Secure Communication',desc:'Ensure all communications are encrypted and authenticated to prevent interception and tampering.',reqs:['Use TLS 1.2+ for all external communications','Validate SSL/TLS certificates','Implement certificate pinning for mobile applications','Use secure protocols for internal service communication','Disable insecure protocols (SSLv3, TLS 1.0, TLS 1.1)','Implement API security (rate limiting, authentication, authorisation)'],type:'Preventive',baseline:'ALL'},
+    {id:'w-9',fw:'wasp',domain:'3rd Party',code:'WAS-9',title:'Third-Party Component Management',desc:'Manage risks introduced by third-party libraries, APIs and services.',reqs:['Maintain software bill of materials (SBOM)','Regularly scan dependencies for known vulnerabilities','Use only dependencies from trusted sources','Implement process for rapid patching of critical vulnerabilities','Review security of third-party APIs before integration','Monitor for supply chain attacks'],type:'Preventive',baseline:'ALL'},
+    {id:'w-10',fw:'wasp',domain:'DevSecOps',code:'WAS-10',title:'Secure Development Lifecycle',desc:'Integrate security throughout the software development lifecycle using DevSecOps practices.',reqs:['Integrate SAST into CI/CD pipeline','Perform DAST scanning on test environments','Conduct regular security code reviews','Perform threat modelling for new features','Maintain security testing as regression suite','Train developers on secure coding practices annually'],type:'Preventive',baseline:'ALL'},
+  ],
+  'nist-csf':[
+    {id:'csf-GV.OC',fw:'nist-csf',domain:'Govern',code:'GV.OC',title:'Organisational Context',desc:'The circumstances — mission, stakeholder expectations, dependencies — surrounding the organisation's cybersecurity risk management decisions are understood.',reqs:['Mission and objectives understood','Internal and external stakeholders identified','Legal and regulatory requirements understood','Organisational risk tolerance established'],type:'Preventive',baseline:'ALL'},
+    {id:'csf-ID.AM',fw:'nist-csf',domain:'Identify',code:'ID.AM',title:'Asset Management',desc:'Assets that enable the organisation to achieve business purposes are identified and managed consistent with their relative importance.',reqs:['Hardware assets inventoried','Software assets inventoried','Network and communication flows documented','External systems catalogued','Assets prioritised based on classification'],type:'Preventive',baseline:'ALL'},
+    {id:'csf-PR.AA',fw:'nist-csf',domain:'Protect',code:'PR.AA',title:'Identity Management, Authentication and Access Control',desc:'Access to physical and logical assets is limited to authorised users, services and hardware.',reqs:['Identities and credentials managed','Least privilege applied','Remote access managed','Access permissions reviewed periodically','MFA implemented'],type:'Preventive',baseline:'ALL'},
+    {id:'csf-DE.CM',fw:'nist-csf',domain:'Detect',code:'DE.CM',title:'Continuous Monitoring',desc:'Assets are monitored to find anomalies, indicators of compromise, and other potentially adverse events.',reqs:['Networks and network services monitored','Physical environment monitored','Personnel activity monitored','External service provider activities monitored','Vulnerability scans performed regularly'],type:'Detective',baseline:'ALL'},
+    {id:'csf-RS.MA',fw:'nist-csf',domain:'Respond',code:'RS.MA',title:'Incident Management',desc:'Responses to detected cybersecurity incidents are managed.',reqs:['Incidents categorised and prioritised','Incident response plan executed','Incidents reported to stakeholders','Evidence preserved','Incidents contained and eradicated'],type:'Corrective',baseline:'ALL'},
+    {id:'csf-RC.RP',fw:'nist-csf',domain:'Recover',code:'RC.RP',title:'Incident Recovery Plan Execution',desc:'Restoration activities are performed to ensure operational availability of systems and services affected by cybersecurity incidents.',reqs:['Recovery plan executed','Recovery activities communicated','Systems restored and validated','Recovery documentation updated'],type:'Corrective',baseline:'ALL'},
   ],
 };
 
@@ -1907,6 +2016,13 @@ function renderCmpOverview() {
 
 // ── FRAMEWORKS TAB ────────────────────────────────────────
 window.renderFwCards = function() {
+  // Update stat counts
+  var tc = document.getElementById('fw-total-count');
+  var ac = document.getElementById('fw-active-count');
+  var lv = document.getElementById('fw-lib-version');
+  if (tc) tc.textContent = FW_DATA.length;
+  if (ac) ac.textContent = CMP_FWS.length;
+  if (lv) lv.textContent = (typeof FW_DATA_VERSION !== 'undefined' ? FW_DATA_VERSION : localStorage.getItem('te_fw_lib_version') || '2025-01');
   var q  = (document.getElementById('fw-search')  ||{value:''}).value.toLowerCase();
   var cat= (document.getElementById('fw-cat')     ||{value:''}).value;
   var reg= (document.getElementById('fw-region')  ||{value:''}).value;
@@ -1945,6 +2061,28 @@ window.renderFwCards = function() {
       '</button>'+
       '</div></div>';
   }).join('');
+};
+
+window.updateFwLibrary = function() {
+  var btn = document.getElementById('fw-update-btn');
+  if (btn) { btn.disabled = true; btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .6s linear infinite"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Updating…'; }
+  setTimeout(function() {
+    // Update version timestamp
+    var now = new Date();
+    var ver = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0');
+    FW_DATA_VERSION = ver;
+    localStorage.setItem('te_fw_lib_version', ver);
+    // Update UI
+    var vEl = document.getElementById('fw-lib-version');
+    if (vEl) vEl.textContent = ver;
+    var banner = document.getElementById('fw-update-banner');
+    var countEl = document.getElementById('fw-update-count');
+    if (countEl) countEl.textContent = FW_DATA.length;
+    if (banner) { banner.style.display = 'flex'; setTimeout(function(){ banner.style.display = 'none'; }, 4000); }
+    if (btn) { btn.disabled = false; btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg> Update Library'; }
+    renderFwCards();
+    if (typeof toast === 'function') toast('Library updated to ' + FW_DATA.length + ' frameworks', 'success');
+  }, 1200);
 };
 
 window.toggleFw = function(id){
