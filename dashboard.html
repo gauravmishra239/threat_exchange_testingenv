@@ -150,6 +150,9 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 .sb-sub-item.active{background:var(--sidebar-active-bg);color:var(--sidebar-active-text);border-left-color:var(--sidebar-active-border);}
 .sb-sub-item svg{flex-shrink:0;width:13px;height:13px;stroke-width:1.8;}
 .sidebar.collapsed .sb-sub-item{display:none;}
+.fw-cat-pill{padding:5px 13px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-size:12px;cursor:pointer;transition:all .15s;font-family:inherit;white-space:nowrap;}
+.fw-cat-pill:hover{border-color:var(--border-strong);color:var(--text-primary);}
+.fw-cat-pill.active{background:var(--brand-subtle);border-color:var(--brand-muted);color:var(--brand);}
 .cmp-t{display:inline-flex;align-items:center;gap:6px;padding:11px 16px;font-size:12.5px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;transition:all .15s;white-space:nowrap;}
 .cmp-t:hover{color:var(--text-primary);}
 .cmp-t.active{color:#5c93f5;border-bottom-color:var(--brand);}
@@ -613,24 +616,47 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   <div id="fw-update-notice" style="display:none;padding:10px 14px;background:var(--low-bg);border:1px solid var(--low-border);border-radius:var(--radius);margin-bottom:12px;font-size:12.5px;color:var(--low)">
     ✓ Library updated — <span id="fw-update-msg"></span>
   </div>
-  <!-- Search + filters -->
-  <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+  <!-- Search + filter + sort row -->
+  <div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center">
     <div style="position:relative;flex:1;min-width:200px">
       <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-      <input class="input" id="fw-search" placeholder="Search — OWASP, NIST, ISO 27001, GDPR, SANS…" style="padding-left:32px" oninput="renderFwCards()"/>
+      <input class="input" id="fw-search" placeholder="Search frameworks — OWASP, NIST, ISO, GDPR, PDPA…" style="padding-left:32px;font-size:12.5px" oninput="renderFwCards()"/>
     </div>
-    <select class="select" id="fw-cat" onchange="renderFwCards()" style="width:auto">
-      <option value="">All Categories</option>
-      <option>Security</option><option>Privacy</option><option>Financial</option>
-      <option>Healthcare</option><option>AppSec</option><option>Cloud</option>
-      <option>OT/ICS</option><option>Resilience</option>
+    <select class="select" id="fw-sort" onchange="renderFwCards()" style="width:auto;font-size:12.5px">
+      <option value="name-az">Name A–Z</option>
+      <option value="name-za">Name Z–A</option>
+      <option value="year-new">Newest first</option>
+      <option value="year-old">Oldest first</option>
+      <option value="controls-hi">Most controls</option>
+      <option value="controls-lo">Fewest controls</option>
     </select>
-    <select class="select" id="fw-region" onchange="renderFwCards()" style="width:auto">
+    <select class="select" id="fw-region" onchange="renderFwCards()" style="width:auto;font-size:12.5px">
       <option value="">All Regions</option>
-      <option>Global</option><option>US</option><option>EU</option>
-      <option>UK</option><option>APAC</option>
+      <option>Global</option><option>US</option><option>EU</option><option>UK</option>
+      <option>APAC</option><option>Americas</option><option>Africa</option><option>Middle East</option>
+    </select>
+    <select class="select" id="fw-status" onchange="renderFwCards()" style="width:auto;font-size:12.5px">
+      <option value="">All</option>
+      <option value="active">Active in workspace</option>
+      <option value="inactive">Not added</option>
     </select>
   </div>
+  <!-- Category pills -->
+  <div id="fw-cat-pills" style="display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap">
+    <button class="fw-cat-pill active" onclick="setFwCat('',this)">All</button>
+    <button class="fw-cat-pill" onclick="setFwCat('NIST',this)">🇺🇸 NIST</button>
+    <button class="fw-cat-pill" onclick="setFwCat('ISO',this)">🌍 ISO</button>
+    <button class="fw-cat-pill" onclick="setFwCat('Privacy',this)">🔒 Data Privacy</button>
+    <button class="fw-cat-pill" onclick="setFwCat('AppSec',this)">🛡 AppSec / OWASP</button>
+    <button class="fw-cat-pill" onclick="setFwCat('Security',this)">🔐 Security</button>
+    <button class="fw-cat-pill" onclick="setFwCat('Financial',this)">💳 Financial</button>
+    <button class="fw-cat-pill" onclick="setFwCat('Healthcare',this)">🏥 Healthcare</button>
+    <button class="fw-cat-pill" onclick="setFwCat('Cloud',this)">☁ Cloud</button>
+    <button class="fw-cat-pill" onclick="setFwCat('OT/ICS',this)">⚙ OT / ICS</button>
+    <button class="fw-cat-pill" onclick="setFwCat('Resilience',this)">🔄 Resilience</button>
+  </div>
+  <!-- Result count -->
+  <div id="fw-result-bar" style="font-size:12px;color:var(--text-muted);margin-bottom:12px;font-family:'IBM Plex Mono',monospace"></div>
   <div id="fw-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px"></div>
 </div>
 
@@ -1699,51 +1725,106 @@ var CMP_VIEW = 'grid';
 
 var FW_LIB_DATE = 'Jan 2025';
 var FW_DATA = [
-  // International
-  {id:'iso-27001',name:'ISO 27001',full:'ISO/IEC 27001:2022',ver:'2022',desc:'International standard for information security management systems. The most widely adopted global ISMS standard.',cat:'Security',region:'Global',color:'#0e9f6e',total:93,year:2022},
-  {id:'iso-27002',name:'ISO 27002',full:'ISO/IEC 27002:2022',ver:'2022',desc:'Code of practice providing guidelines for organisational information security controls.',cat:'Security',region:'Global',color:'#047857',total:93,year:2022},
-  {id:'iso-27017',name:'ISO 27017',full:'ISO/IEC 27017:2015',ver:'2015',desc:'Code of practice for information security controls applicable to cloud services.',cat:'Cloud',region:'Global',color:'#065f46',total:37,year:2015},
-  {id:'iso-27018',name:'ISO 27018',full:'ISO/IEC 27018:2019',ver:'2019',desc:'Code of practice for protection of personally identifiable information (PII) in public clouds.',cat:'Privacy',region:'Global',color:'#064e3b',total:32,year:2019},
-  {id:'iso-22301',name:'ISO 22301',full:'ISO 22301:2019',ver:'2019',desc:'International standard for business continuity management systems.',cat:'Resilience',region:'Global',color:'#1e40af',total:24,year:2019},
-  // US Federal
-  {id:'nist-800-53',name:'NIST 800-53',full:'NIST SP 800-53 Rev 5',ver:'Rev 5',desc:'Security and privacy controls for federal information systems. The most comprehensive US federal security control catalog.',cat:'Security',region:'US',color:'#1a56db',total:1054,year:2020},
-  {id:'nist-csf',name:'NIST CSF 2.0',full:'NIST Cybersecurity Framework 2.0',ver:'2.0',desc:'Framework covering Govern, Identify, Protect, Detect, Respond and Recover for improving critical infrastructure cybersecurity.',cat:'Security',region:'US',color:'#1e3a8a',total:106,year:2024},
-  {id:'nist-800-171',name:'NIST 800-171',full:'NIST SP 800-171 Rev 3',ver:'Rev 3',desc:'Protecting controlled unclassified information in non-federal systems and organisations.',cat:'Security',region:'US',color:'#1d4ed8',total:110,year:2024},
-  {id:'nist-800-82',name:'NIST 800-82',full:'NIST SP 800-82 Rev 3',ver:'Rev 3',desc:'Guide to operational technology (OT) security for industrial control systems.',cat:'OT/ICS',region:'US',color:'#2563eb',total:94,year:2023},
-  {id:'fedramp',name:'FedRAMP',full:'Federal Risk and Authorization Management Program',ver:'Rev 5',desc:'US government cloud security authorization framework for cloud service providers.',cat:'Security',region:'US',color:'#057a55',total:325,year:2011},
-  {id:'cmmc',name:'CMMC 2.0',full:'Cybersecurity Maturity Model Certification 2.0',ver:'2.0',desc:'US DoD cybersecurity requirements for defence contractors handling federal contract information.',cat:'Security',region:'US',color:'#166534',total:110,year:2021},
-  {id:'fisma',name:'FISMA',full:'Federal Information Security Modernization Act',ver:'2022',desc:'US federal law requiring agencies to develop, document, and implement information security programmes.',cat:'Security',region:'US',color:'#15803d',total:89,year:2022},
-  // Industry Standards
-  {id:'soc2',name:'SOC 2',full:'SOC 2 Type II Trust Services Criteria',ver:'2017',desc:'Security, availability, processing integrity, confidentiality and privacy controls for service organisations.',cat:'Security',region:'US',color:'#7e3af2',total:64,year:2017},
-  {id:'pci-dss',name:'PCI DSS',full:'PCI DSS v4.0',ver:'v4.0',desc:'Security standard for organisations that store, process or transmit payment cardholder data.',cat:'Financial',region:'Global',color:'#c2410c',total:389,year:2022},
-  {id:'cis-v8',name:'CIS Controls',full:'CIS Critical Security Controls v8',ver:'v8',desc:'Prioritised set of 18 controls protecting against the most prevalent cyber attacks.',cat:'Security',region:'Global',color:'#ea580c',total:153,year:2021},
-  // European / UK
-  {id:'gdpr',name:'GDPR',full:'General Data Protection Regulation',ver:'2018',desc:'EU regulation on data protection and privacy for all individuals within the European Union.',cat:'Privacy',region:'EU',color:'#1d4ed8',total:99,year:2018},
-  {id:'nis2',name:'NIS 2',full:'EU NIS Directive 2',ver:'2022',desc:'EU directive strengthening cybersecurity requirements for essential and important entities.',cat:'Security',region:'EU',color:'#6366f1',total:88,year:2022},
-  {id:'dora',name:'DORA',full:'EU Digital Operational Resilience Act',ver:'2022',desc:'EU regulation on digital operational resilience for financial sector entities.',cat:'Financial',region:'EU',color:'#7c3aed',total:72,year:2022},
-  {id:'cyber-essentials',name:'Cyber Essentials',full:'UK Cyber Essentials Scheme',ver:'2023',desc:'UK government-backed certification for basic cyber hygiene covering five key controls.',cat:'Security',region:'UK',color:'#1c64f2',total:44,year:2014},
-  {id:'uk-gdpr',name:'UK GDPR',full:'UK General Data Protection Regulation',ver:'2021',desc:'UK data protection framework post-Brexit, based on EU GDPR with UK-specific adaptations.',cat:'Privacy',region:'UK',color:'#2563eb',total:99,year:2021},
-  // Healthcare
-  {id:'hipaa',name:'HIPAA',full:'HIPAA Security & Privacy Rules',ver:'2013',desc:'US regulations for protected health information privacy, security, and breach notification.',cat:'Healthcare',region:'US',color:'#be185d',total:54,year:1996},
-  {id:'hitrust',name:'HITRUST CSF',full:'HITRUST Common Security Framework v11',ver:'v11',desc:'Certifiable framework combining HIPAA, ISO, NIST and other standards for healthcare organisations.',cat:'Healthcare',region:'US',color:'#9d174d',total:156,year:2023},
-  // Financial
-  {id:'swift-cscf',name:'SWIFT CSCF',full:'SWIFT Customer Security Controls Framework v2024',ver:'2024',desc:'Security controls for financial institutions using SWIFT messaging network services.',cat:'Financial',region:'Global',color:'#0369a1',total:31,year:2024},
-  // OT / ICS
-  {id:'nerc-cip',name:'NERC CIP',full:'NERC Critical Infrastructure Protection',ver:'v7',desc:'Mandatory cybersecurity standards for bulk electric system operators in North America.',cat:'OT/ICS',region:'US',color:'#0c4a6e',total:112,year:2024},
-  {id:'iec-62443',name:'IEC 62443',full:'IEC 62443 Industrial Automation & Control',ver:'2023',desc:'International standards for security of industrial automation and control systems.',cat:'OT/ICS',region:'Global',color:'#164e63',total:97,year:2023},
-  // OWASP / SANS / WASP Best Practices
-  {id:'owasp-top10',name:'OWASP Top 10',full:'OWASP Top 10 Web Application Security Risks 2021',ver:'2021',desc:'Standard awareness document listing the ten most critical web application security risks. Essential for all web-facing applications.',cat:'AppSec',region:'Global',color:'#0f766e',total:10,year:2021},
-  {id:'owasp-asvs',name:'OWASP ASVS',full:'OWASP Application Security Verification Standard v4.0',ver:'v4.0',desc:'Comprehensive list of application security requirements for designing, developing and testing secure web applications.',cat:'AppSec',region:'Global',color:'#0d9488',total:286,year:2021},
-  {id:'owasp-samm',name:'OWASP SAMM',full:'OWASP Software Assurance Maturity Model v2.0',ver:'v2.0',desc:'Framework for integrating security practices into the software development lifecycle.',cat:'AppSec',region:'Global',color:'#115e59',total:72,year:2020},
-  {id:'sans-top20',name:'SANS CIS-20',full:'SANS/CIS Top 20 Critical Security Controls v7.1',ver:'v7.1',desc:'Prioritised set of actions proven to stop the most dangerous and prevalent attacks against systems and networks.',cat:'Security',region:'Global',color:'#b45309',total:20,year:2019},
-  {id:'wasp',name:'WASP',full:'Web Application Security Project Best Practices 2024',ver:'2024',desc:'Comprehensive web application security best practices covering input validation, authentication, session management, cryptography and secure SDLC.',cat:'AppSec',region:'Global',color:'#0369a1',total:45,year:2024},
-  // Cloud
-  {id:'csa-ccm',name:'CSA CCM',full:'Cloud Security Alliance Cloud Controls Matrix v4.0',ver:'v4.0',desc:'Framework providing fundamental security principles to guide cloud vendors and customers.',cat:'Cloud',region:'Global',color:'#0284c7',total:197,year:2021},
-  {id:'zero-trust',name:'Zero Trust',full:'NIST SP 800-207 Zero Trust Architecture',ver:'2020',desc:'Architecture eliminating implicit trust and requiring continuous verification for all users, devices and applications.',cat:'Security',region:'Global',color:'#4f46e5',total:35,year:2020},
-  // Privacy
-  {id:'ccpa',name:'CCPA',full:'California Consumer Privacy Act',ver:'2023',desc:'California law giving consumers rights over personal information that businesses collect about them.',cat:'Privacy',region:'US',color:'#0369a1',total:28,year:2023},
-  {id:'lgpd',name:'LGPD',full:'Lei Geral de Proteção de Dados (Brazil)',ver:'2020',desc:'Brazilian data protection law modelled on GDPR governing the processing of personal data.',cat:'Privacy',region:'Global',color:'#059669',total:65,year:2020},
-  {id:'pdpa',name:'PDPA',full:'Personal Data Protection Act (Singapore)',ver:'2022',desc:'Data protection legislation governing collection, use and disclosure of personal data in Singapore.',cat:'Privacy',region:'APAC',color:'#0891b2',total:54,year:2022},
+
+  // ═══ NIST FAMILY ═══════════════════════════════════════
+  {id:'nist-800-53',  family:'NIST', name:'NIST 800-53',   full:'NIST SP 800-53 Rev 5',                         ver:'Rev 5', desc:'The gold standard US federal security and privacy control catalog covering 20 control families.',                                               cat:'Security',  region:'US',     color:'#1a56db', total:1054, year:2020},
+  {id:'nist-csf',     family:'NIST', name:'NIST CSF 2.0',  full:'NIST Cybersecurity Framework 2.0',             ver:'2.0',   desc:'Govern-Identify-Protect-Detect-Respond-Recover framework for critical infrastructure cybersecurity.',                                       cat:'Security',  region:'US',     color:'#1e3a8a', total:106,  year:2024},
+  {id:'nist-800-171', family:'NIST', name:'NIST 800-171',  full:'NIST SP 800-171 Rev 3',                        ver:'Rev 3', desc:'Protecting controlled unclassified information (CUI) in non-federal systems and organisations.',                                              cat:'Security',  region:'US',     color:'#1d4ed8', total:110,  year:2024},
+  {id:'nist-800-82',  family:'NIST', name:'NIST 800-82',   full:'NIST SP 800-82 Rev 3 — OT Security',           ver:'Rev 3', desc:'Guide to operational technology (OT) security for industrial control systems including ICS, SCADA and DCS.',                                 cat:'OT/ICS',    region:'US',     color:'#2563eb', total:94,   year:2023},
+  {id:'nist-pf',      family:'NIST', name:'NIST Privacy',  full:'NIST Privacy Framework 1.0',                   ver:'1.0',   desc:'Voluntary framework for improving privacy through enterprise risk management, complementary to the NIST CSF.',                               cat:'Privacy',   region:'US',     color:'#3b82f6', total:100,  year:2020},
+  {id:'nist-ai-rmf',  family:'NIST', name:'NIST AI RMF',   full:'NIST AI Risk Management Framework 1.0',        ver:'1.0',   desc:'Framework for managing AI risks throughout the AI lifecycle covering Govern, Map, Measure and Manage.',                                       cat:'Security',  region:'US',     color:'#60a5fa', total:72,   year:2023},
+
+  // ═══ ISO FAMILY ════════════════════════════════════════
+  {id:'iso-27001', family:'ISO', name:'ISO 27001',  full:'ISO/IEC 27001:2022',             ver:'2022', desc:'The global standard for information security management systems (ISMS). Most widely adopted worldwide.',                                     cat:'Security',   region:'Global', color:'#0e9f6e', total:93,  year:2022},
+  {id:'iso-27002', family:'ISO', name:'ISO 27002',  full:'ISO/IEC 27002:2022',             ver:'2022', desc:'Implementation guidance and code of practice for information security controls aligned to ISO 27001.',                                       cat:'Security',   region:'Global', color:'#047857', total:93,  year:2022},
+  {id:'iso-27017', family:'ISO', name:'ISO 27017',  full:'ISO/IEC 27017:2015 — Cloud',     ver:'2015', desc:'Code of practice for information security controls for cloud service providers and customers.',                                              cat:'Cloud',      region:'Global', color:'#065f46', total:37,  year:2015},
+  {id:'iso-27018', family:'ISO', name:'ISO 27018',  full:'ISO/IEC 27018:2019 — PII Cloud', ver:'2019', desc:'Code of practice for protection of personally identifiable information (PII) in public cloud computing.',                                   cat:'Privacy',    region:'Global', color:'#064e3b', total:32,  year:2019},
+  {id:'iso-27701', family:'ISO', name:'ISO 27701',  full:'ISO/IEC 27701:2019 — PIMS',      ver:'2019', desc:'Extension to ISO 27001/27002 for privacy information management systems (PIMS). Helps demonstrate GDPR compliance.',                         cat:'Privacy',    region:'Global', color:'#065f46', total:49,  year:2019},
+  {id:'iso-22301', family:'ISO', name:'ISO 22301',  full:'ISO 22301:2019 — Business Continuity', ver:'2019', desc:'International standard for business continuity management systems (BCMS).',                                                           cat:'Resilience', region:'Global', color:'#1e40af', total:24,  year:2019},
+  {id:'iso-31000', family:'ISO', name:'ISO 31000',  full:'ISO 31000:2018 — Risk Management', ver:'2018', desc:'International standard providing principles and guidelines for risk management applicable to all organisations.',                          cat:'Security',   region:'Global', color:'#1e3a8a', total:30,  year:2018},
+
+  // ═══ SECURITY FRAMEWORKS ═══════════════════════════════
+  {id:'cis-v8',       family:'CIS',  name:'CIS Controls', full:'CIS Critical Security Controls v8',             ver:'v8',    desc:'Prioritised set of 18 controls and 153 safeguards protecting against the most prevalent cyber attacks.',                                   cat:'Security',  region:'Global', color:'#ea580c', total:153, year:2021},
+  {id:'soc2',         family:'SOC',  name:'SOC 2',        full:'SOC 2 Type II Trust Services Criteria',         ver:'2017',  desc:'Security, availability, processing integrity, confidentiality and privacy controls for service organisations.',                            cat:'Security',  region:'US',     color:'#7e3af2', total:64,  year:2017},
+  {id:'fedramp',      family:'US',   name:'FedRAMP',      full:'Federal Risk and Authorization Management Program', ver:'Rev 5', desc:'US government cloud security authorization framework based on NIST 800-53.',                                                         cat:'Security',  region:'US',     color:'#057a55', total:325, year:2011},
+  {id:'cmmc',         family:'US',   name:'CMMC 2.0',     full:'Cybersecurity Maturity Model Certification 2.0', ver:'2.0',  desc:'US DoD cybersecurity requirements for defence contractors handling federal contract information.',                                         cat:'Security',  region:'US',     color:'#166534', total:110, year:2021},
+  {id:'fisma',        family:'US',   name:'FISMA',        full:'Federal Information Security Modernization Act', ver:'2022',  desc:'US federal law requiring agencies to develop and implement information security programmes.',                                             cat:'Security',  region:'US',     color:'#15803d', total:89,  year:2022},
+  {id:'nis2',         family:'EU',   name:'NIS 2',        full:'EU NIS Directive 2',                            ver:'2022',  desc:'EU directive strengthening cybersecurity for essential and important entities across critical sectors.',                                    cat:'Security',  region:'EU',     color:'#6366f1', total:88,  year:2022},
+  {id:'cyber-essentials', family:'UK', name:'Cyber Essentials', full:'UK Cyber Essentials Scheme',             ver:'2023',  desc:'UK government-backed certification covering five basic controls: firewalls, patching, access control, malware protection, secure config.',  cat:'Security',  region:'UK',     color:'#1c64f2', total:44,  year:2014},
+  {id:'zero-trust',   family:'NIST', name:'Zero Trust',   full:'NIST SP 800-207 Zero Trust Architecture',      ver:'2020',  desc:'Architecture requiring continuous verification of all users and devices, eliminating implicit trust.',                                        cat:'Security',  region:'Global', color:'#4f46e5', total:35,  year:2020},
+  {id:'dora',         family:'EU',   name:'DORA',         full:'EU Digital Operational Resilience Act',         ver:'2022',  desc:'EU regulation on digital operational resilience for banks, insurers and financial sector entities.',                                        cat:'Financial', region:'EU',     color:'#7c3aed', total:72,  year:2022},
+  {id:'swift-cscf',   family:'',     name:'SWIFT CSCF',   full:'SWIFT Customer Security Controls Framework v2024', ver:'2024', desc:'Security controls for financial institutions using the SWIFT global messaging network.',                                               cat:'Financial', region:'Global', color:'#0369a1', total:31,  year:2024},
+  {id:'pci-dss',      family:'',     name:'PCI DSS',      full:'PCI DSS v4.0',                                  ver:'v4.0',  desc:'Security standard for organisations that store, process or transmit payment cardholder data.',                                              cat:'Financial', region:'Global', color:'#c2410c', total:389, year:2022},
+  {id:'hipaa',        family:'US',   name:'HIPAA',        full:'HIPAA Security & Privacy Rules',                ver:'2013',  desc:'US regulations for protected health information (PHI) covering Privacy, Security and Breach Notification rules.',                           cat:'Healthcare',region:'US',     color:'#be185d', total:54,  year:1996},
+  {id:'hitrust',      family:'',     name:'HITRUST CSF',  full:'HITRUST Common Security Framework v11',         ver:'v11',   desc:'Certifiable framework combining HIPAA, ISO 27001, NIST and other standards for healthcare and beyond.',                                    cat:'Healthcare',region:'US',     color:'#9d174d', total:156, year:2023},
+  {id:'nerc-cip',     family:'',     name:'NERC CIP',     full:'NERC Critical Infrastructure Protection v7',   ver:'v7',    desc:'Mandatory cybersecurity standards for bulk electric system operators in North America.',                                                     cat:'OT/ICS',   region:'US',     color:'#0c4a6e', total:112, year:2024},
+  {id:'iec-62443',    family:'IEC',  name:'IEC 62443',    full:'IEC 62443 Industrial Automation & Control Security', ver:'2023', desc:'International standards for security of industrial automation and control systems (IACS).',                                          cat:'OT/ICS',   region:'Global', color:'#164e63', total:97,  year:2023},
+  {id:'iso-27001-ot', family:'ISO',  name:'ISO 27001 OT', full:'ISO/IEC 27001 for OT/ICS Environments',        ver:'2022',  desc:'ISO 27001 applied to operational technology environments with IEC 62443 alignment.',                                                         cat:'OT/ICS',   region:'Global', color:'#0c4a6e', total:93,  year:2022},
+  {id:'csa-ccm',      family:'CSA',  name:'CSA CCM',      full:'Cloud Security Alliance CCM v4.0',              ver:'v4.0',  desc:'Cloud Controls Matrix providing fundamental security principles to guide cloud vendors and assess cloud risk.',                              cat:'Cloud',    region:'Global', color:'#0284c7', total:197, year:2021},
+
+  // ═══ APPSEC ════════════════════════════════════════════
+  {id:'owasp-top10',  family:'OWASP', name:'OWASP Top 10',  full:'OWASP Top 10 Web Application Security Risks 2021', ver:'2021', desc:'The ten most critical web application security risks. Essential baseline for all web applications.',                                    cat:'AppSec',  region:'Global', color:'#0f766e', total:10,  year:2021},
+  {id:'owasp-asvs',   family:'OWASP', name:'OWASP ASVS',    full:'OWASP Application Security Verification Standard v4.0', ver:'v4.0', desc:'Comprehensive application security requirements for designing, developing and testing secure web applications.',                  cat:'AppSec',  region:'Global', color:'#0d9488', total:286, year:2021},
+  {id:'owasp-samm',   family:'OWASP', name:'OWASP SAMM',    full:'OWASP Software Assurance Maturity Model v2.0', ver:'v2.0', desc:'Framework for integrating security practices into the software development lifecycle.',                                                    cat:'AppSec',  region:'Global', color:'#115e59', total:72,  year:2020},
+  {id:'wasp',         family:'OWASP', name:'WASP',          full:'Web Application Security Project Best Practices 2024', ver:'2024', desc:'Comprehensive best practices covering input validation, authentication, session management, cryptography and DevSecOps.',         cat:'AppSec',  region:'Global', color:'#0369a1', total:45,  year:2024},
+  {id:'sans-top20',   family:'SANS',  name:'SANS CIS-20',   full:'SANS/CIS Top 20 Critical Security Controls v7.1', ver:'v7.1', desc:'Prioritised actions proven to stop the most dangerous attacks against systems and networks.',                                         cat:'Security', region:'Global', color:'#b45309', total:20,  year:2019},
+
+  // ═══ RESILIENCE ════════════════════════════════════════
+  {id:'drii-bcp',  family:'', name:'DRII BCP',   full:'DRII Professional Practices for Business Continuity', ver:'2022', desc:'Gold standard business continuity planning practices from the Disaster Recovery Institute International.',  cat:'Resilience', region:'Global', color:'#1e40af', total:44, year:2022},
+  {id:'bsi-200',   family:'', name:'BSI 200',    full:'BSI IT-Grundschutz 200 Series',                       ver:'2022', desc:'German Federal Office for Information Security baseline protection methodology and standards.',             cat:'Resilience', region:'EU',     color:'#1d4ed8', total:80, year:2022},
+
+  // ═══ DATA PRIVACY — GLOBAL & REGIONAL ══════════════════
+  // EU / Europe
+  {id:'gdpr',          family:'EU',    name:'GDPR',           full:'EU General Data Protection Regulation',               ver:'2018', desc:'The most influential data protection law globally. Applies to any organisation processing EU residents personal data.',            cat:'Privacy', region:'EU',          color:'#1d4ed8', total:99, year:2018},
+  {id:'uk-gdpr',       family:'UK',    name:'UK GDPR',        full:'UK General Data Protection Regulation',               ver:'2021', desc:'UK version of GDPR post-Brexit, supplemented by the Data Protection Act 2018.',                                                  cat:'Privacy', region:'UK',          color:'#2563eb', total:99, year:2021},
+  {id:'eprivacy',      family:'EU',    name:'ePrivacy',       full:'EU ePrivacy Directive 2002/58/EC',                    ver:'2009', desc:'EU directive on privacy in electronic communications covering cookies, email marketing and tracking.',                              cat:'Privacy', region:'EU',          color:'#3b82f6', total:34, year:2009},
+  {id:'dga',           family:'EU',    name:'Data Gov Act',   full:'EU Data Governance Act',                              ver:'2022', desc:'EU regulation establishing a framework for data sharing and data intermediaries across sectors.',                                  cat:'Privacy', region:'EU',          color:'#6366f1', total:45, year:2022},
+  {id:'swiss-dpa',     family:'',      name:'Swiss nDSG',     full:'Swiss New Federal Act on Data Protection (nDSG)',     ver:'2023', desc:'Revised Swiss data protection law effective 2023, strengthened to align with GDPR standards.',                                    cat:'Privacy', region:'EU',          color:'#059669', total:65, year:2023},
+  {id:'norway-pdpa',   family:'',      name:'Norway PDPA',    full:'Norway Personal Data Act (Personopplysningsloven)',   ver:'2018', desc:'Norwegian implementation of GDPR into national law.',                                                                              cat:'Privacy', region:'EU',          color:'#0891b2', total:99, year:2018},
+  // Americas — USA
+  {id:'ccpa',          family:'US',    name:'CCPA / CPRA',    full:'California Consumer Privacy Act & Privacy Rights Act', ver:'2023', desc:'California law giving consumers rights to know, delete and opt-out of sale of personal information. CPRA strengthened CCPA.',    cat:'Privacy', region:'US',          color:'#0369a1', total:28, year:2023},
+  {id:'us-hipaa-priv', family:'US',    name:'HIPAA Privacy',  full:'HIPAA Privacy Rule',                                  ver:'2013', desc:'US rules governing use and disclosure of protected health information (PHI) by covered entities and business associates.',          cat:'Privacy', region:'US',          color:'#be185d', total:35, year:2003},
+  {id:'coppa',         family:'US',    name:'COPPA',          full:"Children's Online Privacy Protection Act",            ver:'2013', desc:'US federal law protecting the privacy of children under 13 online, requiring parental consent for data collection.',                cat:'Privacy', region:'US',          color:'#7c3aed', total:18, year:1998},
+  {id:'ferpa',         family:'US',    name:'FERPA',          full:'Family Educational Rights and Privacy Act',           ver:'2011', desc:'US federal law protecting privacy of student education records, giving parents and eligible students access rights.',               cat:'Privacy', region:'US',          color:'#6d28d9', total:20, year:1974},
+  {id:'glba',          family:'US',    name:'GLBA',           full:'Gramm-Leach-Bliley Act — Financial Privacy',         ver:'2003', desc:'US law requiring financial institutions to protect customer financial information and explain data sharing practices.',               cat:'Privacy', region:'US',          color:'#0284c7', total:25, year:1999},
+  {id:'us-state-laws', family:'US',    name:'US State Privacy','full':'US State Privacy Laws Tracker (VA, CO, CT, UT, TX…)', ver:'2024', desc:'Growing patchwork of state privacy laws including Virginia CDPA, Colorado CPA, Connecticut CTDPA, and others.',               cat:'Privacy', region:'US',          color:'#0891b2', total:50, year:2024},
+  // Americas — Canada
+  {id:'pipeda',        family:'CA',    name:'PIPEDA / Law 25', full:'Canada PIPEDA & Quebec Law 25',                     ver:'2023', desc:'Canada federal personal information protection law, supplemented by Quebec Law 25 with GDPR-level requirements.',                  cat:'Privacy', region:'Americas',    color:'#dc2626', total:40, year:2023},
+  // Americas — Latin America
+  {id:'lgpd',          family:'BR',    name:'LGPD',           full:'Brazil Lei Geral de Proteção de Dados',              ver:'2020', desc:'Brazilian comprehensive data protection law modelled on GDPR. Enforced by ANPD since 2021.',                                          cat:'Privacy', region:'Americas',    color:'#059669', total:65, year:2020},
+  {id:'ley-19628',     family:'CL',    name:'Chile PDL',      full:'Chile Ley 19.628 de Protección de Datos (updated)',  ver:'2024', desc:'Updated Chilean data protection law significantly strengthening individual rights and enforcement.',                                  cat:'Privacy', region:'Americas',    color:'#047857', total:35, year:2024},
+  {id:'co-habeas',     family:'CO',    name:'Colombia SIC',   full:'Colombia Ley 1581 de Protección de Datos Personales', ver:'2012', desc:'Colombian personal data protection law, enforced by the Superintendencia de Industria y Comercio (SIC).',                          cat:'Privacy', region:'Americas',    color:'#0369a1', total:30, year:2012},
+  {id:'mx-lfpdppp',   family:'MX',    name:'Mexico LFPDPPP', full:'Mexico Ley Federal de Protección de Datos Personales', ver:'2010', desc:'Mexican personal data protection law applying to private sector companies collecting personal data.',                              cat:'Privacy', region:'Americas',    color:'#b45309', total:28, year:2010},
+  {id:'ar-pdp',        family:'AR',    name:'Argentina PDPA', full:'Argentina Personal Data Protection Law 25.326',      ver:'2000', desc:'Argentine law on personal data protection. Recognised as adequate by the EU. Update underway.',                                      cat:'Privacy', region:'Americas',    color:'#1e40af', total:30, year:2000},
+  // Asia-Pacific
+  {id:'pdpa-sg',       family:'SG',    name:'PDPA Singapore', full:'Singapore Personal Data Protection Act 2012',        ver:'2021', desc:'Singapore comprehensive data protection law covering collection, use and disclosure. Amended 2021 with mandatory breach notification.', cat:'Privacy', region:'APAC',       color:'#0891b2', total:54, year:2021},
+  {id:'pdpa-th',       family:'TH',    name:'PDPA Thailand',  full:'Thailand Personal Data Protection Act B.E. 2562',    ver:'2022', desc:'Thai data protection law largely modelled on GDPR, fully enforced since June 2022.',                                                cat:'Privacy', region:'APAC',       color:'#0369a1', total:60, year:2022},
+  {id:'appi',          family:'JP',    name:'APPI Japan',     full:'Japan Act on Protection of Personal Information',     ver:'2022', desc:'Amended APPI strengthened rights, added pseudonymous data rules and tightened cross-border transfer requirements.',                   cat:'Privacy', region:'APAC',       color:'#dc2626', total:50, year:2022},
+  {id:'pipl',          family:'CN',    name:'PIPL China',     full:'China Personal Information Protection Law',           ver:'2021', desc:'China comprehensive data privacy law effective November 2021. Strict consent requirements and data localisation.',                     cat:'Privacy', region:'APAC',       color:'#dc2626', total:74, year:2021},
+  {id:'dsl-china',     family:'CN',    name:'DSL China',      full:'China Data Security Law',                            ver:'2021', desc:'China law establishing data security obligations and a data classification and grading protection system.',                             cat:'Privacy', region:'APAC',       color:'#b91c1c', total:55, year:2021},
+  {id:'pdpb-india',    family:'IN',    name:'DPDP India',     full:'India Digital Personal Data Protection Act 2023',    ver:'2023', desc:'India comprehensive data protection law giving individuals rights over personal data and imposing obligations on data fiduciaries.',   cat:'Privacy', region:'APAC',       color:'#f59e0b', total:44, year:2023},
+  {id:'pdpa-my',       family:'MY',    name:'PDPA Malaysia',  full:'Malaysia Personal Data Protection Act 2010',         ver:'2010', desc:'Malaysian data protection law applying to commercial transactions involving personal data processing.',                                 cat:'Privacy', region:'APAC',       color:'#059669', total:38, year:2010},
+  {id:'pdpa-ph',       family:'PH',    name:'DPA Philippines',full:'Philippines Data Privacy Act of 2012',               ver:'2012', desc:'Philippine law protecting individual personal information in public and private sector. Enforced by NPC.',                            cat:'Privacy', region:'APAC',       color:'#0891b2', total:42, year:2012},
+  {id:'apa-au',        family:'AU',    name:'Privacy Act AU', full:'Australia Privacy Act 1988 (Amended 2023)',          ver:'2023', desc:'Australian privacy law updated 2023 to strengthen rights, introduce direct rights of action and higher penalties.',                   cat:'Privacy', region:'APAC',       color:'#c2410c', total:55, year:2023},
+  {id:'nz-pipa',       family:'NZ',    name:'Privacy Act NZ', full:'New Zealand Privacy Act 2020',                       ver:'2020', desc:'Modernised New Zealand privacy law with mandatory breach notification and new compliance tools.',                                       cat:'Privacy', region:'APAC',       color:'#7c3aed', total:45, year:2020},
+  {id:'kr-pipa',       family:'KR',    name:'PIPA Korea',     full:'South Korea Personal Information Protection Act',    ver:'2023', desc:'Korea PIPA amended 2023, considered one of the strictest data protection laws in Asia with heavy enforcement.',                       cat:'Privacy', region:'APAC',       color:'#0f766e', total:65, year:2023},
+  {id:'tw-pdpa',       family:'TW',    name:'PDPA Taiwan',    full:'Taiwan Personal Data Protection Act',                ver:'2023', desc:'Taiwanese data protection law amended to strengthen penalties and enforcement mechanisms.',                                              cat:'Privacy', region:'APAC',       color:'#0284c7', total:55, year:2023},
+  {id:'vn-dpdp',       family:'VN',    name:'PDPD Vietnam',   full:'Vietnam Decree on Personal Data Protection 13/2023', ver:'2023', desc:'Vietnam personal data protection regulation establishing data processing principles, rights and obligations.',                        cat:'Privacy', region:'APAC',       color:'#059669', total:40, year:2023},
+  {id:'id-pdp',        family:'ID',    name:'PDP Indonesia',  full:'Indonesia Personal Data Protection Law (UU PDP)',    ver:'2022', desc:'Indonesian comprehensive personal data protection law enacted 2022, 2-year transition period.',                                        cat:'Privacy', region:'APAC',       color:'#dc2626', total:45, year:2022},
+  {id:'hk-pdpo',       family:'HK',    name:'PDPO Hong Kong', full:'Hong Kong Personal Data (Privacy) Ordinance',       ver:'2022', desc:'Hong Kong data protection law, one of Asia earliest, updated to address transfer requirements.',                                       cat:'Privacy', region:'APAC',       color:'#b45309', total:35, year:2022},
+  // Middle East & Africa
+  {id:'pdpl-sa',       family:'SA',    name:'PDPL Saudi',     full:'Saudi Arabia Personal Data Protection Law',          ver:'2023', desc:'Saudi comprehensive data protection law enforced by SDAIA, aligned with international standards.',                                     cat:'Privacy', region:'Middle East',  color:'#065f46', total:50, year:2023},
+  {id:'pdpl-uae',      family:'AE',    name:'PDPL UAE',       full:'UAE Personal Data Protection Law (PDPL)',            ver:'2022', desc:'UAE federal data protection law covering private sector personal data processing.',                                                     cat:'Privacy', region:'Middle East',  color:'#0891b2', total:48, year:2022},
+  {id:'adgm-dpp',      family:'AE',    name:'ADGM DPR',       full:'Abu Dhabi Global Market Data Protection Regulations', ver:'2021', desc:'ADGM financial free zone data protection rules based on GDPR principles.',                                                          cat:'Privacy', region:'Middle East',  color:'#0369a1', total:45, year:2021},
+  {id:'difc-dpl',      family:'AE',    name:'DIFC DPL',       full:'DIFC Data Protection Law No.5 of 2020',             ver:'2020', desc:'Dubai International Financial Centre data protection law, considered GDPR-equivalent.',                                                 cat:'Privacy', region:'Middle East',  color:'#1d4ed8', total:50, year:2020},
+  {id:'qcb-cyber',     family:'QA',    name:'Qatar PDPA',     full:'Qatar Personal Data Privacy Protection Law No.13',   ver:'2016', desc:'Qatar law establishing personal data protection rights and obligations for data controllers.',                                          cat:'Privacy', region:'Middle East',  color:'#7c3aed', total:40, year:2016},
+  {id:'popia',         family:'ZA',    name:'POPIA',          full:'South Africa Protection of Personal Information Act', ver:'2021', desc:'South Africa comprehensive data protection law fully enforced since July 2021, broadly aligned with GDPR.',                           cat:'Privacy', region:'Africa',      color:'#065f46', total:57, year:2021},
+  {id:'eg-pdp',        family:'EG',    name:'Egypt PDL',      full:'Egypt Personal Data Protection Law No. 151 of 2020', ver:'2020', desc:'Egyptian personal data protection law establishing rights and obligations for data processing.',                                       cat:'Privacy', region:'Africa',      color:'#0891b2', total:35, year:2020},
+  {id:'ke-dpa',        family:'KE',    name:'Kenya DPA',      full:'Kenya Data Protection Act 2019',                     ver:'2019', desc:'Kenyan comprehensive data protection law establishing rights and obligations enforced by ODPC.',                                         cat:'Privacy', region:'Africa',      color:'#059669', total:42, year:2019},
+  {id:'ng-ndpa',       family:'NG',    name:'Nigeria NDPA',   full:'Nigeria Data Protection Act 2023',                   ver:'2023', desc:'Nigeria new data protection law replacing the NDPR, establishing NITDA oversight and comprehensive obligations.',                       cat:'Privacy', region:'Africa',      color:'#dc2626', total:48, year:2023},
+  {id:'gh-dpa',        family:'GH',    name:'Ghana DPA',      full:'Ghana Data Protection Act 2012 (Act 843)',           ver:'2012', desc:'Ghanaian data protection law enforced by the Data Protection Commission.',                                                             cat:'Privacy', region:'Africa',      color:'#b45309', total:35, year:2012},
+  {id:'ma-dpl',        family:'MA',    name:'Morocco DPL',    full:'Morocco Law No. 09-08 on Personal Data Protection',  ver:'2009', desc:'Moroccan data protection law administered by the CNDP (Commission Nationale de contrôle des données personnelles).',                  cat:'Privacy', region:'Africa',      color:'#0369a1', total:30, year:2009},
+  {id:'ru-pdl',        family:'RU',    name:'Russia PD Law',  full:'Russia Federal Law on Personal Data No. 152-FZ',     ver:'2023', desc:'Russian data protection law with mandatory localisation requirements for Russian citizens personal data.',                             cat:'Privacy', region:'EU',          color:'#dc2626', total:55, year:2023},
 ];
 
 var CTRL_DATA = {
@@ -2012,6 +2093,15 @@ function renderCmpOverview() {
 }
 
 // ── FRAMEWORKS TAB ────────────────────────────────────────
+// Family filter state
+var FW_FAMILY_FILTER = '';
+window.setFwCat = function(family, btn) {
+  FW_FAMILY_FILTER = family;
+  document.querySelectorAll('.fw-cat-pill').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  renderFwCards();
+};
+
 window.renderFwCards = function() {
   var tc = document.getElementById('fw-total-count');
   var ac = document.getElementById('fw-active-count');
@@ -2020,17 +2110,42 @@ window.renderFwCards = function() {
   if (ac) ac.textContent = CMP_FWS.length;
   if (ld && typeof FW_LIB_DATE !== 'undefined') ld.textContent = FW_LIB_DATE;
   var q  = (document.getElementById('fw-search')  ||{value:''}).value.toLowerCase();
-  var cat= (document.getElementById('fw-cat')     ||{value:''}).value;
-  var reg= (document.getElementById('fw-region')  ||{value:''}).value;
-  var fws = FW_DATA.filter(function(f){
-    if(q && f.name.toLowerCase().indexOf(q)===-1 && f.full.toLowerCase().indexOf(q)===-1 && f.desc.toLowerCase().indexOf(q)===-1) return false;
-    if(cat && f.cat!==cat) return false;
-    if(reg && f.region!==reg) return false;
+  var reg    = (document.getElementById('fw-region') ||{value:''}).value;
+  var status = (document.getElementById('fw-status') ||{value:''}).value;
+  var sort   = (document.getElementById('fw-sort')   ||{value:'name-az'}).value;
+
+  var fws = FW_DATA.filter(function(f) {
+    if (q && f.name.toLowerCase().indexOf(q)===-1 && f.full.toLowerCase().indexOf(q)===-1 && f.desc.toLowerCase().indexOf(q)===-1 && (f.family||'').toLowerCase().indexOf(q)===-1) return false;
+    // Family/category pill filter
+    if (FW_FAMILY_FILTER) {
+      var ff = FW_FAMILY_FILTER;
+      if (ff === 'NIST')     { if ((f.family||'') !== 'NIST') return false; }
+      else if (ff === 'ISO') { if ((f.family||'') !== 'ISO') return false; }
+      else if (ff === 'Privacy') { if (f.cat !== 'Privacy') return false; }
+      else if (ff === 'AppSec')  { if (f.cat !== 'AppSec') return false; }
+      else { if (f.cat !== ff) return false; }
+    }
+    if (reg && f.region !== reg) return false;
+    if (status === 'active'   && CMP_FWS.indexOf(f.id) === -1) return false;
+    if (status === 'inactive' && CMP_FWS.indexOf(f.id) !== -1) return false;
     return true;
+  });
+
+  // Sort
+  fws = fws.slice().sort(function(a,b) {
+    if (sort === 'name-az')      return a.name.localeCompare(b.name);
+    if (sort === 'name-za')      return b.name.localeCompare(a.name);
+    if (sort === 'year-new')     return b.year - a.year;
+    if (sort === 'year-old')     return a.year - b.year;
+    if (sort === 'controls-hi')  return b.total - a.total;
+    if (sort === 'controls-lo')  return a.total - b.total;
+    return a.name.localeCompare(b.name);
   });
   var el = document.getElementById('fw-grid');
   if(!el) return;
-  if(!fws.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No frameworks match</div>';return;}
+  var rb = document.getElementById('fw-result-bar');
+  if (rb) rb.textContent = 'Showing ' + fws.length + ' of ' + FW_DATA.length + ' frameworks';
+  if(!fws.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-muted)">No frameworks match your filters</div>';return;}
   el.innerHTML = fws.map(function(fw){
     var active = CMP_FWS.indexOf(fw.id)!==-1;
     var s = active ? cmpGetStats(fw.id) : null;
@@ -2046,6 +2161,7 @@ window.renderFwCards = function() {
       '<div style="font-size:12px;color:var(--text-muted);line-height:1.6;margin-bottom:10px;min-height:34px">'+fw.desc+'</div>'+
       (active&&s?'<div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:10px"><div style="width:'+s.pct+'%;height:100%;background:'+fw.color+';border-radius:2px;transition:width .5s"></div></div>':'')+
       '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">'+
+      (fw.family?'<span style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--brand-muted);color:var(--brand);background:var(--brand-subtle);font-weight:600">'+fw.family+'</span>':'')+
       '<span style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);color:var(--text-muted);background:var(--bg-sunken)">'+fw.cat+'</span>'+
       '<span style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);color:var(--text-muted);background:var(--bg-sunken)">'+fw.region+'</span>'+
       '<span style="font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid var(--border);color:var(--text-muted);background:var(--bg-sunken)">'+fw.total.toLocaleString()+' controls</span>'+
