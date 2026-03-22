@@ -144,7 +144,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
 /* ── TOAST ── */
 .toast-el{position:fixed;bottom:20px;right:20px;z-index:9999;background:var(--bg-raised);border:1px solid var(--border-strong);color:var(--text-primary);padding:11px 16px;border-radius:var(--radius-md);font-size:13px;box-shadow:var(--shadow-lg);display:flex;align-items:center;gap:10px;max-width:360px;animation:toastIn .25s ease;}
-@keyframes toastIn{from{transform:translateX(100%);opacity:0;}to{transform:none;opacity:1;}}
+@keyframes toastIn{from{transform:translateX(100%);opacity:0;}to{transform:none;opacity:1;}} @keyframes popIn{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
 .sb-sub-item{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 32px;border-radius:var(--radius);color:var(--text-secondary);font-size:12.5px;font-weight:500;cursor:pointer;transition:all .15s;border-left:2px solid transparent;margin-bottom:1px;}
 .sb-sub-item:hover{background:var(--sidebar-hover);color:var(--text-primary);}
 .sb-sub-item.active{background:var(--sidebar-active-bg);color:var(--sidebar-active-text);border-left-color:var(--sidebar-active-border);}
@@ -943,20 +943,27 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 </div>
 
 <!-- ══ CONTROL DRAWER ══ -->
-<div id="cmp-mask" style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none" onclick="closeCmpDrawer()"></div>
-<div id="cmp-drawer" style="position:fixed;right:0;top:0;bottom:0;width:560px;max-width:95vw;background:var(--bg-surface);border-left:1px solid var(--border);z-index:401;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .25s ease;overflow:hidden">
-  <div style="padding:16px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0">
-    <div style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:3px" id="dr-code"></div>
-    <div style="font-size:16px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif;padding-right:32px;line-height:1.3" id="dr-title"></div>
-    <button onclick="closeCmpDrawer()" style="position:absolute;top:14px;right:14px;width:28px;height:28px;border:none;background:var(--bg-sunken);cursor:pointer;border-radius:6px;color:var(--text-muted);font-size:18px;display:flex;align-items:center;justify-content:center;line-height:1">×</button>
+<!-- Control popup modal -->
+<div id="cmp-mask" style="position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;display:none;align-items:center;justify-content:center;padding:20px" onclick="if(event.target===this)closeCmpDrawer()">
+  <div id="cmp-drawer" style="background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;z-index:401;display:flex;flex-direction:column;width:820px;max-width:95vw;max-height:88vh;box-shadow:0 24px 64px rgba(0,0,0,.4);overflow:hidden;animation:popIn .18s ease">
+    <!-- Header -->
+    <div style="padding:18px 22px 14px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+      <div style="min-width:0">
+        <div style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:4px;letter-spacing:.5px" id="dr-code"></div>
+        <div style="font-size:17px;font-weight:800;color:var(--text-primary);font-family:'Syne',sans-serif;line-height:1.3" id="dr-title"></div>
+      </div>
+      <button onclick="closeCmpDrawer()" style="flex-shrink:0;width:30px;height:30px;border:none;background:var(--bg-sunken);cursor:pointer;border-radius:8px;color:var(--text-muted);font-size:20px;display:flex;align-items:center;justify-content:center;line-height:1;margin-top:2px">×</button>
+    </div>
+    <!-- Tabs — dynamic based on control type -->
+    <div style="display:flex;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 6px;overflow-x:auto;scrollbar-width:none" id="dr-tabs-bar">
+      <button class="dr-tab active" onclick="drTab('overview',this)">Overview</button>
+      <button class="dr-tab" onclick="drTab('checklist',this)">Checklist</button>
+      <button class="dr-tab" onclick="drTab('tracking',this)">Tracking</button>
+      <button class="dr-tab" onclick="drTab('evidence',this)">Evidence</button>
+    </div>
+    <!-- Body -->
+    <div style="overflow-y:auto;flex:1;padding:22px" id="dr-body"></div>
   </div>
-  <div style="display:flex;border-bottom:1px solid var(--border);flex-shrink:0;padding:0 4px">
-    <button class="dr-tab active" onclick="drTab('overview',this)">Overview</button>
-    <button class="dr-tab" onclick="drTab('checklist',this)">Checklist</button>
-    <button class="dr-tab" onclick="drTab('tracking',this)">Tracking</button>
-    <button class="dr-tab" onclick="drTab('evidence',this)">Evidence</button>
-  </div>
-  <div style="overflow-y:auto;flex:1;padding:20px" id="dr-body"></div>
 </div>
 
 </div>
@@ -2395,7 +2402,7 @@ function cmpSave() {
 }
 
 // ── TAB SWITCHER ─────────────────────────────────────────
-var CMP_TABS = ['overview','frameworks','controls','heatmap','inventory','residency','rights','breach','scanner','ropa','evidence'];
+var CMP_TABS = ['overview','frameworks','controls'];
 window.showCmpTab = function(tab) {
   CMP_TABS.forEach(function(t){
     var p = document.getElementById('ctp-'+t);
@@ -2406,14 +2413,6 @@ window.showCmpTab = function(tab) {
   if(tab==='overview')   renderCmpOverview();
   if(tab==='frameworks') renderFwCards();
   if(tab==='controls')   renderCtrlsTab();
-  if(tab==='heatmap')    renderHeatmap();
-  if(tab==='inventory')  renderInventory();
-  if(tab==='residency')  renderResidency();
-  if(tab==='rights')     renderRightsQueue();
-  if(tab==='breach')     renderBreachTracker();
-  if(tab==='scanner')    renderScanner();
-  if(tab==='ropa')       renderRopa();
-  if(tab==='evidence')   renderEvidence();
 };
 
 // ── loadComplianceSummary — called by nav('compliance') ───
@@ -2777,6 +2776,39 @@ window.setCtrlView = function(v){
 };
 
 // ── DRAWER ────────────────────────────────────────────────
+// Map control keywords to operational tabs
+var CTRL_OP_TABS = {
+  // Right of access / DSAR
+  dsar:     {kw:['access','art.15','subject access','right of access','dsar'],label:'DSAR Requests',tab:'dsar',icon:'👤'},
+  // Right to erasure
+  erasure:  {kw:['erasure','deletion','forgotten','art.17','right to erase','delete'],label:'Erasure Requests',tab:'erasure',icon:'🗑️'},
+  // Right to portability
+  portability:{kw:['portability','art.20','portable','machine-readable'],label:'Portability Requests',tab:'portability',icon:'📦'},
+  // Breach notification
+  breach:   {kw:['breach','incident','art.33','art.34','notification','72 hour','72h'],label:'Breach Incidents',tab:'breach',icon:'🚨'},
+  // Consent management
+  consent:  {kw:['consent','art.6(1)(a)','withdrawal','art.7','freely given'],label:'Consent Log',tab:'consent',icon:'✅'},
+  // Data inventory / DPIA
+  inventory:{kw:['art.25','art.35','dpia','privacy by design','data protection impact','inventory','minimis'],label:'Data Inventory',tab:'inventory',icon:'🗂️'},
+  // Records of processing
+  ropa:     {kw:['art.30','records of processing','ropa','processing activities'],label:'RoPA Entry',tab:'ropa',icon:'📋'},
+  // Vendor/DPA
+  vendor:   {kw:['art.28','processor','vendor','dpa','data processing agreement','sub-processor'],label:'Vendor Register',tab:'vendor',icon:'🤝'},
+  // Rights general (objection, restriction, rectification)
+  rights:   {kw:['objection','art.21','restriction','art.18','rectification','art.16','automated','art.22'],label:'Rights Request',tab:'rights',icon:'⚖️'},
+};
+
+function getOpTabs(ctrl) {
+  var text = ((ctrl.code||'')+'|'+(ctrl.title||'')+'|'+(ctrl.desc||'')).toLowerCase();
+  var tabs = [];
+  Object.values(CTRL_OP_TABS).forEach(function(op) {
+    if (op.kw.some(function(kw){ return text.indexOf(kw) !== -1; })) {
+      tabs.push(op);
+    }
+  });
+  return tabs;
+}
+
 window.openCtrlDrawer = function(ctrlId){
   var allC=[];
   CMP_FWS.forEach(function(id){allC=allC.concat(cmpGetCtrls(id));});
@@ -2786,13 +2818,26 @@ window.openCtrlDrawer = function(ctrlId){
   document.getElementById('dr-code').textContent=CMP_CTRL.code+(fw.name?' · '+fw.name:'');
   document.getElementById('dr-code').style.color=fw.color||'var(--brand)';
   document.getElementById('dr-title').textContent=CMP_CTRL.title;
-  drTab('overview',document.querySelector('.dr-tab'));
-  document.getElementById('cmp-drawer').style.transform='none';
-  document.getElementById('cmp-mask').style.display='block';
+
+  // Build contextual tabs
+  var opTabs = getOpTabs(CMP_CTRL);
+  var tabsBar = document.getElementById('dr-tabs-bar');
+  if (tabsBar) {
+    var baseTabsHtml = '<button class="dr-tab active" onclick="drTab('overview',this)">Overview</button>' +
+      '<button class="dr-tab" onclick="drTab('checklist',this)">Checklist</button>' +
+      '<button class="dr-tab" onclick="drTab('tracking',this)">Tracking</button>' +
+      '<button class="dr-tab" onclick="drTab('evidence',this)">Evidence</button>';
+    var opTabsHtml = opTabs.map(function(op){
+      return '<button class="dr-tab dr-tab-op" onclick="drTab('op-'+op.tab+'',this)" style="color:var(--brand)">'+op.icon+' '+op.label+'</button>';
+    }).join('');
+    tabsBar.innerHTML = baseTabsHtml + opTabsHtml;
+  }
+
+  drTab('overview', document.querySelector('.dr-tab'));
+  document.getElementById('cmp-mask').style.display='flex';
 };
 
 window.closeCmpDrawer=function(){
-  document.getElementById('cmp-drawer').style.transform='translateX(100%)';
   document.getElementById('cmp-mask').style.display='none';
 };
 
@@ -2811,10 +2856,8 @@ window.drTab=function(tab,btn){
     var xrefMap={'nist-800-53-SC-28':'NIST SC-28','nist-800-53-SC-8':'NIST SC-8','nist-800-53-AC-1':'NIST AC-1','nist-800-53-AC-3':'NIST AC-3','nist-800-53-SA-8':'NIST SA-8','nist-800-53-SI-12':'NIST SI-12','nist-800-53-SI-2':'NIST SI-2','nist-800-53-PM-1':'NIST PM-1','nist-800-53-PM-5':'NIST PM-5','nist-800-53-RA-3':'NIST RA-3','nist-800-53-MP-6':'NIST MP-6','nist-800-53-IR-6':'NIST IR-6','nist-800-53-IR-7':'NIST IR-7','nist-800-61':'NIST 800-61','nist-ai-rmf':'NIST AI RMF','iso-27001-A.5.1':'ISO A.5.1','iso-27001-A.5.2':'ISO A.5.2','iso-27001-A.5.19':'ISO A.5.19','iso-27001-A.8.24':'ISO A.8.24','soc2-CC6.1':'SOC 2 CC6.1'};
     var xrefs=c.cross_refs||[];
     var xrefHtml=xrefs.length?'<div style="margin-bottom:12px"><div style="font-size:10px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Maps to</div><div style="display:flex;flex-wrap:wrap;gap:5px">'+xrefs.map(function(x){return'<span style="font-size:10.5px;padding:2px 8px;border-radius:4px;background:var(--brand-subtle);border:1px solid var(--brand-muted);color:var(--brand);font-family:\'IBM Plex Mono\',monospace">'+(xrefMap[x]||x)+'</span>';}).join('')+'</div></div>':'';
-    var penaltyHtml=c.penalty?'<div style="padding:9px 12px;background:rgba(248,79,79,.08);border:1px solid rgba(248,79,79,.25);border-radius:6px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--critical)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg><span style="font-size:12px;color:var(--critical);font-weight:600">Max penalty: '+c.penalty+'</span></div>':'';
-    var sourceHtml=c.source_url?'<a href="'+c.source_url+'" target="_blank" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;text-decoration:none"><span style="font-size:11.5px;color:var(--text-secondary)">Official Source — EUR-Lex</span><span style="font-size:11.5px;color:var(--brand);font-weight:600">View ↗</span></a>':'';
     body.innerHTML=
-      penaltyHtml+sourceHtml+
+      
       '<div style="margin-bottom:12px"><div style="font-size:10px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Description</div>'+
       '<div style="font-size:13px;color:var(--text-secondary);line-height:1.7">'+(c.desc||'—')+'</div></div>'+
       xrefHtml+
@@ -2865,23 +2908,201 @@ window.drTab=function(tab,btn){
       '<button class="btn btn-primary btn-sm" onclick="saveCtrlTrk()">Save Changes</button>';
   }
   else if(tab==='evidence'){
+    var evTypeIcons = {'PDF':'📄','Word':'📝','Excel':'📊','Image':'🖼️','CSV':'📋','ZIP':'📦','URL':'🔗','Other':'📎'};
     body.innerHTML=
       '<div id="ev-list">'+
       (!ev.length?'<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">No evidence attached yet</div>':
         ev.map(function(e,i){
+          var icon = evTypeIcons[e.fileType||'Other']||'📎';
           return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:8px">'+
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+
+            '<span style="font-size:20px">'+icon+'</span>'+
             '<div style="flex:1"><div style="font-size:12.5px;font-weight:600;color:var(--text-primary)">'+e.title+'</div>'+
+            '<div style="font-size:11px;color:var(--text-muted);">'+(e.fileType||'Document')+(e.fileSize?' · '+e.fileSize:'')+(e.addedAt?' · '+new Date(e.addedAt).toLocaleDateString():'')+'</div>'+
             (e.url?'<a href="'+e.url+'" target="_blank" style="font-size:11px;color:var(--text-link)">'+e.url+'</a>':'')+
-            '</div><button class="btn btn-ghost btn-xs" onclick="removeEv('+i+')">×</button></div>';
+            '</div><button class="btn btn-ghost btn-xs" onclick="removeEv('+i+')" style="flex-shrink:0">×</button></div>';
         }).join(''))+
       '</div>'+
       '<div style="margin-top:12px;padding:14px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px">'+
       '<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:10px">Add Evidence</div>'+
-      '<input id="ev-title" class="input" placeholder="Document title" style="margin-bottom:8px"/>'+
-      '<input id="ev-url" class="input" placeholder="URL or reference (optional)" style="margin-bottom:10px"/>'+
-      '<button class="btn btn-primary btn-sm" onclick="addEv()">Add</button></div>';
+      '<input id="ev-title" class="input" placeholder="Document title (e.g. DPIA Report — Customer Analytics)" style="margin-bottom:8px"/>'+
+      '<select id="ev-type" class="select" style="width:100%;margin-bottom:8px"><option value="">Select type…</option><option>Policy Document</option><option>DPIA Report</option><option>DPA Agreement</option><option>Pentest Report</option><option>Training Record</option><option>Audit Report</option><option>Screenshot</option><option>Certificate</option><option>Legal Opinion</option></select>'+
+      '<div style="border:2px dashed var(--border);border-radius:8px;padding:16px;text-align:center;margin-bottom:8px;cursor:pointer;transition:border-color .15s" id="ev-drop-zone" ondragover="event.preventDefault();this.style.borderColor=\'var(--brand)\'" ondragleave="this.style.borderColor=\'var(--border)\'" ondrop="handleEvDrop(event)">'+
+      '<div style="font-size:13px;color:var(--text-muted);margin-bottom:6px">📁 Drag & drop file here</div>'+
+      '<div style="font-size:11.5px;color:var(--text-muted)">PDF, Word, Excel, CSV, Image, ZIP</div>'+
+      '<input type="file" id="ev-file" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.zip,.txt" style="display:none" onchange="handleEvFile(this)"/>'+
+      '<button class="btn btn-secondary btn-sm" style="margin-top:8px" onclick="document.getElementById(\'ev-file\').click()">Browse files</button>'+
+      '<div id="ev-file-name" style="font-size:12px;color:var(--brand);margin-top:6px"></div>'+
+      '</div>'+
+      '<div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;text-align:center">— or —</div>'+
+      '<input id="ev-url" class="input" placeholder="Paste URL or reference link (optional)" style="margin-bottom:10px"/>'+
+      '<button class="btn btn-primary btn-sm" onclick="addEv()">Add Evidence</button></div>';
   }
+  // ── OPERATIONAL TABS ──────────────────────────────────
+  else if(tab.startsWith('op-')){
+    var opType = tab.replace('op-','');
+    var c = CMP_CTRL;
+    var opKey = c.id + '_' + opType;
+    var opData = JSON.parse(localStorage.getItem('te_op_' + opKey) || '[]');
+    var now = new Date().toISOString().split('T')[0];
+
+    var opConfig = {
+      dsar: {
+        title: 'Data Subject Access Requests (DSAR)',
+        subtitle: 'Track access requests for data held under this control. GDPR: 30 days · CCPA: 45 days · PIPL: 15 days',
+        fields: [{id:'subject',label:'Data Subject Name / Ref',type:'input',ph:'e.g. John Smith or REF-001'},{id:'regulation',label:'Regulation',type:'select',opts:['GDPR','UK GDPR','CCPA','PIPL','PDPA Singapore','LGPD','DPDP India']},{id:'received',label:'Date Received',type:'date'},{id:'notes',label:'Notes',type:'textarea',ph:'Details of what data was requested…'}],
+        sla: {'GDPR':30,'UK GDPR':30,'CCPA':45,'PIPL':15,'PDPA Singapore':30,'LGPD':15,'DPDP India':30},
+        statusOpts: ['Received','Identity Verified','Processing','Fulfilled','Rejected'],
+      },
+      erasure: {
+        title: 'Erasure / Right to be Forgotten Requests',
+        subtitle: 'Track deletion requests under this control. Document grounds for refusal where exceptions apply.',
+        fields: [{id:'subject',label:'Data Subject Name / Ref',type:'input',ph:'e.g. Jane Doe or REF-002'},{id:'regulation',label:'Regulation',type:'select',opts:['GDPR Art.17','UK GDPR Art.17','CCPA','LGPD','PDPA Singapore']},{id:'received',label:'Date Received',type:'date'},{id:'grounds',label:'Erasure Grounds',type:'select',opts:['Consent withdrawn','No longer necessary','Objection upheld','Unlawful processing','Legal obligation']},{id:'notes',label:'Notes',type:'textarea',ph:'Scope of data to be erased, systems affected…'}],
+        sla: {'GDPR Art.17':30,'UK GDPR Art.17':30,'CCPA':45,'LGPD':15,'PDPA Singapore':30},
+        statusOpts: ['Received','Verified','Erasure in Progress','Completed','Refused (documented)'],
+      },
+      portability: {
+        title: 'Data Portability Requests',
+        subtitle: 'Track requests to receive personal data in a structured, machine-readable format.',
+        fields: [{id:'subject',label:'Data Subject Name / Ref',type:'input',ph:'e.g. Customer ID 12345'},{id:'format',label:'Requested Format',type:'select',opts:['JSON','CSV','XML','PDF','Other']},{id:'received',label:'Date Received',type:'date'},{id:'destination',label:'Destination Controller (if direct transfer)',type:'input',ph:'e.g. Competitor service name'}],
+        sla: {'GDPR Art.20':30,'UK GDPR':30},
+        statusOpts: ['Received','Processing','Export Ready','Delivered','Refused'],
+      },
+      breach: {
+        title: 'Breach Incidents Linked to This Control',
+        subtitle: 'Log incidents where this control was implicated. Timers track notification deadlines.',
+        fields: [{id:'title',label:'Incident Description',type:'input',ph:'e.g. Unauthorised access to customer records'},{id:'detected',label:'Date/Time Detected',type:'datetime-local'},{id:'records',label:'Records Affected',type:'input',ph:'e.g. 1500'},{id:'regulation',label:'Applicable Regulation',type:'select',opts:['GDPR (72h)','UK GDPR (72h)','NIS2 (24h)','HIPAA (60 days)','PDPA Singapore (72h)','PDPL Saudi (72h)','LGPD (2 days)','CCPA (expedient)','PIPL (expedient)','DPDP India (expedient)']}],
+        sla: {'GDPR (72h)':3,'UK GDPR (72h)':3,'NIS2 (24h)':1,'PDPA Singapore (72h)':3,'PDPL Saudi (72h)':3,'LGPD (2 days)':2,'HIPAA (60 days)':60,'CCPA (expedient)':3,'PIPL (expedient)':3,'DPDP India (expedient)':3},
+        statusOpts: ['Active','Contained','Authority Notified','Subjects Notified','Closed'],
+        isHours: {'GDPR (72h)':true,'UK GDPR (72h)':true,'NIS2 (24h)':true,'PDPA Singapore (72h)':true,'PDPL Saudi (72h)':true},
+      },
+      consent: {
+        title: 'Consent Register',
+        subtitle: 'Log consent records for processing activities relying on this control.',
+        fields: [{id:'subject',label:'Data Subject Ref',type:'input',ph:'e.g. User ID or email hash'},{id:'purpose',label:'Purpose of Consent',type:'input',ph:'e.g. Marketing communications'},{id:'mechanism',label:'Collection Mechanism',type:'select',opts:['Checkbox on form','Cookie banner','Verbal consent (recorded)','Written consent form','App opt-in']},{id:'date',label:'Date Consented',type:'date'}],
+        sla: {},
+        statusOpts: ['Active','Withdrawn','Expired','Refreshed'],
+      },
+      rights: {
+        title: 'Rights Requests (Objection / Restriction / Rectification)',
+        subtitle: 'Track data subject rights requests applicable to this control.',
+        fields: [{id:'subject',label:'Data Subject Name / Ref',type:'input',ph:'e.g. REF-2025-100'},{id:'type',label:'Rights Request Type',type:'select',opts:['Objection (Art.21)','Restriction (Art.18)','Rectification (Art.16)','Withdraw Consent','Other']},{id:'regulation',label:'Regulation',type:'select',opts:['GDPR','UK GDPR','CCPA','LGPD','PIPL','PDPA Singapore']},{id:'received',label:'Date Received',type:'date'},{id:'notes',label:'Details',type:'textarea',ph:'Describe the request and grounds…'}],
+        sla: {'GDPR':30,'UK GDPR':30,'CCPA':45,'LGPD':15,'PIPL':15,'PDPA Singapore':30},
+        statusOpts: ['Received','Under Review','Upheld','Refused (documented)','Closed'],
+      },
+      inventory: {
+        title: 'Data Inventory / DPIA Notes',
+        subtitle: 'Record the personal data processed under this control and any DPIA findings.',
+        fields: [{id:'data_cats',label:'Data Categories Processed',type:'input',ph:'e.g. Name, email, health data, device identifiers'},{id:'subjects',label:'Data Subject Categories',type:'input',ph:'e.g. Customers, employees, children'},{id:'volume',label:'Approximate Volume',type:'select',opts:['<1,000','1K–100K','100K–1M','>1M']},{id:'dpia',label:'DPIA Required?',type:'select',opts:['No – low risk','Yes – scheduled','Yes – completed','Screening required']},{id:'notes',label:'DPIA Findings / Notes',type:'textarea',ph:'Summary of risk assessment and mitigations…'}],
+        sla: {},
+        statusOpts: ['Documented','Under Review','DPIA Complete','Approved'],
+      },
+      ropa: {
+        title: 'RoPA Entry (Records of Processing)',
+        subtitle: 'Document the processing activity covered by this control per GDPR Art.30.',
+        fields: [{id:'activity',label:'Processing Activity Name',type:'input',ph:'e.g. Customer order fulfilment'},{id:'purpose',label:'Purpose',type:'input',ph:'e.g. Fulfil contractual obligations'},{id:'legal_basis',label:'Legal Basis',type:'select',opts:['Art.6(1)(a) Consent','Art.6(1)(b) Contract','Art.6(1)(c) Legal obligation','Art.6(1)(e) Public task','Art.6(1)(f) Legitimate interests']},{id:'recipients',label:'Recipients',type:'input',ph:'e.g. Payment processor, cloud host'},{id:'retention',label:'Retention Period',type:'input',ph:'e.g. 7 years then delete'}],
+        sla: {},
+        statusOpts: ['Draft','Complete','Reviewed','Approved'],
+      },
+      vendor: {
+        title: 'Vendor / Processor Register',
+        subtitle: 'Track processors and DPAs related to this control per GDPR Art.28.',
+        fields: [{id:'vendor',label:'Vendor Name',type:'input',ph:'e.g. AWS Europe'},{id:'service',label:'Service Provided',type:'input',ph:'e.g. Cloud hosting, payment processing'},{id:'country',label:'Processing Country',type:'input',ph:'e.g. Ireland, US, India'},{id:'dpa_date',label:'DPA Signed Date',type:'date'},{id:'review_date',label:'Next Review Date',type:'date'}],
+        sla: {},
+        statusOpts: ['DPA Pending','DPA Signed','Under Review','Terminated'],
+      },
+    };
+
+    var cfg = opConfig[opType];
+    if (!cfg) { body.innerHTML = '<div style="color:var(--text-muted)">No operational data for this tab.</div>'; return; }
+
+    // Render add form + existing entries
+    var fieldsHtml = cfg.fields.map(function(f){
+      var inp = '';
+      if (f.type==='input') inp = '<input id="op-'+f.id+'" class="input" placeholder="'+(f.ph||'')+'" style="width:100%"/>';
+      else if (f.type==='date') inp = '<input id="op-'+f.id+'" class="input" type="date" value="'+now+'" style="width:100%"/>';
+      else if (f.type==='datetime-local') inp = '<input id="op-'+f.id+'" class="input" type="datetime-local" value="'+new Date().toISOString().slice(0,16)+'" style="width:100%"/>';
+      else if (f.type==='select') inp = '<select id="op-'+f.id+'" class="select" style="width:100%">'+(f.opts||[]).map(function(o){return'<option>'+o+'</option>';}).join('')+'</select>';
+      else if (f.type==='textarea') inp = '<textarea id="op-'+f.id+'" class="input" rows="2" placeholder="'+(f.ph||'')+'" style="width:100%;resize:none;line-height:1.5"></textarea>';
+      return '<div style="flex:1;min-width:180px"><label style="font-size:11px;color:var(--text-muted);font-weight:600;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">'+f.label+'</label>'+inp+'</div>';
+    }).join('');
+
+    var existingHtml = !opData.length ? '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">No entries yet. Add one below.</div>' :
+      opData.map(function(entry, ei){
+        var statusColor = entry.status===cfg.statusOpts[cfg.statusOpts.length-1]?'var(--low)':'var(--brand)';
+        var deadlineHtml = '';
+        if (cfg.sla && entry.regulation && cfg.sla[entry.regulation]) {
+          var baseDate = entry.received || entry.detected || entry.date || now;
+          var slaDays = cfg.sla[entry.regulation];
+          var deadlineMs = new Date(baseDate).getTime() + slaDays*86400000;
+          var remaining = deadlineMs - Date.now();
+          var daysLeft = Math.ceil(remaining/86400000);
+          var isOver = remaining < 0;
+          var timerColor = isOver ? 'var(--critical)' : daysLeft <= 3 ? 'var(--medium)' : 'var(--low)';
+          deadlineHtml = '<span style="font-size:11.5px;font-weight:700;color:'+timerColor+';font-family:\'IBM Plex Mono\',monospace;margin-left:auto">'+(isOver?'OVERDUE':daysLeft+'d left')+'</span>';
+        }
+        var vals = Object.entries(entry).filter(function(e){return e[0]!=='status'&&e[0]!=='addedAt';}).map(function(e){return'<span style="font-size:11.5px;color:var(--text-secondary)"><b>'+e[0]+':</b> '+e[1]+'</span>';}).join(' · ');
+        return '<div style="padding:10px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:8px">' +
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+          '<select onchange="updateOpEntry(\''+opKey+'\','+ei+',this.value)" style="font-size:11px;background:var(--bg-surface);border:1px solid var(--border);color:'+statusColor+';padding:3px 7px;border-radius:5px;cursor:pointer;font-family:inherit;font-weight:600">'+
+          cfg.statusOpts.map(function(s){return'<option value="'+s+'"'+(entry.status===s?' selected':'')+'>'+s+'</option>';}).join('')+'</select>'+
+          deadlineHtml+
+          '<button onclick="removeOpEntry(\''+opKey+'\','+ei+')" style="font-size:11px;color:var(--critical);background:none;border:none;cursor:pointer;margin-left:4px">×</button></div>'+
+          '<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:8px">'+vals+'</div>' +
+          '<div style="font-size:10.5px;color:var(--text-muted);margin-top:4px;font-family:\'IBM Plex Mono\',monospace">Added: '+new Date(entry.addedAt||now).toLocaleDateString()+'</div>' +
+          '</div>';
+      }).join('');
+
+    body.innerHTML =
+      '<div style="margin-bottom:14px"><div style="font-size:13px;font-weight:700;color:var(--text-primary);font-family:\'Syne\',sans-serif;margin-bottom:3px">'+cfg.title+'</div>' +
+      '<div style="font-size:12px;color:var(--text-muted)">'+cfg.subtitle+'</div></div>' +
+      '<div style="margin-bottom:14px">'+existingHtml+'</div>' +
+      '<div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px;padding:14px">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:10px">Add Entry</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:10px">'+fieldsHtml+'</div>' +
+      '<button class="btn btn-primary btn-sm" onclick="saveOpEntry(\''+opKey+'\',\''+opType+'\')">Save Entry</button>' +
+      '</div>';
+  }
+};
+
+window.saveOpEntry = function(opKey, opType) {
+  var opConfig_fields = {
+    dsar:['subject','regulation','received','notes'],
+    erasure:['subject','regulation','received','grounds','notes'],
+    portability:['subject','format','received','destination'],
+    breach:['title','detected','records','regulation'],
+    consent:['subject','purpose','mechanism','date'],
+    rights:['subject','type','regulation','received','notes'],
+    inventory:['data_cats','subjects','volume','dpia','notes'],
+    ropa:['activity','purpose','legal_basis','recipients','retention'],
+    vendor:['vendor','service','country','dpa_date','review_date'],
+  };
+  var fields = opConfig_fields[opType] || [];
+  var entry = {addedAt: new Date().toISOString(), status: 'Received'};
+  fields.forEach(function(f){
+    var el = document.getElementById('op-'+f);
+    if (el) entry[f] = el.value || '';
+  });
+  var existing = JSON.parse(localStorage.getItem('te_op_'+opKey)||'[]');
+  existing.unshift(entry);
+  localStorage.setItem('te_op_'+opKey, JSON.stringify(existing));
+  // Re-render the tab
+  var activeBtn = document.querySelector('.dr-tab-op.active') || document.querySelector('.dr-tab.active');
+  drTab('op-'+opType, activeBtn);
+  if (typeof toast === 'function') toast('Entry saved', 'success');
+};
+
+window.updateOpEntry = function(opKey, idx, status) {
+  var data = JSON.parse(localStorage.getItem('te_op_'+opKey)||'[]');
+  if (data[idx]) { data[idx].status = status; localStorage.setItem('te_op_'+opKey, JSON.stringify(data)); }
+};
+
+window.removeOpEntry = function(opKey, idx) {
+  var data = JSON.parse(localStorage.getItem('te_op_'+opKey)||'[]');
+  data.splice(idx,1);
+  localStorage.setItem('te_op_'+opKey, JSON.stringify(data));
+  var activeBtn = document.querySelector('.dr-tab-op.active') || document.querySelector('.dr-tab.active');
+  var opType = opKey.split('_').slice(-1)[0];
+  drTab('op-'+opType, activeBtn);
 };
 
 window.quickStat=function(v){
@@ -2925,13 +3146,46 @@ window.saveCtrlTrk=function(){
   renderCtrlCards(); renderCmpOverview();
 };
 
+window._evFileMeta = {};
+window.handleEvFile = function(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  var ext = file.name.split('.').pop().toUpperCase();
+  var typeMap = {PDF:'PDF',DOC:'Word',DOCX:'Word',XLS:'Excel',XLSX:'Excel',CSV:'CSV',PNG:'Image',JPG:'Image',JPEG:'Image',ZIP:'ZIP',TXT:'Other'};
+  var sz = file.size > 1048576 ? (file.size/1048576).toFixed(1)+'MB' : Math.round(file.size/1024)+'KB';
+  window._evFileMeta = {name:file.name, fileType:typeMap[ext]||'Other', fileSize:sz};
+  var nameEl = document.getElementById('ev-file-name');
+  if (nameEl) nameEl.textContent = '✓ ' + file.name + ' (' + sz + ')';
+  // Auto-fill title if empty
+  var titleEl = document.getElementById('ev-title');
+  if (titleEl && !titleEl.value) titleEl.value = file.name.replace(/\.[^.]+$/,'');
+};
+window.handleEvDrop = function(e) {
+  e.preventDefault();
+  var zone = document.getElementById('ev-drop-zone');
+  if (zone) zone.style.borderColor = 'var(--border)';
+  var file = e.dataTransfer.files[0];
+  if (!file) return;
+  var fakeInput = {files:[file]};
+  handleEvFile(fakeInput);
+};
 window.addEv=function(){
   if(!CMP_CTRL)return;
   var t=document.getElementById('ev-title');
   if(!t||!t.value.trim()){toast('Enter a title','warning');return;}
   var u=document.getElementById('ev-url');
+  var evType = (document.getElementById('ev-type')||{}).value || '';
   if(!CMP_EV[CMP_CTRL.id])CMP_EV[CMP_CTRL.id]=[];
-  CMP_EV[CMP_CTRL.id].push({title:t.value.trim(),url:(u?u.value.trim():''),addedAt:new Date().toISOString()});
+  CMP_EV[CMP_CTRL.id].push({
+    title:t.value.trim(),
+    url:(u?u.value.trim():''),
+    evType:evType,
+    fileType:window._evFileMeta.fileType||'',
+    fileSize:window._evFileMeta.fileSize||'',
+    fileName:window._evFileMeta.name||'',
+    addedAt:new Date().toISOString()
+  });
+  window._evFileMeta = {};
   cmpSave();
   drTab('evidence',document.querySelectorAll('.dr-tab')[3]);
   toast('Evidence added','success');
