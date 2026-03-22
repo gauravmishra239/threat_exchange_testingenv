@@ -468,23 +468,57 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 <div class="page" id="page-compliance" style="padding:0">
 
 <!-- tab bar -->
-<div id="cmpTabBar" style="display:flex;border-bottom:1px solid var(--border);background:var(--bg-surface);padding:0 26px;flex-shrink:0">
+<div id="cmpTabBar" style="display:flex;border-bottom:1px solid var(--border);background:var(--bg-surface);padding:0 16px;flex-shrink:0;overflow-x:auto;scrollbar-width:none">
   <button class="cmp-t active" id="ctb-overview" onclick="showCmpTab('overview')">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
     Overview
   </button>
   <button class="cmp-t" id="ctb-frameworks" onclick="showCmpTab('frameworks')">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
     Frameworks
     <span id="fwTabBadge" style="display:none;font-size:9px;font-weight:700;padding:1px 5px;background:var(--brand);color:#fff;border-radius:8px;margin-left:2px">0</span>
   </button>
   <button class="cmp-t" id="ctb-controls" onclick="showCmpTab('controls')">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-    Controls &amp; Tracking
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    Controls
   </button>
-  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding:8px 0">
-    <button class="btn btn-secondary btn-sm" onclick="cmpExport()">Export CSV</button>
-    <button class="btn btn-primary btn-sm" onclick="showCmpTab('frameworks')">+ Add Framework</button>
+  <button class="cmp-t" id="ctb-heatmap" onclick="showCmpTab('heatmap')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>
+    Cross-Map
+  </button>
+  <button class="cmp-t" id="ctb-inventory" onclick="showCmpTab('inventory')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+    Data Inventory
+  </button>
+  <button class="cmp-t" id="ctb-residency" onclick="showCmpTab('residency')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+    Residency
+  </button>
+  <button class="cmp-t" id="ctb-rights" onclick="showCmpTab('rights')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+    Rights Queue
+    <span id="rightsQBadge" style="display:none;font-size:9px;font-weight:700;padding:1px 5px;background:var(--critical);color:#fff;border-radius:8px;margin-left:2px">0</span>
+  </button>
+  <button class="cmp-t" id="ctb-breach" onclick="showCmpTab('breach')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+    Breach Tracker
+    <span id="breachBadge" style="display:none;font-size:9px;font-weight:700;padding:1px 5px;background:var(--critical);color:#fff;border-radius:8px;margin-left:2px">0</span>
+  </button>
+  <button class="cmp-t" id="ctb-scanner" onclick="showCmpTab('scanner')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v3l2 2"/></svg>
+    PII Scanner
+  </button>
+  <button class="cmp-t" id="ctb-ropa" onclick="showCmpTab('ropa')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    RoPA Builder
+  </button>
+  <button class="cmp-t" id="ctb-evidence" onclick="showCmpTab('evidence')">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    Evidence Locker
+  </button>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px;padding:6px 0;flex-shrink:0;padding-left:12px">
+    <button class="btn btn-secondary btn-sm" onclick="cmpExport()">Export</button>
+    <button class="btn btn-primary btn-sm" onclick="showCmpTab('frameworks')">+ Framework</button>
   </div>
 </div>
 
@@ -702,6 +736,210 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   </div>
   <div id="ctrl-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px"></div>
   <div id="ctrl-list" style="display:none"></div>
+</div>
+
+<!-- ══ TAB: CROSS-MAP HEATMAP ══ -->
+<div id="ctp-heatmap" style="display:none;padding:24px 26px;animation:fadeIn .18s ease;overflow:auto">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › Cross-Regulation Heatmap</div>
+      <div class="page-title">Cross-Regulation Control Matrix</div>
+      <div class="page-subtitle">One control — multiple regulations satisfied. Find the highest-leverage actions.</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="exportHeatmapCSV()">Export CSV</button>
+    </div>
+  </div>
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)"><div style="width:14px;height:14px;border-radius:3px;background:var(--low)"></div>Satisfied</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)"><div style="width:14px;height:14px;border-radius:3px;background:var(--medium)"></div>Partial</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)"><div style="width:14px;height:14px;border-radius:3px;background:rgba(248,79,79,.2)"></div>Gap</div>
+    <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted)"><div style="width:14px;height:14px;border-radius:3px;background:var(--border)"></div>N/A</div>
+    <div style="margin-left:auto;font-size:12px;color:var(--text-muted)">Click any cell to view the control requirement</div>
+  </div>
+  <div style="overflow:auto;border:1px solid var(--border);border-radius:var(--radius-md)">
+    <div id="heatmap-grid"></div>
+  </div>
+</div>
+
+<!-- ══ TAB: DATA INVENTORY ══ -->
+<div id="ctp-inventory" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › Data Inventory</div>
+      <div class="page-title">Data Inventory &amp; Classification</div>
+      <div class="page-subtitle">Define personal data types your org holds — regulations auto-trigger based on what you process</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="addDataType()">+ Add Data Type</button>
+    </div>
+  </div>
+  <div style="background:var(--brand-subtle);border:1px solid var(--brand-muted);border-radius:var(--radius-md);padding:12px 16px;margin-bottom:16px;font-size:12.5px;color:var(--brand)">
+    💡 Based on your data inventory, the system automatically highlights which regulation controls apply to your organisation. Add a data type to see triggered regulations.
+  </div>
+  <div id="inv-triggered" style="margin-bottom:18px"></div>
+  <div id="inv-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px"></div>
+  <!-- Add modal -->
+  <div id="inv-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:none;align-items:center;justify-content:center">
+    <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;width:440px;max-width:95vw">
+      <div style="font-size:15px;font-weight:700;margin-bottom:16px;font-family:'Syne',sans-serif">Add Data Type</div>
+      <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Data Category</label>
+      <select id="inv-cat" class="select" style="width:100%">
+        <option value="name">Full Name</option><option value="email">Email Address</option><option value="phone">Phone Number</option>
+        <option value="ip">IP Address</option><option value="location">Location / GPS Data</option><option value="dob">Date of Birth</option>
+        <option value="id">National ID / Passport</option><option value="financial">Financial Data (card, IBAN)</option>
+        <option value="health">Health / Medical Data</option><option value="biometric">Biometric Data</option>
+        <option value="genetic">Genetic Data</option><option value="race">Racial / Ethnic Origin</option>
+        <option value="religion">Religious Beliefs</option><option value="political">Political Opinions</option>
+        <option value="sexual">Sexual Orientation</option><option value="criminal">Criminal Convictions</option>
+        <option value="children">Children's Data</option><option value="employee">Employee Data</option>
+        <option value="cookie">Cookie / Tracking Data</option><option value="custom">Custom Data Type</option>
+      </select></div>
+      <div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Custom name (optional)</label>
+      <input id="inv-name" class="input" placeholder="e.g. Customer loyalty score"/></div>
+      <div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Volume</label>
+      <select id="inv-vol" class="select" style="width:100%">
+        <option value="small">Small (&lt;1,000 records)</option><option value="medium">Medium (1K–100K records)</option>
+        <option value="large">Large (100K–1M records)</option><option value="xlarge">Very Large (&gt;1M records)</option>
+      </select></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary btn-sm" onclick="saveDataType()">Add</button>
+        <button class="btn btn-secondary btn-sm" onclick="document.getElementById('inv-modal').style.display='none'">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TAB: DATA RESIDENCY ══ -->
+<div id="ctp-residency" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › Data Residency</div>
+      <div class="page-title">Data Residency &amp; Transfer Map</div>
+      <div class="page-subtitle">Where your data lives and what regulations apply + cross-border transfer requirements</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="addResidencyRegion()">+ Add Region</button>
+    </div>
+  </div>
+  <div id="residency-regions" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:20px"></div>
+  <div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px">
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px;font-family:'Syne',sans-serif">Cross-Border Transfer Mechanisms</div>
+    <div id="transfer-mechanisms"></div>
+  </div>
+</div>
+
+<!-- ══ TAB: RIGHTS QUEUE ══ -->
+<div id="ctp-rights" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › Rights Queue</div>
+      <div class="page-title">Data Subject Rights Queue</div>
+      <div class="page-subtitle">Track DSARs with per-regulation SLA countdowns — GDPR 30 days · CCPA 45 days · PIPL 15 days</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="addRightsRequest()">+ New Request</button>
+    </div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:18px">
+    <div class="kpi"><div class="kpi-label">Open Requests</div><div class="kpi-value" id="rq-open" style="color:var(--brand)">0</div><div class="kpi-bar" style="background:var(--brand)"></div></div>
+    <div class="kpi"><div class="kpi-label">Overdue</div><div class="kpi-value" id="rq-overdue" style="color:var(--critical)">0</div><div class="kpi-bar" style="background:var(--critical)"></div></div>
+    <div class="kpi"><div class="kpi-label">Due This Week</div><div class="kpi-value" id="rq-week" style="color:var(--medium)">0</div><div class="kpi-bar" style="background:var(--medium)"></div></div>
+    <div class="kpi"><div class="kpi-label">Completed</div><div class="kpi-value" id="rq-done" style="color:var(--low)">0</div><div class="kpi-bar" style="background:var(--low)"></div></div>
+  </div>
+  <div id="rights-list"></div>
+</div>
+
+<!-- ══ TAB: BREACH TRACKER ══ -->
+<div id="ctp-breach" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › Breach Tracker</div>
+      <div class="page-title">Breach Notification Tracker</div>
+      <div class="page-subtitle">Live countdown timers per regulation — GDPR/PDPL 72h · NIS2 24h · HIPAA 60 days</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary btn-sm" onclick="addBreachIncident()" style="background:var(--critical);border-color:var(--critical)">+ Log Incident</button>
+    </div>
+  </div>
+  <div id="breach-incidents"></div>
+  <!-- Breach SLA Reference -->
+  <div style="margin-top:20px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px">
+    <div style="font-size:13px;font-weight:700;margin-bottom:12px;font-family:'Syne',sans-serif">Notification Deadlines by Regulation</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:8px" id="breach-sla-ref"></div>
+  </div>
+</div>
+
+<!-- ══ TAB: PII SCANNER ══ -->
+<div id="ctp-scanner" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › PII Scanner</div>
+      <div class="page-title">AI Sensitive Data Scanner</div>
+      <div class="page-subtitle">Paste any text or data export — Claude identifies PII, PHI, financial data and maps to triggered regulation requirements</div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:8px">Input — paste text to scan</div>
+      <textarea id="scanner-input" style="width:100%;height:220px;background:var(--bg-sunken);border:1px solid var(--border);color:var(--text-primary);font-size:12.5px;padding:12px;border-radius:var(--radius);outline:none;font-family:'IBM Plex Mono',monospace;resize:vertical;line-height:1.6" placeholder="Paste any text, CSV row, API response, email, document snippet…&#10;&#10;Example:&#10;Customer: John Smith&#10;Email: john.smith@example.com&#10;DOB: 15/03/1985&#10;Card: 4532-1234-5678-9012&#10;Health: Diabetic, insulin dependent"></textarea>
+      <button class="btn btn-primary" style="width:100%;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="runPiiScan()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Scan with Claude AI
+      </button>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:8px">Scan Results</div>
+      <div id="scanner-results" style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:var(--radius);padding:14px;min-height:220px;font-size:12.5px;color:var(--text-muted)">
+        Results will appear here after scanning…
+      </div>
+    </div>
+  </div>
+  <div id="scanner-findings" style="margin-top:16px"></div>
+</div>
+
+<!-- ══ TAB: RoPA BUILDER ══ -->
+<div id="ctp-ropa" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › RoPA Builder</div>
+      <div class="page-title">Records of Processing Activities</div>
+      <div class="page-subtitle">GDPR Art.30 mandated — mirrored in LGPD Art.37, PDPL, DPDP and most global privacy laws</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="exportRopa()">Export PDF/CSV</button>
+      <button class="btn btn-primary btn-sm" onclick="addRopaEntry()">+ Add Activity</button>
+    </div>
+  </div>
+  <div id="ropa-completeness" style="margin-bottom:14px"></div>
+  <div id="ropa-table"></div>
+</div>
+
+<!-- ══ TAB: EVIDENCE LOCKER ══ -->
+<div id="ctp-evidence" style="display:none;padding:24px 26px;animation:fadeIn .18s ease">
+  <div class="page-hd" style="margin-bottom:16px">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb" onclick="navCmpSub('overview')" style="cursor:pointer">Compliance Management</span> › Evidence Locker</div>
+      <div class="page-title">Evidence Locker</div>
+      <div class="page-subtitle">Attach proof of implementation per control — policies, DPIAs, DPAs, pentest reports, training records</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="exportEvidencePackage()">Export Package</button>
+      <button class="btn btn-primary btn-sm" onclick="addEvidence()">+ Add Evidence</button>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+    <select id="ev-fw-filter" class="select" onchange="renderEvidence()" style="width:auto;font-size:12.5px">
+      <option value="">All Frameworks</option>
+    </select>
+    <select id="ev-type-filter" class="select" onchange="renderEvidence()" style="width:auto;font-size:12.5px">
+      <option value="">All Types</option>
+      <option>Policy Document</option><option>DPIA Report</option><option>DPA Agreement</option>
+      <option>Pentest Report</option><option>Training Record</option><option>Audit Report</option>
+      <option>Screenshot</option><option>Certificate</option><option>Legal Opinion</option>
+    </select>
+  </div>
+  <div id="evidence-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px"></div>
 </div>
 
 <!-- ══ CONTROL DRAWER ══ -->
@@ -1738,6 +1976,90 @@ window.navCmpSub = function(tab) {
 // ══════════════════════════════════════════════════════════
 
 // ── DATA ─────────────────────────────────────────────────
+// ── SKYFLOW DATA STATE ───────────────────────────────────
+var INV_DATA     = JSON.parse(localStorage.getItem('te_inv_data')   || '[]');
+var RIGHTS_QUEUE = JSON.parse(localStorage.getItem('te_rights_q')   || '[]');
+var BREACH_LOG   = JSON.parse(localStorage.getItem('te_breaches')   || '[]');
+var ROPA_DATA    = JSON.parse(localStorage.getItem('te_ropa')       || '[]');
+var EV_DATA      = JSON.parse(localStorage.getItem('te_evidence2')  || '[]');
+var RESIDENCY    = JSON.parse(localStorage.getItem('te_residency')  || '[]');
+
+function skyflowSave() {
+  localStorage.setItem('te_inv_data',  JSON.stringify(INV_DATA));
+  localStorage.setItem('te_rights_q',  JSON.stringify(RIGHTS_QUEUE));
+  localStorage.setItem('te_breaches',  JSON.stringify(BREACH_LOG));
+  localStorage.setItem('te_ropa',      JSON.stringify(ROPA_DATA));
+  localStorage.setItem('te_evidence2', JSON.stringify(EV_DATA));
+  localStorage.setItem('te_residency', JSON.stringify(RESIDENCY));
+}
+
+// Data type → triggered regulations map
+var DATA_TYPE_REGS = {
+  name:      ['gdpr','uk-gdpr','ccpa','lgpd','pdpa-sg','appi','pipl','dpdp','popia','pipeda'],
+  email:     ['gdpr','uk-gdpr','ccpa','lgpd','pdpa-sg','appi','pipl','dpdp','popia','pipeda'],
+  phone:     ['gdpr','uk-gdpr','ccpa','lgpd','pdpa-sg','appi','pipl','dpdp','popia'],
+  ip:        ['gdpr','uk-gdpr','ccpa','pdpa-sg'],
+  location:  ['gdpr','uk-gdpr','ccpa','lgpd','pipl','pdpa-sg','appi'],
+  dob:       ['gdpr','uk-gdpr','ccpa','lgpd','pipl','pdpa-sg','appi','dpdp','popia'],
+  id:        ['gdpr','uk-gdpr','lgpd','pipl','dpdp','popia','pdpl-sa','pdpa-sg'],
+  financial: ['gdpr','uk-gdpr','ccpa','lgpd','glba','pci-dss','pipl','appi','pdpa-sg'],
+  health:    ['gdpr','uk-gdpr','hipaa','lgpd','pipl','dpdp','popia','pdpa-sg','appi'],
+  biometric: ['gdpr','uk-gdpr','lgpd','pipl','dpdp','popia','pdpl-sa','pdpa-th','ccpa'],
+  genetic:   ['gdpr','uk-gdpr','lgpd','pipl','dpdp'],
+  race:      ['gdpr','uk-gdpr','lgpd','pipl','dpdp','popia'],
+  religion:  ['gdpr','uk-gdpr','lgpd','pipl'],
+  political: ['gdpr','uk-gdpr','lgpd','pipl'],
+  sexual:    ['gdpr','uk-gdpr','lgpd','pipl'],
+  criminal:  ['gdpr','uk-gdpr','lgpd','pipl','dpdp','popia'],
+  children:  ['gdpr','uk-gdpr','coppa','lgpd','pipl','pdpa-sg','dpdp'],
+  employee:  ['gdpr','uk-gdpr','lgpd','pipl','popia','pdpa-sg'],
+  cookie:    ['gdpr','uk-gdpr','eprivacy','ccpa'],
+  custom:    ['gdpr','uk-gdpr'],
+};
+
+// Rights SLA by regulation (days)
+var RIGHTS_SLA = {
+  'gdpr':30,'uk-gdpr':30,'ccpa':45,'lgpd':15,'pipl':15,
+  'pdpa-sg':30,'appi':30,'dpdp':30,'popia':30,'pdpl-sa':30,
+  'pdpa-th':30,'kr-pipa':10,'apa-au':30,'nz-pipa':20,
+};
+
+// Breach SLA by regulation
+var BREACH_SLA = {
+  'gdpr':       {hours:72,  to:'Supervisory Authority (DPA)'},
+  'uk-gdpr':    {hours:72,  to:'ICO (Information Commissioner)'},
+  'nis2':       {hours:24,  to:'CSIRT + Competent Authority'},
+  'pdpl-sa':    {hours:72,  to:'NDMO (Saudi)'},
+  'pdpa-sg':    {hours:72,  to:'PDPC (Singapore)'},
+  'lgpd':       {days:2,    to:'ANPD + data subjects'},
+  'popia':      {asap:true, to:'Information Regulator (SA)'},
+  'hipaa':      {days:60,   to:'HHS + media if >500 in state'},
+  'ccpa':       {asap:true, to:'Data subjects (expedient)'},
+  'pipl':       {asap:true, to:'Cyberspace Administration of China'},
+  'dpdp':       {asap:true, to:'Data Protection Board of India'},
+  'appi':       {days:30,   to:'PPC (Japan) + data subjects'},
+  'pdpa-th':    {days:72,   to:'PDPC Thailand (hours)'},
+  'apa-au':     {days:30,   to:'OAIC (Australia)'},
+};
+
+// Cross-regulation heatmap control matrix
+var HEATMAP_CONTROLS = [
+  {id:'encryption',      label:'Encryption at rest & transit',   regs:{gdpr:'✓','uk-gdpr':'✓','hipaa':'✓','pci-dss':'✓','ccpa':'~','lgpd':'✓','pipl':'✓','pdpl-sa':'✓','dpdp':'✓','popia':'✓','nist-800-53':'✓','iso-27001':'✓','soc2':'✓'}},
+  {id:'access-control',  label:'Access Control (RBAC/PBAC)',      regs:{gdpr:'✓','uk-gdpr':'✓','hipaa':'✓','pci-dss':'✓','ccpa':'~','lgpd':'✓','pipl':'✓','pdpl-sa':'~','dpdp':'~','popia':'✓','nist-800-53':'✓','iso-27001':'✓','soc2':'✓'}},
+  {id:'ropa',            label:'Records of Processing (RoPA)',     regs:{gdpr:'✓','uk-gdpr':'✓','lgpd':'✓','pipl':'✓','dpdp':'✓','pdpl-sa':'✓','popia':'~','hipaa':'✓','nist-800-53':'~','iso-27001':'~','soc2':'✗','ccpa':'✗'}},
+  {id:'breach-72h',      label:'72-hour Breach Notification',      regs:{gdpr:'✓','uk-gdpr':'✓','nis2':'~','pdpl-sa':'✓','pdpa-sg':'✓','nist-800-53':'~','iso-27001':'~','hipaa':'✗','ccpa':'✗','lgpd':'~','pipl':'~','popia':'~'}},
+  {id:'dpia',            label:'Data Protection Impact Assessment', regs:{gdpr:'✓','uk-gdpr':'✓','lgpd':'~','pipl':'~','dpdp':'~','pdpl-sa':'~','popia':'~','hipaa':'✗','ccpa':'✗','nist-800-53':'✓','iso-27001':'~','soc2':'✗'}},
+  {id:'dpo',             label:'DPO / Privacy Officer',             regs:{gdpr:'✓','uk-gdpr':'✓','lgpd':'✓','pipl':'✓','dpdp':'✓','pdpl-sa':'✓','pdpa-sg':'~','popia':'~','hipaa':'✓','ccpa':'✗','nist-800-53':'✗','iso-27001':'~','soc2':'✗'}},
+  {id:'consent',         label:'Consent Management',                regs:{gdpr:'✓','uk-gdpr':'✓','ccpa':'✓','lgpd':'✓','pipl':'✓','dpdp':'✓','pdpa-sg':'✓','pdpa-th':'✓','appi':'✓','kr-pipa':'✓','popia':'✓','pdpl-sa':'✓','nist-800-53':'~','iso-27001':'✗','soc2':'✗'}},
+  {id:'right-access',    label:'Right of Access (DSAR)',            regs:{gdpr:'✓','uk-gdpr':'✓','ccpa':'✓','lgpd':'✓','pipl':'✓','dpdp':'✓','pdpa-sg':'✓','pdpa-th':'✓','appi':'✓','kr-pipa':'✓','popia':'✓','pdpl-sa':'✓','nist-800-53':'✗','iso-27001':'✗','soc2':'✗'}},
+  {id:'right-erasure',   label:'Right to Erasure / Deletion',       regs:{gdpr:'✓','uk-gdpr':'✓','ccpa':'✓','lgpd':'✓','pipl':'✓','dpdp':'✓','pdpa-sg':'~','appi':'~','kr-pipa':'✓','popia':'✓','pdpl-sa':'✓','nist-800-53':'✗','iso-27001':'✗','soc2':'✗'}},
+  {id:'transfers',       label:'Cross-Border Transfer Controls',    regs:{gdpr:'✓','uk-gdpr':'✓','pipl':'✓','dpdp':'~','pdpl-sa':'✓','lgpd':'✓','kr-pipa':'✓','pdpa-sg':'✓','appi':'~','popia':'✓','hipaa':'✗','ccpa':'✗','nist-800-53':'~','iso-27001':'~'}},
+  {id:'retention',       label:'Data Retention & Deletion Policy',  regs:{gdpr:'✓','uk-gdpr':'✓','lgpd':'✓','pipl':'✓','dpdp':'~','pdpl-sa':'✓','hipaa':'✓','pci-dss':'✓','popia':'✓','nist-800-53':'✓','iso-27001':'✓','soc2':'✓','ccpa':'~'}},
+  {id:'pentest',         label:'Penetration Testing',               regs:{gdpr:'~','uk-gdpr':'~','hipaa':'~','pci-dss':'✓','nis2':'✓','nist-800-53':'✓','iso-27001':'✓','soc2':'✓','lgpd':'✗','ccpa':'✗','pipl':'✗','dpdp':'✗','popia':'✗'}},
+  {id:'privacy-design',  label:'Privacy by Design',                 regs:{gdpr:'✓','uk-gdpr':'✓','lgpd':'~','pipl':'~','dpdp':'~','pdpl-sa':'~','nist-800-53':'✓','iso-27001':'~','soc2':'~','hipaa':'✗','ccpa':'✗','popia':'~','pdpa-sg':'~'}},
+  {id:'vendor-mgmt',     label:'Vendor / Processor Due Diligence',  regs:{gdpr:'✓','uk-gdpr':'✓','hipaa':'✓','lgpd':'✓','pipl':'✓','dpdp':'~','popia':'✓','pdpl-sa':'~','nist-800-53':'✓','iso-27001':'✓','soc2':'✓','pci-dss':'✓','ccpa':'~'}},
+];
+
 var CMP_TR   = JSON.parse(localStorage.getItem('te_cmp_tr')   || '{}');
 var CMP_EV   = JSON.parse(localStorage.getItem('te_cmp_ev')   || '{}');
 var CMP_FWS  = JSON.parse(localStorage.getItem('te_cmp_fws')  || '[]');
@@ -2073,8 +2395,9 @@ function cmpSave() {
 }
 
 // ── TAB SWITCHER ─────────────────────────────────────────
+var CMP_TABS = ['overview','frameworks','controls','heatmap','inventory','residency','rights','breach','scanner','ropa','evidence'];
 window.showCmpTab = function(tab) {
-  ['overview','frameworks','controls'].forEach(function(t){
+  CMP_TABS.forEach(function(t){
     var p = document.getElementById('ctp-'+t);
     if(p) p.style.display = t===tab ? 'block' : 'none';
     var b = document.getElementById('ctb-'+t);
@@ -2083,6 +2406,14 @@ window.showCmpTab = function(tab) {
   if(tab==='overview')   renderCmpOverview();
   if(tab==='frameworks') renderFwCards();
   if(tab==='controls')   renderCtrlsTab();
+  if(tab==='heatmap')    renderHeatmap();
+  if(tab==='inventory')  renderInventory();
+  if(tab==='residency')  renderResidency();
+  if(tab==='rights')     renderRightsQueue();
+  if(tab==='breach')     renderBreachTracker();
+  if(tab==='scanner')    renderScanner();
+  if(tab==='ropa')       renderRopa();
+  if(tab==='evidence')   renderEvidence();
 };
 
 // ── loadComplianceSummary — called by nav('compliance') ───
@@ -2611,6 +2942,594 @@ window.removeEv=function(i){
   CMP_EV[CMP_CTRL.id].splice(i,1);
   cmpSave();
   drTab('evidence',document.querySelectorAll('.dr-tab')[3]);
+};
+
+
+// ══════════════════════════════════════════════════════════
+// SKYFLOW-INSPIRED FUNCTIONS
+// ══════════════════════════════════════════════════════════
+
+// ── HEATMAP ──────────────────────────────────────────────
+window.renderHeatmap = function() {
+  var el = document.getElementById('heatmap-grid');
+  if (!el) return;
+  var regs = ['gdpr','uk-gdpr','ccpa','hipaa','lgpd','pipl','dpdp','pdpl-sa','popia','pdpa-sg','nis2','pci-dss','nist-800-53','iso-27001','soc2'];
+  var regNames = {'gdpr':'GDPR','uk-gdpr':'UK GDPR','ccpa':'CCPA','hipaa':'HIPAA','lgpd':'LGPD','pipl':'PIPL','dpdp':'DPDP','pdpl-sa':'PDPL SA','popia':'POPIA','pdpa-sg':'PDPA SG','nis2':'NIS 2','pci-dss':'PCI DSS','nist-800-53':'NIST 800-53','iso-27001':'ISO 27001','soc2':'SOC 2'};
+  var cellStyle = function(v) {
+    if (v==='✓') return 'background:rgba(63,185,80,.2);color:var(--low)';
+    if (v==='~') return 'background:rgba(240,192,0,.15);color:var(--medium)';
+    if (v==='✗') return 'background:rgba(248,79,79,.12);color:var(--critical)';
+    return 'background:var(--bg-sunken);color:var(--text-muted)';
+  };
+  var colW = '68px';
+  var html = '<table style="border-collapse:collapse;min-width:100%;font-size:11.5px">';
+  // Header
+  html += '<thead><tr><th style="padding:10px 14px;text-align:left;background:var(--bg-raised);border:1px solid var(--border);min-width:200px;font-size:12px;position:sticky;left:0;z-index:2">Control Category</th>';
+  regs.forEach(function(r){ html += '<th style="padding:8px 4px;text-align:center;background:var(--bg-raised);border:1px solid var(--border);width:'+colW+';font-size:10.5px;font-family:\'IBM Plex Mono\',monospace;writing-mode:vertical-lr;transform:rotate(180deg);height:90px;white-space:nowrap">' + (regNames[r]||r) + '</th>'; });
+  html += '</tr></thead><tbody>';
+  HEATMAP_CONTROLS.forEach(function(ctrl, ri) {
+    var satisfied = Object.values(ctrl.regs).filter(function(v){return v==='✓';}).length;
+    var partial   = Object.values(ctrl.regs).filter(function(v){return v==='~';}).length;
+    html += '<tr>';
+    html += '<td style="padding:9px 14px;border:1px solid var(--border);background:var(--bg-surface);position:sticky;left:0;z-index:1">';
+    html += '<div style="font-size:12.5px;font-weight:600;color:var(--text-primary)">' + ctrl.label + '</div>';
+    html += '<div style="font-size:10.5px;color:var(--text-muted);margin-top:2px">' + satisfied + ' regs satisfied · ' + partial + ' partial</div>';
+    html += '</td>';
+    regs.forEach(function(r){
+      var v = ctrl.regs[r] || '—';
+      html += '<td style="padding:8px 4px;border:1px solid var(--border);text-align:center;cursor:pointer;transition:opacity .15s;' + cellStyle(v) + '" onclick="heatmapClick(\''+ctrl.id+'\',\''+r+'\',\''+v+'\')" title="'+ctrl.label+' — '+(regNames[r]||r)+': '+v+'">' + v + '</td>';
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  el.innerHTML = html;
+};
+
+window.heatmapClick = function(ctrlId, regId, status) {
+  var ctrl = HEATMAP_CONTROLS.find(function(c){return c.id===ctrlId;});
+  if (!ctrl) return;
+  var fw = FW_DATA.find(function(f){return f.id===regId;})||{name:regId,color:'var(--brand)'};
+  var statusLabel = status==='✓'?'Satisfied':status==='~'?'Partial':status==='✗'?'Gap':'Not Applicable';
+  var statusColor = status==='✓'?'var(--low)':status==='~'?'var(--medium)':status==='✗'?'var(--critical)':'var(--text-muted)';
+  toast(ctrl.label + ' → ' + (fw.name||regId) + ': ' + statusLabel, status==='✓'?'success':status==='~'?'warning':'error');
+  if (status !== '—') { showCmpTab('controls'); CMP_FW = regId; renderCtrlsTab(); }
+};
+
+window.exportHeatmapCSV = function() {
+  var regs = ['gdpr','uk-gdpr','ccpa','hipaa','lgpd','pipl','dpdp','pdpl-sa','popia','pdpa-sg','nis2','pci-dss','nist-800-53','iso-27001','soc2'];
+  var rows = ['Control,' + regs.join(',')];
+  HEATMAP_CONTROLS.forEach(function(c){
+    rows.push('"'+c.label+'",' + regs.map(function(r){return c.regs[r]||'—';}).join(','));
+  });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'}));
+  a.download = 'compliance-crossmap.csv'; a.click();
+};
+
+// ── DATA INVENTORY ────────────────────────────────────────
+window.renderInventory = function() {
+  var el = document.getElementById('inv-grid');
+  if (!el) return;
+  var trigEl = document.getElementById('inv-triggered');
+
+  if (!INV_DATA.length) {
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md)"><div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:8px">No data types defined yet</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Add the types of personal data your organisation processes</div><button class="btn btn-primary btn-sm" onclick="addDataType()">+ Add Data Type</button></div>';
+    if (trigEl) trigEl.innerHTML = '';
+    return;
+  }
+
+  // Compute triggered regs
+  var triggered = {};
+  INV_DATA.forEach(function(item) {
+    var regs = DATA_TYPE_REGS[item.cat] || [];
+    regs.forEach(function(r){ triggered[r] = (triggered[r]||0) + 1; });
+  });
+
+  if (trigEl) {
+    var sortedRegs = Object.entries(triggered).sort(function(a,b){return b[1]-a[1];});
+    trigEl.innerHTML = '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;margin-bottom:4px">' +
+      '<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:10px">Regulations triggered by your data inventory (' + sortedRegs.length + ')</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:7px">' +
+      sortedRegs.map(function(e) {
+        var fw = FW_DATA.find(function(f){return f.id===e[0];})||{name:e[0],color:'var(--brand)',flag:''};
+        return '<span onclick="showCmpTab(\'controls\');CMP_FW=\''+e[0]+'\';renderCtrlsTab()" style="cursor:pointer;font-size:11.5px;padding:4px 10px;border-radius:20px;border:1px solid '+(fw.color||'var(--brand)')+';color:'+(fw.color||'var(--brand)')+';background:'+(fw.color||'var(--brand)')+'18;display:inline-flex;align-items:center;gap:5px;font-weight:600">'+(fw.flag||'')+(fw.name||e[0])+'<span style="font-size:10px;opacity:.7">×'+e[1]+'</span></span>';
+      }).join('') + '</div></div>';
+  }
+
+  var labels = {name:'Full Name',email:'Email',phone:'Phone',ip:'IP Address',location:'Location',dob:'Date of Birth',id:'National ID',financial:'Financial Data',health:'Health Data',biometric:'Biometric',genetic:'Genetic',race:'Race/Ethnicity',religion:'Religion',political:'Political Opinion',sexual:'Sexual Orientation',criminal:'Criminal Data',children:"Children's Data",employee:'Employee Data',cookie:'Cookie/Tracking',custom:'Custom'};
+  var icons  = {name:'👤',email:'📧',phone:'📱',ip:'🌐',location:'📍',dob:'🎂',id:'🪪',financial:'💳',health:'🏥',biometric:'🔬',genetic:'🧬',race:'🌍',religion:'⛪',political:'🏛️',sexual:'🏳️',criminal:'⚖️',children:'👶',employee:'💼',cookie:'🍪',custom:'📦'};
+  var volLabels = {small:'<1K records',medium:'1K–100K',large:'100K–1M',xlarge:'>1M records'};
+  var special = ['health','biometric','genetic','race','religion','political','sexual','criminal'];
+  el.innerHTML = INV_DATA.map(function(item, i) {
+    var isSpecial = special.indexOf(item.cat) !== -1;
+    var triggeredCount = (DATA_TYPE_REGS[item.cat]||[]).length;
+    return '<div style="background:var(--bg-surface);border:1px solid var(--border);border-top:3px solid '+(isSpecial?'var(--critical)':'var(--brand)')+';border-radius:var(--radius-md);padding:14px">' +
+      '<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">' +
+      '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:22px">'+(icons[item.cat]||'📦')+'</span>' +
+      '<div><div style="font-size:13.5px;font-weight:700;color:var(--text-primary);font-family:\'Syne\',sans-serif">'+(item.name||labels[item.cat]||item.cat)+'</div>' +
+      '<div style="font-size:11px;color:var(--text-muted)">'+(volLabels[item.vol]||item.vol)+'</div></div></div>' +
+      (isSpecial?'<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(248,79,79,.1);border:1px solid rgba(248,79,79,.3);color:var(--critical);font-weight:700">SPECIAL CATEGORY</span>':'') +
+      '</div>' +
+      '<div style="font-size:11.5px;color:var(--brand);margin-bottom:8px;font-weight:600">Triggers '+triggeredCount+' regulation'+(triggeredCount!==1?'s':'')+'</div>' +
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+      '<button onclick="removeDataType('+i+')" style="font-size:11px;color:var(--critical);background:none;border:none;cursor:pointer;padding:0">Remove</button>' +
+      '<button onclick="showCmpTab(\'heatmap\')" style="font-size:11px;color:var(--brand);background:none;border:none;cursor:pointer;padding:0">View in Heatmap →</button>' +
+      '</div></div>';
+  }).join('');
+};
+
+window.addDataType = function() {
+  document.getElementById('inv-modal').style.display = 'flex';
+};
+window.saveDataType = function() {
+  var cat  = document.getElementById('inv-cat').value;
+  var name = document.getElementById('inv-name').value.trim();
+  var vol  = document.getElementById('inv-vol').value;
+  INV_DATA.push({cat:cat, name:name||'', vol:vol, addedAt:new Date().toISOString()});
+  skyflowSave();
+  document.getElementById('inv-modal').style.display = 'none';
+  renderInventory();
+  toast('Data type added — regulations auto-updated', 'success');
+};
+window.removeDataType = function(i) {
+  INV_DATA.splice(i,1); skyflowSave(); renderInventory();
+};
+
+// ── DATA RESIDENCY ────────────────────────────────────────
+var PRESET_REGIONS = [
+  {id:'eu',flag:'🇪🇺',name:'European Union / EEA',color:'#1d4ed8',laws:['gdpr','nis2','dora'],transfers:'Chapter V requires adequacy decision, SCCs, or BCRs for data leaving EEA'},
+  {id:'uk',flag:'🇬🇧',name:'United Kingdom',color:'#2563eb',laws:['uk-gdpr'],transfers:'UK adequacy decision currently in place for EEA transfers. SCCs for other countries'},
+  {id:'us',flag:'🇺🇸',name:'United States',color:'#1e3a8a',laws:['ccpa','hipaa','glba','coppa','ferpa'],transfers:'No federal transfer restrictions; sector-specific rules apply. DPF for EU transfers'},
+  {id:'apac',flag:'🌏',name:'Asia-Pacific',color:'#0891b2',laws:['pipl','dpdp','pdpa-sg','appi','kr-pipa','apa-au'],transfers:'Strict localisation in China (PIPL). Cross-border assessment required for most APAC jurisdictions'},
+  {id:'me',flag:'🕌',name:'Middle East & GCC',color:'#065f46',laws:['pdpl-sa','pdpl-uae','qcb-cyber'],transfers:'Saudi PDPL requires localisation for sensitive data. DIFC provides GDPR-equivalent framework'},
+  {id:'sa',flag:'🌍',name:'Africa & Americas (South)',color:'#059669',laws:['popia','lgpd','ng-ndpa'],transfers:'POPIA restricts transfers to adequate countries. LGPD requires equivalent protection'},
+];
+
+window.renderResidency = function() {
+  if (!RESIDENCY.length) {
+    RESIDENCY = PRESET_REGIONS.map(function(r){ return Object.assign({active: false}, r); });
+  }
+  var regEl = document.getElementById('residency-regions');
+  var tmEl  = document.getElementById('transfer-mechanisms');
+  if (!regEl) return;
+
+  regEl.innerHTML = RESIDENCY.map(function(region, i) {
+    var fws = region.laws.map(function(id){
+      return FW_DATA.find(function(f){return f.id===id;})||{name:id};
+    });
+    var statusColor = region.active ? 'var(--low)' : 'var(--text-muted)';
+    return '<div style="background:var(--bg-surface);border:1px solid var(--border);border-left:4px solid '+(region.active?region.color:'var(--border)')+';border-radius:var(--radius-md);padding:14px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
+      '<div style="display:flex;align-items:center;gap:8px"><span style="font-size:20px">'+region.flag+'</span>' +
+      '<div style="font-size:13px;font-weight:700;color:var(--text-primary)">'+region.name+'</div></div>' +
+      '<label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:'+statusColor+'">' +
+      '<input type="checkbox" '+(region.active?'checked':'')+' onchange="toggleResidency('+i+',this.checked)" style="accent-color:'+region.color+'"/>' +
+      (region.active?'Processing here':'Not active') + '</label></div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">' +
+      fws.slice(0,4).map(function(f){return '<span style="font-size:10.5px;padding:2px 7px;border-radius:4px;background:var(--bg-sunken);border:1px solid var(--border);color:var(--text-muted)">'+(f.name||'')+'</span>';}).join('') + '</div>' +
+      (region.active ? '<div style="font-size:11px;color:var(--text-muted);line-height:1.5">'+region.transfers+'</div>' : '') +
+      '</div>';
+  }).join('');
+
+  // Transfer mechanisms table
+  var activeRegions = RESIDENCY.filter(function(r){return r.active;});
+  if (!activeRegions.length) {
+    if (tmEl) tmEl.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:13px">Activate regions above to see required transfer mechanisms</div>';
+    return;
+  }
+  var mechanisms = [
+    {from:'EU/EEA',to:'UK',mechanism:'Adequacy Decision',status:'✓',note:'UK adequacy — monitor renewal'},
+    {from:'EU/EEA',to:'US',mechanism:'Data Privacy Framework (DPF)',status:'✓',note:'For certified US orgs'},
+    {from:'EU/EEA',to:'Other',mechanism:'Standard Contractual Clauses (SCCs)',status:'~',note:'TIA required alongside SCCs'},
+    {from:'China',to:'Overseas',mechanism:'CAC Cross-Border Assessment',status:'✗',note:'Mandatory for specified data'},
+    {from:'Saudi',to:'Overseas',mechanism:'NDMO Approval + Safeguards',status:'~',note:'Required for sensitive data'},
+  ];
+  if (tmEl) {
+    tmEl.innerHTML = mechanisms.map(function(m){
+      return '<div style="display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)">' +
+        '<span style="font-size:12px;color:var(--text-secondary);min-width:80px">'+m.from+'</span>' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>' +
+        '<span style="font-size:12px;color:var(--text-secondary);min-width:80px">'+m.to+'</span>' +
+        '<span style="flex:1;font-size:12.5px;font-weight:600;color:var(--text-primary)">'+m.mechanism+'</span>' +
+        '<span style="font-size:12px;color:var(--text-muted)">'+m.note+'</span>' +
+        '<span style="font-size:14px">'+(m.status==='✓'?'✅':m.status==='~'?'⚠️':'❌')+'</span>' +
+        '</div>';
+    }).join('');
+  }
+};
+
+window.toggleResidency = function(i, active) {
+  RESIDENCY[i].active = active;
+  skyflowSave(); renderResidency();
+};
+window.addResidencyRegion = function() { toast('Select a region above to activate it', 'info'); };
+
+// ── RIGHTS QUEUE ─────────────────────────────────────────
+var RIGHT_TYPES = ['Access (DSAR)','Rectification','Erasure','Portability','Restriction','Objection','Opt-Out (CCPA)','Withdraw Consent'];
+var RIGHT_STATUS = ['Received','Identity Verified','Processing','Fulfilled','Rejected','Closed'];
+
+window.renderRightsQueue = function() {
+  var now = Date.now();
+  var open = 0, overdue = 0, week = 0, done = 0;
+  RIGHTS_QUEUE.forEach(function(r){
+    var deadline = new Date(r.deadline).getTime();
+    var remaining = deadline - now;
+    if (r.status === 'Fulfilled' || r.status === 'Closed' || r.status === 'Rejected') { done++; return; }
+    open++;
+    if (remaining < 0) overdue++;
+    else if (remaining < 7*24*3600*1000) week++;
+  });
+  var e = function(id,v){var el=document.getElementById(id);if(el)el.textContent=v;};
+  e('rq-open',open); e('rq-overdue',overdue); e('rq-week',week); e('rq-done',done);
+  var badge = document.getElementById('rightsQBadge');
+  if (badge) { badge.textContent=open; badge.style.display=open?'inline':'none'; }
+
+  var el = document.getElementById('rights-list');
+  if (!el) return;
+  if (!RIGHTS_QUEUE.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);color:var(--text-muted)">No requests logged yet. Click "+ New Request" to add one.</div>';
+    return;
+  }
+  el.innerHTML = RIGHTS_QUEUE.map(function(r,i){
+    var deadline = new Date(r.deadline);
+    var remaining = deadline.getTime() - now;
+    var days = Math.ceil(remaining / 86400000);
+    var isOverdue = remaining < 0;
+    var isUrgent  = !isOverdue && remaining < 3*86400000;
+    var statusColor = r.status==='Fulfilled'||r.status==='Closed'?'var(--low)':isOverdue?'var(--critical)':isUrgent?'var(--medium)':'var(--brand)';
+    var fw = FW_DATA.find(function(f){return f.id===r.regulation;})||{name:r.regulation,flag:'🌍'};
+    return '<div style="background:var(--bg-surface);border:1px solid var(--border);border-left:4px solid '+statusColor+';border-radius:var(--radius-md);padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">' +
+      '<div style="min-width:32px;font-size:18px">'+(fw.flag||'🌍')+'</div>' +
+      '<div style="flex:1;min-width:200px">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--text-primary)">'+r.type+' — '+r.subject+'</div>' +
+      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">'+(fw.name||r.regulation)+' · Received: '+new Date(r.received).toLocaleDateString()+'</div>' +
+      '</div>' +
+      '<div style="text-align:center;min-width:80px">' +
+      '<div style="font-size:18px;font-weight:800;color:'+statusColor+';font-family:\'Syne\',sans-serif">'+(isOverdue?'OVERDUE':r.status==='Fulfilled'?'Done':days+'d')+'</div>' +
+      '<div style="font-size:10px;color:var(--text-muted)">'+(isOverdue?'deadline passed':r.status==='Fulfilled'?'completed':'remaining')+'</div>' +
+      '</div>' +
+      '<select onchange="updateRightStatus('+i+',this.value)" style="font-size:12px;background:var(--bg-sunken);border:1px solid var(--border);color:var(--text-primary);padding:5px 8px;border-radius:5px;cursor:pointer;font-family:inherit">' +
+      RIGHT_STATUS.map(function(s){return'<option value="'+s+'"'+(r.status===s?' selected':'')+'>'+s+'</option>';}).join('')+
+      '</select>' +
+      '<button onclick="removeRight('+i+')" style="font-size:11px;color:var(--critical);background:none;border:none;cursor:pointer">Remove</button>' +
+      '</div>';
+  }).join('');
+};
+
+window.addRightsRequest = function() {
+  var regs = CMP_FWS.length ? CMP_FWS : ['gdpr','ccpa','pipl'];
+  var regOptions = regs.map(function(r){ var f=FW_DATA.find(function(fw){return fw.id===r;})||{name:r,flag:''}; return '<option value="'+r+'">'+(f.flag||'')+' '+f.name+'</option>'; }).join('');
+  var html = '<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center" id="rqModal">' +
+    '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;width:440px;max-width:95vw">' +
+    '<div style="font-size:15px;font-weight:700;margin-bottom:16px;font-family:\'Syne\',sans-serif">New Rights Request</div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Request Type</label>' +
+    '<select id="rq-type" class="select" style="width:100%">'+RIGHT_TYPES.map(function(t){return'<option>'+t+'</option>';}).join('')+'</select></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Regulation</label>' +
+    '<select id="rq-reg" class="select" style="width:100%">'+regOptions+'</select></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Data Subject Name / Reference</label>' +
+    '<input id="rq-subj" class="input" placeholder="e.g. John Smith or REF-2025-001"/></div>' +
+    '<div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Date Received</label>' +
+    '<input id="rq-date" class="input" type="date" value="'+new Date().toISOString().split("T")[0]+'"/></div>' +
+    '<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="saveRight()">Add Request</button>' +
+    '<button class="btn btn-secondary btn-sm" onclick="document.getElementById(\'rqModal\').remove()">Cancel</button></div>' +
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+};
+window.saveRight = function() {
+  var type = document.getElementById('rq-type').value;
+  var reg  = document.getElementById('rq-reg').value;
+  var subj = document.getElementById('rq-subj').value.trim() || 'Anonymous';
+  var recv = document.getElementById('rq-date').value;
+  var sla  = RIGHTS_SLA[reg] || 30;
+  var received = new Date(recv);
+  var deadline = new Date(received.getTime() + sla*86400000);
+  RIGHTS_QUEUE.unshift({type:type,regulation:reg,subject:subj,received:received.toISOString(),deadline:deadline.toISOString(),status:'Received',sla:sla});
+  skyflowSave();
+  document.getElementById('rqModal')?.remove();
+  renderRightsQueue();
+  toast(type+' request added — deadline: '+deadline.toLocaleDateString(),'success');
+};
+window.updateRightStatus = function(i,s) { RIGHTS_QUEUE[i].status=s; skyflowSave(); renderRightsQueue(); };
+window.removeRight = function(i) { RIGHTS_QUEUE.splice(i,1); skyflowSave(); renderRightsQueue(); };
+
+// ── BREACH TRACKER ────────────────────────────────────────
+window.renderBreachTracker = function() {
+  var badge = document.getElementById('breachBadge');
+  var open = BREACH_LOG.filter(function(b){return b.status!=='Closed';}).length;
+  if (badge) { badge.textContent=open; badge.style.display=open?'inline':'none'; }
+
+  var el = document.getElementById('breach-incidents');
+  if (!el) return;
+  var slaRef = document.getElementById('breach-sla-ref');
+  if (slaRef) {
+    slaRef.innerHTML = Object.entries(BREACH_SLA).map(function(e){
+      var fw=FW_DATA.find(function(f){return f.id===e[0];})||{name:e[0],flag:'',color:'var(--brand)'};
+      var sla=e[1];
+      var timeStr = sla.hours ? sla.hours+'h' : sla.days ? sla.days+' days' : 'ASAP';
+      return '<div style="padding:8px 10px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px">' +
+        '<div style="font-size:11.5px;font-weight:700;color:var(--text-primary)">'+(fw.flag||'')+' '+(fw.name||e[0])+'</div>' +
+        '<div style="font-size:11px;color:var(--critical);font-weight:700;font-family:\'IBM Plex Mono\',monospace">'+timeStr+'</div>' +
+        '<div style="font-size:10.5px;color:var(--text-muted);margin-top:2px">to '+sla.to+'</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  if (!BREACH_LOG.length) {
+    el.innerHTML = '<div style="text-align:center;padding:40px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md)"><div style="font-size:22px;margin-bottom:8px">🛡️</div><div style="font-size:14px;font-weight:600;color:var(--low)">No incidents logged</div><div style="font-size:12px;color:var(--text-muted);margin-top:4px">Log a breach to start countdown timers</div></div>';
+    return;
+  }
+
+  var now = Date.now();
+  el.innerHTML = BREACH_LOG.map(function(b,i){
+    var detected = new Date(b.detectedAt).getTime();
+    var timers = b.regulations.map(function(regId) {
+      var sla = BREACH_SLA[regId];
+      if (!sla) return '';
+      var fw = FW_DATA.find(function(f){return f.id===regId;})||{name:regId,flag:'',color:'var(--brand)'};
+      var deadlineMs;
+      if (sla.hours) deadlineMs = detected + sla.hours*3600000;
+      else if (sla.days) deadlineMs = detected + sla.days*86400000;
+      else deadlineMs = detected + 86400000; // ASAP = 24h indicator
+      var remaining = deadlineMs - now;
+      var hrs = Math.floor(Math.abs(remaining)/3600000);
+      var mins = Math.floor((Math.abs(remaining)%3600000)/60000);
+      var isOver = remaining < 0;
+      var color = isOver?'var(--critical)':remaining<3600000*4?'var(--medium)':'var(--low)';
+      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:var(--bg-raised);border-radius:5px;margin-bottom:5px">' +
+        '<span style="font-size:12px;color:var(--text-secondary)">'+(fw.flag||'')+' '+(fw.name||regId)+' → '+sla.to+'</span>' +
+        '<span style="font-size:12.5px;font-weight:700;color:'+color+';font-family:\'IBM Plex Mono\',monospace">'+(isOver?'OVERDUE':hrs+'h '+mins+'m remaining')+'</span>' +
+        '</div>';
+    }).join('');
+    return '<div style="background:var(--bg-surface);border:1px solid var(--border);border-left:4px solid var(--critical);border-radius:var(--radius-md);padding:16px;margin-bottom:12px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">' +
+      '<div><div style="font-size:13.5px;font-weight:700;color:var(--text-primary);font-family:\'Syne\',sans-serif">'+b.title+'</div>' +
+      '<div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">Detected: '+new Date(b.detectedAt).toLocaleString()+' · '+b.records.toLocaleString()+' records affected</div></div>' +
+      '<div style="display:flex;gap:8px;align-items:center">' +
+      '<select onchange="updateBreachStatus('+i+',this.value)" style="font-size:12px;background:var(--bg-sunken);border:1px solid var(--border);color:var(--text-primary);padding:4px 8px;border-radius:5px;cursor:pointer;font-family:inherit">' +
+      ['Active','Contained','Notified','Closed'].map(function(s){return'<option value="'+s+'"'+(b.status===s?' selected':'')+'>'+s+'</option>';}).join('')+
+      '</select><button onclick="removeBreach('+i+')" style="font-size:11px;color:var(--critical);background:none;border:none;cursor:pointer">×</button></div></div>' +
+      (timers ? '<div>'+timers+'</div>' : '') +
+      '</div>';
+  }).join('');
+};
+
+window.addBreachIncident = function() {
+  var regs = Object.keys(BREACH_SLA);
+  var regOpts = regs.map(function(r){var f=FW_DATA.find(function(fw){return fw.id===r;})||{name:r,flag:''};return'<option value="'+r+'">'+(f.flag||'')+' '+(f.name||r)+'</option>';}).join('');
+  var html = '<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center" id="breachModal">' +
+    '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;width:480px;max-width:95vw">' +
+    '<div style="font-size:15px;font-weight:700;margin-bottom:4px;font-family:\'Syne\',sans-serif;color:var(--critical)">⚠️ Log Data Breach Incident</div>' +
+    '<div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Countdown timers will start immediately from detection time</div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Incident Title</label>' +
+    '<input id="br-title" class="input" placeholder="e.g. Unauthorised access to customer database"/></div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
+    '<div><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Date/Time Detected</label>' +
+    '<input id="br-date" class="input" type="datetime-local" value="'+new Date().toISOString().slice(0,16)+'"/></div>' +
+    '<div><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Records Affected</label>' +
+    '<input id="br-records" class="input" type="number" placeholder="e.g. 1500"/></div></div>' +
+    '<div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Applicable Regulations (multi-select)</label>' +
+    '<select id="br-regs" class="select" multiple style="width:100%;height:120px">'+regOpts+'</select></div>' +
+    '<div style="display:flex;gap:8px"><button class="btn btn-sm" style="background:var(--critical);color:#fff;border:none;padding:7px 16px;border-radius:6px;cursor:pointer;font-family:inherit" onclick="saveBreach()">Log Incident</button>' +
+    '<button class="btn btn-secondary btn-sm" onclick="document.getElementById(\'breachModal\').remove()">Cancel</button></div>' +
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+};
+window.saveBreach = function() {
+  var title = document.getElementById('br-title').value.trim()||'Breach '+new Date().toLocaleDateString();
+  var date  = document.getElementById('br-date').value;
+  var recs  = parseInt(document.getElementById('br-records').value)||0;
+  var sel   = document.getElementById('br-regs');
+  var regs  = Array.from(sel.selectedOptions).map(function(o){return o.value;});
+  if (!regs.length) regs = ['gdpr'];
+  BREACH_LOG.unshift({title:title,detectedAt:new Date(date).toISOString(),records:recs,regulations:regs,status:'Active',createdAt:new Date().toISOString()});
+  skyflowSave();
+  document.getElementById('breachModal')?.remove();
+  renderBreachTracker();
+  toast('Breach incident logged — notification timers started','error');
+  if(typeof addAuditEntry==='function') addAuditEntry('Breach incident logged', title, 'Security');
+};
+window.updateBreachStatus = function(i,s){ BREACH_LOG[i].status=s; skyflowSave(); renderBreachTracker(); };
+window.removeBreach = function(i){ BREACH_LOG.splice(i,1); skyflowSave(); renderBreachTracker(); };
+
+// ── PII SCANNER ───────────────────────────────────────────
+window.runPiiScan = function() {
+  var text = document.getElementById('scanner-input')?.value.trim();
+  if (!text) { toast('Enter text to scan','warning'); return; }
+  var btn = document.querySelector('#ctp-scanner button.btn-primary');
+  if (btn) { btn.textContent='Scanning…'; btn.disabled=true; }
+  var resEl = document.getElementById('scanner-results');
+  if (resEl) resEl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;text-align:center;padding:20px">Scanning with Claude AI…</div>';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:1500,
+      messages:[{role:'user',content:'You are a data privacy expert. Analyse the following text and identify all personal data, PII, PHI, financial data, and special category data. For each piece found, output a JSON array (no markdown) with objects having these fields: type (e.g. "Email Address"), value (the actual found value or "[REDACTED]" if sensitive), category ("PII"|"PHI"|"Financial"|"Special Category"|"Identifier"), regulations (array of regulation IDs from: gdpr,uk-gdpr,ccpa,hipaa,pipl,dpdp,lgpd,pdpl-sa,popia,pdpa-sg), risk (brief 1-sentence risk description). Return ONLY the JSON array, no other text.\n\nText to analyse:\n'+text}]
+    })
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    if (btn) { btn.textContent='Scan with Claude AI'; btn.disabled=false; }
+    var raw = (data.content||[]).map(function(c){return c.text||'';}).join('');
+    var findings;
+    try { findings = JSON.parse(raw.replace(/```json|```/g,'')); } catch(e) { findings = []; }
+    if (!Array.isArray(findings)||!findings.length) {
+      if (resEl) resEl.innerHTML = '<div style="color:var(--low);font-size:13px;padding:12px">✓ No personal data detected in the provided text.</div>';
+      var findEl = document.getElementById('scanner-findings');
+      if (findEl) findEl.innerHTML='';
+      return;
+    }
+    if (resEl) resEl.innerHTML = '<div style="color:var(--critical);font-size:12.5px;font-weight:700;margin-bottom:8px">'+findings.length+' personal data element'+(findings.length>1?'s':'')+' detected</div>' +
+      findings.map(function(f){
+        return '<div style="padding:7px 0;border-bottom:1px solid var(--border)">' +
+          '<div style="display:flex;justify-content:space-between"><span style="font-size:12.5px;font-weight:600;color:var(--text-primary)">'+f.type+'</span>' +
+          '<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:var(--critical-bg);color:var(--critical);border:1px solid var(--critical-border)">'+f.category+'</span></div>' +
+          '<div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">'+f.risk+'</div></div>';
+      }).join('');
+
+    var findEl = document.getElementById('scanner-findings');
+    if (findEl) {
+      var allRegs = {};
+      findings.forEach(function(f){(f.regulations||[]).forEach(function(r){allRegs[r]=(allRegs[r]||0)+1;});});
+      var sortedRegs = Object.entries(allRegs).sort(function(a,b){return b[1]-a[1];});
+      findEl.innerHTML = '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px">' +
+        '<div style="font-size:13px;font-weight:700;margin-bottom:10px;font-family:\'Syne\',sans-serif">Regulations Triggered by Findings</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:7px">' +
+        sortedRegs.map(function(e){
+          var fw=FW_DATA.find(function(f){return f.id===e[0];})||{name:e[0],flag:'',color:'var(--critical)'};
+          return '<span style="font-size:11.5px;padding:4px 10px;border-radius:20px;border:1px solid '+(fw.color||'var(--critical)')+';color:'+(fw.color||'var(--critical)')+';background:'+(fw.color||'var(--critical)')+'18;font-weight:600;cursor:pointer" onclick="showCmpTab(\'controls\');CMP_FW=\''+e[0]+'\';renderCtrlsTab()">'+(fw.flag||'')+(fw.name||e[0])+'</span>';
+        }).join('') +
+        '</div><div style="font-size:11.5px;color:var(--text-muted);margin-top:10px">'+findings.length+' data element'+(findings.length>1?'s':'')+' found across '+sortedRegs.length+' regulatory jurisdiction'+(sortedRegs.length>1?'s':'')+'. Encrypt, minimise or remove this data to reduce regulatory exposure.</div></div>';
+    }
+  })
+  .catch(function(err){
+    if (btn) { btn.textContent='Scan with Claude AI'; btn.disabled=false; }
+    if (resEl) resEl.innerHTML='<div style="color:var(--critical);font-size:12.5px">Scan failed: '+err.message+'</div>';
+  });
+};
+window.renderScanner = function() {};
+
+// ── RoPA BUILDER ──────────────────────────────────────────
+window.renderRopa = function() {
+  var compEl = document.getElementById('ropa-completeness');
+  var tableEl = document.getElementById('ropa-table');
+  if (!tableEl) return;
+
+  var required = ['purpose','legal_basis','data_cats','subject_cats','recipients','retention','security'];
+  var pct = ROPA_DATA.length ? Math.round(ROPA_DATA.reduce(function(acc,r){
+    var filled = required.filter(function(f){return r[f]&&r[f].trim();}).length;
+    return acc + (filled/required.length);
+  }, 0) / ROPA_DATA.length * 100) : 0;
+
+  if (compEl) compEl.innerHTML = ROPA_DATA.length ? '<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:14px">' +
+    '<div style="flex:1"><div style="font-size:12px;color:var(--text-muted);margin-bottom:5px">RoPA Completeness</div>' +
+    '<div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:'+pct+'%;height:100%;background:'+(pct>=80?'var(--low)':pct>=50?'var(--medium)':'var(--critical)')+';border-radius:3px"></div></div></div>' +
+    '<div style="font-size:16px;font-weight:700;color:'+(pct>=80?'var(--low)':pct>=50?'var(--medium)':'var(--critical)')+';font-family:\'Syne\',sans-serif">'+pct+'%</div>' +
+    '<div style="font-size:11.5px;color:var(--text-muted)">'+ROPA_DATA.length+' activities</div></div>' : '';
+
+  if (!ROPA_DATA.length) {
+    tableEl.innerHTML = '<div style="text-align:center;padding:40px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md)"><div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:8px">No processing activities recorded</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">GDPR Art.30 requires a record of all processing activities</div><button class="btn btn-primary btn-sm" onclick="addRopaEntry()">+ Add First Activity</button></div>';
+    return;
+  }
+  tableEl.innerHTML = ROPA_DATA.map(function(r,i){
+    var filled = required.filter(function(f){return r[f]&&r[f].trim();}).length;
+    var comp = Math.round(filled/required.length*100);
+    return '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;margin-bottom:10px">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">' +
+      '<div><div style="font-size:14px;font-weight:700;color:var(--text-primary);font-family:\'Syne\',sans-serif">'+r.name+'</div>' +
+      '<div style="font-size:11.5px;color:var(--text-muted)">Controller: '+(r.controller||'—')+' · System: '+(r.system||'—')+'</div></div>' +
+      '<div style="display:flex;align-items:center;gap:10px">' +
+      '<span style="font-size:12px;font-weight:700;color:'+(comp===100?'var(--low)':comp>=60?'var(--medium)':'var(--critical)')+'">'+comp+'% complete</span>' +
+      '<button onclick="removeRopa('+i+')" style="font-size:11px;color:var(--critical);background:none;border:none;cursor:pointer">Remove</button></div></div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">' +
+      [['Purpose',r.purpose],['Legal Basis',r.legal_basis],['Data Categories',r.data_cats],['Subject Categories',r.subject_cats],['Recipients',r.recipients],['Retention',r.retention]].map(function(pair){
+        return '<div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:5px;padding:8px">' +
+          '<div style="font-size:10px;color:var(--text-muted);font-family:\'IBM Plex Mono\',monospace;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px">'+pair[0]+'</div>' +
+          '<div style="font-size:12px;color:'+(pair[1]?'var(--text-primary)':'var(--critical)')+'">'+( pair[1]||'⚠ Required')+'</div></div>';
+      }).join('') + '</div></div>';
+  }).join('');
+};
+window.addRopaEntry = function() {
+  var legalBases = ['Consent (Art.6(1)(a))','Contract (Art.6(1)(b))','Legal Obligation (Art.6(1)(c))','Vital Interests (Art.6(1)(d))','Public Task (Art.6(1)(e))','Legitimate Interests (Art.6(1)(f))'];
+  var html = '<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center;overflow:auto" id="ropaModal">' +
+    '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;margin:auto">' +
+    '<div style="font-size:15px;font-weight:700;margin-bottom:16px;font-family:\'Syne\',sans-serif">Add Processing Activity</div>' +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
+    '<div><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Activity Name *</label><input id="rp-name" class="input" placeholder="e.g. Customer Order Processing"/></div>' +
+    '<div><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Controller Name *</label><input id="rp-ctrl" class="input" placeholder="Your organisation name"/></div>' +
+    '</div>' +
+    '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">System / Application</label><input id="rp-sys" class="input" placeholder="e.g. Salesforce CRM"/></div>' +
+    '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Purpose of Processing *</label><input id="rp-pur" class="input" placeholder="e.g. Order fulfilment and customer service"/></div>' +
+    '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Legal Basis *</label>' +
+    '<select id="rp-basis" class="select" style="width:100%">'+legalBases.map(function(l){return'<option>'+l+'</option>';}).join('')+'</select></div>' +
+    '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Data Categories *</label><input id="rp-cats" class="input" placeholder="e.g. Name, email, purchase history"/></div>' +
+    '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Data Subject Categories *</label><input id="rp-subj" class="input" placeholder="e.g. Customers, website visitors"/></div>' +
+    '<div style="margin-bottom:10px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Recipients / Processors</label><input id="rp-recip" class="input" placeholder="e.g. Payment processor, cloud host, analytics"/></div>' +
+    '<div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Retention Period *</label><input id="rp-ret" class="input" placeholder="e.g. 7 years (legal requirement) then delete"/></div>' +
+    '<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="saveRopa()">Add Activity</button>' +
+    '<button class="btn btn-secondary btn-sm" onclick="document.getElementById(\'ropaModal\').remove()">Cancel</button></div>' +
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+};
+window.saveRopa = function() {
+  var g = function(id){return (document.getElementById(id)||{}).value||'';};
+  ROPA_DATA.push({name:g('rp-name')||'Unnamed Activity',controller:g('rp-ctrl'),system:g('rp-sys'),purpose:g('rp-pur'),legal_basis:g('rp-basis'),data_cats:g('rp-cats'),subject_cats:g('rp-subj'),recipients:g('rp-recip'),retention:g('rp-ret'),security:'',createdAt:new Date().toISOString()});
+  skyflowSave();
+  document.getElementById('ropaModal')?.remove();
+  renderRopa();
+  toast('Processing activity added to RoPA','success');
+};
+window.removeRopa = function(i){ ROPA_DATA.splice(i,1); skyflowSave(); renderRopa(); };
+window.exportRopa = function() {
+  var rows = ['Activity Name,Controller,System,Purpose,Legal Basis,Data Categories,Subject Categories,Recipients,Retention,Security'];
+  ROPA_DATA.forEach(function(r){ rows.push([r.name,r.controller,r.system,r.purpose,r.legal_basis,r.data_cats,r.subject_cats,r.recipients,r.retention,r.security].map(function(v){return'"'+(v||'').replace(/"/g,'')+ '"';}).join(',')); });
+  var a = document.createElement('a'); a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'})); a.download='ropa-gdpr-art30.csv'; a.click();
+  toast('RoPA exported','success');
+};
+
+// ── EVIDENCE LOCKER ───────────────────────────────────────
+window.renderEvidence = function() {
+  // Populate framework filter
+  var fwFilter = document.getElementById('ev-fw-filter');
+  if (fwFilter && fwFilter.options.length <= 1) {
+    CMP_FWS.forEach(function(id){ var fw=FW_DATA.find(function(f){return f.id===id;})||{name:id}; fwFilter.innerHTML += '<option value="'+id+'">'+(fw.name||id)+'</option>'; });
+  }
+  var fwF  = (document.getElementById('ev-fw-filter')  ||{value:''}).value;
+  var typF = (document.getElementById('ev-type-filter') ||{value:''}).value;
+  var items = EV_DATA.filter(function(e){ return (!fwF||e.framework===fwF) && (!typF||e.ev_type===typF); });
+  var el = document.getElementById('evidence-grid');
+  if (!el) return;
+  if (!EV_DATA.length) {
+    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md)"><div style="font-size:22px;margin-bottom:8px">📁</div><div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:8px">Evidence Locker is empty</div><div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Attach policies, DPIAs, DPAs, pentest reports and training records to demonstrate compliance</div><button class="btn btn-primary btn-sm" onclick="addEvidence()">+ Add First Evidence</button></div>';
+    return;
+  }
+  var evIcons = {'Policy Document':'📋','DPIA Report':'🔍','DPA Agreement':'📄','Pentest Report':'🔐','Training Record':'🎓','Audit Report':'✅','Screenshot':'📸','Certificate':'🏆','Legal Opinion':'⚖️'};
+  el.innerHTML = items.map(function(e,i){
+    var fw=FW_DATA.find(function(f){return f.id===e.framework;})||{name:e.framework||'General',color:'var(--brand)',flag:''};
+    return '<div style="background:var(--bg-surface);border:1px solid var(--border);border-top:3px solid '+(fw.color||'var(--brand)')+';border-radius:var(--radius-md);padding:14px">' +
+      '<div style="font-size:22px;margin-bottom:8px">'+(evIcons[e.ev_type]||'📄')+'</div>' +
+      '<div style="font-size:13.5px;font-weight:700;color:var(--text-primary);margin-bottom:4px">'+e.title+'</div>' +
+      '<div style="font-size:11.5px;color:var(--text-muted);margin-bottom:8px">'+(fw.flag||'')+(fw.name||'')+(e.control?' · Control: '+e.control:'')+'</div>' +
+      '<span style="font-size:10.5px;padding:2px 8px;border-radius:4px;background:var(--bg-sunken);border:1px solid var(--border);color:var(--text-muted)">'+e.ev_type+'</span>' +
+      '<div style="font-size:10.5px;color:var(--text-muted);margin-top:8px;font-family:\'IBM Plex Mono\',monospace">Added: '+new Date(e.addedAt).toLocaleDateString()+'</div>' +
+      (e.url?'<a href="'+e.url+'" target="_blank" style="font-size:11.5px;color:var(--brand);font-weight:600;display:block;margin-top:6px">View ↗</a>':'') +
+      '<button onclick="removeEvItem('+i+')" style="font-size:11px;color:var(--critical);background:none;border:none;cursor:pointer;margin-top:6px;display:block">Remove</button>' +
+      '</div>';
+  }).join('');
+};
+window.addEvidence = function() {
+  var fwOpts = FW_DATA.filter(function(f){return CMP_FWS.indexOf(f.id)!==-1;}).map(function(f){return'<option value="'+f.id+'">'+(f.flag||'')+' '+f.name+'</option>';}).join('');
+  var evTypes = ['Policy Document','DPIA Report','DPA Agreement','Pentest Report','Training Record','Audit Report','Screenshot','Certificate','Legal Opinion'];
+  var html = '<div style="position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;display:flex;align-items:center;justify-content:center" id="evModal">' +
+    '<div style="background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:24px;width:440px;max-width:95vw">' +
+    '<div style="font-size:15px;font-weight:700;margin-bottom:16px;font-family:\'Syne\',sans-serif">Add Evidence</div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Document Title</label><input id="ev-title" class="input" placeholder="e.g. GDPR DPIA — Customer Analytics System"/></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Evidence Type</label>' +
+    '<select id="ev-type" class="select" style="width:100%">'+evTypes.map(function(t){return'<option>'+t+'</option>';}).join('')+'</select></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Framework</label>' +
+    '<select id="ev-fw" class="select" style="width:100%"><option value="">General</option>'+fwOpts+'</select></div>' +
+    '<div style="margin-bottom:12px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">Related Control (optional)</label><input id="ev-ctrl" class="input" placeholder="e.g. Art.35, AC-1, A.8.24"/></div>' +
+    '<div style="margin-bottom:16px"><label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:5px">URL / Link (optional)</label><input id="ev-url" class="input" placeholder="https://drive.google.com/…"/></div>' +
+    '<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="saveEv()">Add Evidence</button>' +
+    '<button class="btn btn-secondary btn-sm" onclick="document.getElementById(\'evModal\').remove()">Cancel</button></div>' +
+    '</div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+};
+window.saveEv = function() {
+  var g=function(id){return(document.getElementById(id)||{}).value||'';};
+  EV_DATA.unshift({title:g('ev-title')||'Evidence',ev_type:g('ev-type'),framework:g('ev-fw'),control:g('ev-ctrl'),url:g('ev-url'),addedAt:new Date().toISOString()});
+  skyflowSave();
+  document.getElementById('evModal')?.remove();
+  renderEvidence();
+  toast('Evidence added to locker','success');
+};
+window.removeEvItem = function(i){ EV_DATA.splice(i,1); skyflowSave(); renderEvidence(); };
+window.exportEvidencePackage = function() {
+  var rows=['Title,Type,Framework,Control,URL,Added'];
+  EV_DATA.forEach(function(e){rows.push([e.title,e.ev_type,e.framework,e.control,e.url,e.addedAt].map(function(v){return'"'+(v||'')+'"';}).join(','));});
+  var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.join('\n')],{type:'text/csv'}));a.download='evidence-package.csv';a.click();
 };
 
 window.cmpExport=function(){
