@@ -826,7 +826,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
       <div class="report-desc">Complete activity log for compliance and forensic review</div>
       <div class="report-meta"><span class="badge badge-info">CSV</span><span id="auditLogCount">All entries</span></div>
     </div>
-    <div class="report-card" onclick="generateReport('pdf')">
+    <div class="report-card" onclick="toast('Executive PDF report — available in Pro plan','warning')">
       <div class="report-icon" style="background:var(--low-bg)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--low)" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <div class="report-name">Executive Summary PDF</div>
       <div class="report-desc">Board-ready security posture summary with risk scores and trends</div>
@@ -950,7 +950,262 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
   </div>
 
   <div class="settings-section">
+    <div class="settings-section-hd"><div class="settings-section-title">Plan & Billing</div></div>
+    <div class="settings-body">
+      <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:var(--radius-md);margin-bottom:14px">
+        <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif">Free Plan</div><div style="font-size:12px;color:var(--text-muted);margin-top:3px">Up to 5 team members · Unlimited compliance tracking · AI intelligence (usage-based)</div></div>
+        
+      </div>
+      <div style="font-size:12px;color:var(--text-muted)">Pro plan includes: unlimited team members, executive PDF reports, SIEM integrations, dedicated support, and SSO.</div>
+    </div>
+  </div>
 
+  <div class="settings-section" style="border-color:var(--critical-border)">
+    <div class="settings-section-hd" style="background:var(--critical-bg)"><div class="settings-section-title" style="color:var(--critical)">Danger Zone</div><div class="settings-section-sub">Irreversible actions</div></div>
+    <div class="settings-body">
+      <button class="btn btn-danger btn-sm" onclick="if(confirm('Delete all workspace data? This cannot be undone.'))toast('Contact support to delete workspace','error')">Delete Workspace</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ AUDIT LOG ═══════ -->
+<div class="page" id="page-auditlog">
+  <div class="page-hd">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb">Threat Exchange</span> / Audit Log</div>
+      <div class="page-title">Audit Log</div>
+      <div class="page-subtitle">Complete record of all actions performed across your workspace</div>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-secondary btn-sm" onclick="generateReport('auditlog')">Export CSV</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-hd">
+      <div class="card-title">All Activity</div>
+      <div style="display:flex;gap:8px">
+        <input class="input" id="auditQ" placeholder="Search actions…" style="width:180px" oninput="renderAuditLog()"/>
+        <select class="select" id="auditTypeFilter" onchange="renderAuditLog()" style="width:auto">
+          <option value="">All Types</option>
+          <option>Login</option><option>Compliance</option><option>Team</option><option>Settings</option><option>Report</option>
+        </select>
+      </div>
+    </div>
+    <div id="auditLogList" style="padding:0"></div>
+  </div>
+</div>
+
+<!-- ═══════ PROFILE ═══════ -->
+<div class="page" id="page-profile">
+  <div class="page-hd">
+    <div class="page-hd-left">
+      <div class="breadcrumb"><span class="crumb">Threat Exchange</span> / Profile</div>
+      <div class="page-title">My Profile</div>
+      <div class="page-subtitle">Manage your personal account settings, security, and sessions</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="switchProfileTab('overview',this)">Profile</button>
+    <button class="tab" onclick="switchProfileTab('security',this)">Security</button>
+    <button class="tab" onclick="switchProfileTab('sessions',this)">Sessions</button>
+    <button class="tab" onclick="switchProfileTab('notifications',this)">Notifications</button>
+    <button class="tab" onclick="switchProfileTab('apikey',this)">API Key</button>
+  </div>
+
+  <!-- PROFILE TAB -->
+  <div id="ptab-overview">
+    <div class="profile-hero">
+      <div class="profile-av" id="profileAv" onclick="triggerAvatarUpload()">?</div>
+      <div>
+        <div class="profile-name" id="profileName">Loading…</div>
+        <div class="profile-email" id="profileEmail">…</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <span class="badge badge-brand" id="profileRoleBadge">admin</span>
+          <span class="badge badge-neutral" id="profileOrgBadge">Workspace</span>
+        </div>
+      </div>
+      <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="triggerAvatarUpload()">Change Photo</button>
+    </div>
+    <input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(this)"/>
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Personal Information</div></div>
+      <div class="card-bd">
+        <div class="grid-2" style="gap:14px">
+          <div class="field"><label>First Name</label><input class="input" id="pfFirstName" placeholder="John"/></div>
+          <div class="field"><label>Last Name</label><input class="input" id="pfLastName" placeholder="Doe"/></div>
+          <div class="field"><label>Email Address</label><input class="input" id="pfEmail" disabled style="opacity:.6;cursor:not-allowed"/><div style="font-size:11px;color:var(--text-muted);margin-top:4px">Email cannot be changed. Contact support to update.</div></div>
+          <div class="field"><label>Job Title</label><input class="input" id="pfJobTitle" placeholder="Security Analyst"/></div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECURITY TAB -->
+  <div id="ptab-security" style="display:none">
+    <div class="card" style="margin-bottom:14px">
+      <div class="card-hd"><div class="card-title">Change Password</div></div>
+      <div class="card-bd">
+        <div class="field"><label>Current Password</label><input class="input" type="password" id="pwCurrent" placeholder="Enter current password"/></div>
+        <div class="field"><label>New Password</label><input class="input" type="password" id="pwNew" placeholder="Min. 8 characters"/></div>
+        <div class="field"><label>Confirm New Password</label><input class="input" type="password" id="pwConfirm" placeholder="Repeat new password"/></div>
+        <div class="alert alert-error" id="pwErr"></div>
+        <div class="alert alert-success" id="pwOk"></div>
+        <button class="btn btn-primary btn-sm" onclick="changePassword()">Update Password</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Two-Factor Authentication</div><span class="badge badge-neutral" id="2faStatus">Not enabled</span></div>
+      <div class="card-bd">
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.6">Protect your account with a TOTP authenticator app (Google Authenticator, Authy, 1Password).</div>
+        <button class="btn btn-secondary btn-sm" onclick="setup2FA()">Set Up 2FA</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SESSIONS TAB -->
+  <div id="ptab-sessions" style="display:none">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Active Sessions</div><button class="btn btn-danger btn-sm" onclick="revokeAllSessions()">Revoke All Other Sessions</button></div>
+      <div class="card-bd" id="sessionsList">
+        <div class="session-card">
+          <div class="session-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+          <div style="flex:1"><div class="session-device">Current browser</div><div class="session-meta" id="sessionBrowser">Loading…</div></div>
+          <span class="session-current">Current</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS TAB -->
+  <div id="ptab-notifications" style="display:none">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Notification Preferences</div></div>
+      <div class="card-bd">
+        <div class="toggle-row"><div><div class="toggle-title">Critical security alerts</div><div class="toggle-desc">Immediate alerts for critical threats</div></div><label class="toggle"><input type="checkbox" checked id="pnCritical"/><span class="toggle-track"></span></label></div>
+        <div class="toggle-row"><div><div class="toggle-title">Compliance deadline reminders</div><div class="toggle-desc">7-day advance notice for due dates</div></div><label class="toggle"><input type="checkbox" checked id="pnCompliance"/><span class="toggle-track"></span></label></div>
+        <div class="toggle-row"><div><div class="toggle-title">Weekly digest</div><div class="toggle-desc">Summary of workspace activity every Monday</div></div><label class="toggle"><input type="checkbox" id="pnDigest"/><span class="toggle-track"></span></label></div>
+        <div class="toggle-row"><div><div class="toggle-title">Team invitations accepted</div><div class="toggle-desc">When someone joins your workspace</div></div><label class="toggle"><input type="checkbox" id="pnTeam"/><span class="toggle-track"></span></label></div>
+        <div style="margin-top:16px"><button class="btn btn-primary btn-sm" onclick="saveNotificationPrefs()">Save Preferences</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- API KEY TAB -->
+  <div id="ptab-apikey" style="display:none">
+    <div class="card">
+      <div class="card-hd"><div class="card-title">Personal API Key</div></div>
+      <div class="card-bd">
+        <div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;line-height:1.6">Use your personal API key to access Threat Exchange programmatically. Treat this like a password — keep it secret.</div>
+        <div class="api-key-box" style="margin-bottom:12px">
+          <code id="personalApiKey" onclick="revealPersonalKey()" title="Click to reveal">te_••••••••••••••••••••••••••••••••••••••</code>
+          <button class="btn btn-ghost btn-xs" onclick="revealPersonalKey()">Reveal</button>
+          <button class="btn btn-ghost btn-xs" onclick="copyPersonalKey()">Copy</button>
+        </div>
+        <button class="btn btn-danger btn-sm" onclick="if(confirm('Regenerate API key? Your existing key will stop working immediately.'))regenerateApiKey()">Regenerate Key</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /body -->
+
+<!-- ═══════ MODALS ═══════ -->
+
+<!-- Invite Member Modal -->
+<div class="modal-mask" id="inviteModal" onclick="if(event.target===this)closeModal('inviteModal')">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-hd"><div class="modal-title">Invite Team Member</div><button class="modal-x" onclick="closeModal('inviteModal')">×</button></div>
+    <div class="modal-bd">
+      <div class="alert alert-error" id="inviteErr"></div>
+      <div class="alert alert-success" id="inviteOk"></div>
+      <div class="field"><label>Email Address</label><input class="input" id="inviteEmail" type="email" placeholder="colleague@organisation.com"/></div>
+      <div class="field"><label>Role</label>
+        <select class="select" id="inviteRole">
+          <option value="analyst">Analyst — Can edit compliance and assets</option>
+          <option value="viewer">Viewer — Read-only access</option>
+          <option value="admin">Admin — Full access including settings</option>
+        </select>
+      </div>
+      <div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;font-size:12px;color:var(--text-secondary);margin-top:4px">
+        An email invitation will be sent with a secure join link. The link expires in 72 hours.
+      </div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('inviteModal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="sendInvite()">Send Invitation</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Asset Modal -->
+<div class="modal-mask" id="addAssetModal" onclick="if(event.target===this)closeModal('addAssetModal')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-hd"><div class="modal-title">Add Asset</div><button class="modal-x" onclick="closeModal('addAssetModal')">×</button></div>
+    <div class="modal-bd">
+      <div class="grid-2" style="gap:12px">
+        <div class="field"><label>Hostname / IP</label><input class="input" id="asHostname" placeholder="webserver-01 or 192.168.1.10"/></div>
+        <div class="field"><label>Asset Type</label><select class="select" id="asType"><option>Server</option><option>Workstation</option><option>Network Device</option><option>Cloud Instance</option><option>Container</option><option>IoT Device</option></select></div>
+        <div class="field"><label>Operating System</label><input class="input" id="asOS" placeholder="Ubuntu 22.04 LTS"/></div>
+        <div class="field"><label>Owner / Team</label><input class="input" id="asOwner" placeholder="IT Security Team"/></div>
+        <div class="field"><label>Environment</label><select class="select" id="asEnv"><option>Production</option><option>Staging</option><option>Development</option><option>Test</option></select></div>
+        <div class="field"><label>IP Address</label><input class="input" id="asIP" placeholder="10.0.0.1"/></div>
+      </div>
+      <div class="field"><label>Notes</label><textarea class="textarea" id="asNotes" rows="2" placeholder="Any additional context…"></textarea></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('addAssetModal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="addAsset()">Add Asset</button>
+    </div>
+  </div>
+</div>
+
+<!-- Onboarding Wizard -->
+<div class="wizard-mask" id="wizardMask">
+  <div class="wizard-box">
+    <div class="wizard-steps">
+      <div class="wizard-step active" id="wstep1">01. Workspace</div>
+      <div class="wizard-step" id="wstep2">02. Team</div>
+    </div>
+    <!-- Step 1 -->
+    <div id="wbody1">
+      <div class="wizard-body">
+        <div class="wizard-title">Set up your workspace</div>
+        <div class="wizard-sub">Give your organisation's security workspace a name. This will be visible to all team members.</div>
+        <div class="field"><label>Organisation Name</label><input class="input" id="wzOrgName" placeholder="Acme Security Inc." style="font-size:14px"/></div>
+        <div class="field"><label>Industry</label>
+          <select class="select" id="wzIndustry">
+            <option>Financial Services</option><option>Healthcare</option><option>Technology</option>
+            <option>Government</option><option>Energy & Utilities</option><option>Manufacturing</option>
+            <option>Retail & E-Commerce</option><option>Telecommunications</option><option>Education</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="wizard-ft"><button class="btn btn-primary" onclick="wizardNext(1)">Continue →</button></div>
+    </div>
+    <!-- Step 2 -->
+    <div id="wbody2" style="display:none">
+      <div class="wizard-body">
+        <div class="wizard-title">Invite your team</div>
+        <div class="wizard-sub">Add colleagues to your workspace. You can always invite more people later from Team Settings.</div>
+        <div id="wzInviteList">
+          <div class="grid-2" style="gap:10px;margin-bottom:10px" id="wzInvite1">
+            <input class="input" placeholder="colleague@company.com" id="wzi1"/>
+            <select class="select" id="wzr1"><option value="analyst">Analyst</option><option value="viewer">Viewer</option><option value="admin">Admin</option></select>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="addWizardInviteRow()">+ Add another</button>
+      </div>
+      <div class="wizard-ft">
+        <button class="btn btn-secondary btn-sm" onclick="wizardBack(2)">← Back</button>
+        <button class="btn btn-ghost btn-sm" onclick="finishWizard()">Skip</button>
+        <button class="btn btn-primary" onclick="finishWizard()">Launch Workspace →</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
