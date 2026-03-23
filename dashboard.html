@@ -1914,10 +1914,39 @@ var CTRL_DATA = {
     {id:'i-A6.1',fw:'iso-27001',domain:'People Controls',code:'A.6.1',title:'Screening',desc:'Background verification checks shall be carried out on all candidates prior to joining.',reqs:['Define screening requirements per role','Conduct criminal background checks','Verify employment history','Check qualifications','Obtain references'],type:'Preventive',baseline:'ALL'},
   ],
   'gdpr':[
-    {id:'g-5a',fw:'gdpr',domain:'Principles',code:'Art.5(1)(a)',title:'Lawfulness, Fairness, Transparency',desc:'Personal data shall be processed lawfully, fairly and in a transparent manner in relation to the data subject.',reqs:['Identify lawful basis for each activity','Document in records of processing','Provide privacy notices to data subjects','Ensure processing is fair'],type:'Preventive',baseline:'ALL'},
-    {id:'g-5b',fw:'gdpr',domain:'Principles',code:'Art.5(1)(b)',title:'Purpose Limitation',desc:'Personal data shall be collected for specified, explicit and legitimate purposes and not further processed in an incompatible manner.',reqs:['Define clear purposes before collection','Document purposes in privacy notice','Assess compatibility before secondary use'],type:'Preventive',baseline:'ALL'},
-    {id:'g-25',fw:'gdpr',domain:'Privacy by Design',code:'Art.25',title:'Data Protection by Design and Default',desc:'Implement appropriate technical and organisational measures to implement data protection principles effectively.',reqs:['Conduct DPIAs for high-risk processing','Implement privacy by design','Apply data minimisation by default','Review measures regularly'],type:'Preventive',baseline:'ALL'},
-    {id:'g-32',fw:'gdpr',domain:'Security',code:'Art.32',title:'Security of Processing',desc:'Implement appropriate technical and organisational measures to ensure security appropriate to the risk.',reqs:['Implement pseudonymisation and encryption','Ensure ongoing confidentiality and integrity','Restore access after incidents','Test security measures regularly'],type:'Preventive',baseline:'ALL'},
+    {id:'g-5-1a',fw:'gdpr',source_url:'https://gdpr-info.eu/art-5-gdpr/',cross_refs:['nist-800-53-AC-1'],domain:'Principles',code:'Art.5(1)(a)',title:'Lawfulness, Fairness and Transparency',desc:'Personal data shall be processed lawfully, fairly and in a transparent manner in relation to the data subject.',reqs:['Document the lawful basis for every processing activity in your RoPA','Conduct a legitimate interests assessment (LIA) where Art.6(1)(f) is relied upon','Publish a privacy notice using plain language accessible to the average person','Ensure processing is not deceptive or unduly detrimental to data subjects','Train staff to identify activities that lack a clear lawful basis','Review lawful bases annually or when processing activities change'],type:'Preventive',baseline:'ALL'},
+    {id:'g-5-1b',fw:'gdpr',source_url:'https://gdpr-info.eu/art-5-gdpr/',cross_refs:['nist-800-53-SI-12'],domain:'Principles',code:'Art.5(1)(b)',title:'Purpose Limitation',desc:'Personal data shall be collected for specified, explicit and legitimate purposes and not further processed in a manner incompatible with those purposes.',reqs:['Specify the exact purpose for each data collection before it begins','Document purposes in the RoPA with enough specificity to assess compatibility','Conduct a compatibility assessment before using data for any new purpose','Never use data for a materially different purpose without a new legal basis','Review and update documented purposes whenever processing activities change'],type:'Preventive',baseline:'ALL'},
+    {id:'g-5-1c',fw:'gdpr',source_url:'https://gdpr-info.eu/art-5-gdpr/',cross_refs:['nist-800-53-SA-8'],domain:'Principles',code:'Art.5(1)(c)',title:'Data Minimisation',desc:'Personal data shall be adequate, relevant and limited to what is necessary in relation to the purposes for which they are processed.',reqs:['Conduct a data necessity review before designing any new system','Remove data fields not strictly necessary for the stated purpose','Document the justification for each category of personal data collected','Review data collected annually to identify and remove unnecessary fields','Apply data minimisation by default'],type:'Preventive',baseline:'ALL'},
+    {id:'g-5-1d',fw:'gdpr',source_url:'https://gdpr-info.eu/art-5-gdpr/',cross_refs:[],domain:'Principles',code:'Art.5(1)(d)',title:'Accuracy',desc:'Personal data shall be accurate and, where necessary, kept up to date. Every reasonable step must be taken to ensure inaccurate data is erased or rectified without delay.',reqs:['Implement mechanisms for data subjects to update their own personal data','Conduct periodic data quality reviews for high-risk datasets','Establish a process to action inaccuracy complaints within 30 days','Implement data validation at point of collection','Correct or delete inaccurate data without undue delay'],type:'Preventive',baseline:'ALL'},
+    {id:'g-5-1e',fw:'gdpr',source_url:'https://gdpr-info.eu/art-5-gdpr/',cross_refs:['nist-800-53-SI-12'],domain:'Principles',code:'Art.5(1)(e)',title:'Storage Limitation',desc:'Personal data shall be kept in a form which permits identification of data subjects for no longer than is necessary for the purposes for which they are processed.',reqs:['Establish and document a data retention schedule for every category of personal data','Implement automated deletion or anonymisation at end of retention period','Conduct an annual data audit to identify and delete data past its retention date','Ensure backups are subject to the same retention schedule as live data'],type:'Preventive',baseline:'ALL'},
+    {id:'g-5-1f',fw:'gdpr',source_url:'https://gdpr-info.eu/art-5-gdpr/',cross_refs:['nist-800-53-SC-28','iso-27001-A.8.24'],domain:'Principles',code:'Art.5(1)(f)',title:'Integrity and Confidentiality',desc:'Personal data shall be processed in a manner ensuring appropriate security, including protection against unauthorised or unlawful processing and against accidental loss, destruction or damage.',reqs:['Implement encryption at rest using AES-256 or equivalent','Implement encryption in transit using TLS 1.2 or higher','Apply role-based access controls so only authorised personnel access personal data','Implement logging and monitoring for all access to personal data','Test security controls through annual penetration testing'],type:'Preventive',baseline:'ALL'},
+    {id:'g-5-2',fw:'gdpr',source_url:'https://gdpr-info.eu/art-5-gdpr/',cross_refs:['nist-800-53-PM-1'],domain:'Principles',code:'Art.5(2)',title:'Accountability Principle',desc:'The controller shall be responsible for and be able to demonstrate compliance with the principles.',reqs:['Maintain a comprehensive Records of Processing Activities (RoPA) per Art.30','Document all data protection decisions with rationale and date','Implement a data protection governance programme with executive sponsor','Appoint a Data Protection Officer where required under Art.37','Conduct and document Data Protection Impact Assessments (DPIAs) per Art.35'],type:'Preventive',baseline:'ALL'},
+    {id:'g-6-1a',fw:'gdpr',source_url:'https://gdpr-info.eu/art-6-gdpr/',cross_refs:[],domain:'Lawful Basis',code:'Art.6(1)(a)',title:'Consent',desc:'Processing is lawful where the data subject has given consent to the processing of their personal data for one or more specific purposes.',reqs:['Obtain freely given, specific, informed and unambiguous consent before processing','Use clear affirmative action — no pre-ticked boxes or bundled consent','Record consent with timestamp, mechanism and privacy notice version','Make withdrawal of consent as easy as giving it','Never make service provision conditional on consent where unnecessary'],type:'Preventive',baseline:'ALL'},
+    {id:'g-6-1b',fw:'gdpr',source_url:'https://gdpr-info.eu/art-6-gdpr/',cross_refs:[],domain:'Lawful Basis',code:'Art.6(1)(b)',title:'Contract Performance',desc:'Processing is lawful where necessary for the performance of a contract to which the data subject is party, or to take pre-contractual steps at their request.',reqs:['Document the specific contractual necessity for each processing activity','Only use this basis where processing is genuinely required for contract performance','Do not extend this basis to cover convenience processing or analytics','Include this lawful basis in your privacy notice'],type:'Preventive',baseline:'ALL'},
+    {id:'g-6-1c',fw:'gdpr',source_url:'https://gdpr-info.eu/art-6-gdpr/',cross_refs:[],domain:'Lawful Basis',code:'Art.6(1)(c)',title:'Legal Obligation',desc:'Processing is lawful where necessary for compliance with a legal obligation to which the controller is subject.',reqs:['Identify every processing activity relying on Art.6(1)(c) and cite the specific law','Document the legal obligation in the RoPA with the relevant statutory reference','Do not use this basis for obligations that are contractual rather than legal'],type:'Preventive',baseline:'ALL'},
+    {id:'g-6-1f',fw:'gdpr',source_url:'https://gdpr-info.eu/art-6-gdpr/',cross_refs:[],domain:'Lawful Basis',code:'Art.6(1)(f)',title:'Legitimate Interests',desc:'Processing is lawful where necessary for purposes of legitimate interests pursued by the controller or a third party, except where overridden by interests or fundamental rights of the data subject.',reqs:['Conduct and document a three-part Legitimate Interests Assessment (LIA)','Identify the interest; assess necessity; balance against data subject interests','Consider whether the data subject would reasonably expect this processing','Publish the outcome of the LIA in your privacy notice'],type:'Preventive',baseline:'ALL'},
+    {id:'g-9',fw:'gdpr',source_url:'https://gdpr-info.eu/art-9-gdpr/',cross_refs:['nist-800-53-AC-3'],domain:'Special Categories',code:'Art.9',title:'Special Category Data',desc:'Processing of health, biometric, genetic, racial/ethnic origin, political opinions, religious beliefs, trade union membership or sexual orientation data is prohibited unless an explicit exception applies.',reqs:['Identify all processing of special category data across the organisation','Map to one of the 10 exceptions under Art.9(2) for each processing activity','Obtain explicit consent where relying on Art.9(2)(a)','Implement enhanced security controls for special category data','Restrict access to special category data on strict need-to-know basis'],type:'Preventive',baseline:'ALL'},
+    {id:'g-12',fw:'gdpr',source_url:'https://gdpr-info.eu/art-12-gdpr/',cross_refs:[],domain:'Data Subject Rights',code:'Art.12',title:'Transparent Communication',desc:'The controller shall provide information in a concise, transparent, intelligible and easily accessible form, using clear and plain language.',reqs:['Write all privacy communications at a reading age of 12-13 years','Provide information in layered format — short notice plus full notice','Respond to data subject requests within 1 calendar month','Provide responses free of charge unless requests are manifestly unfounded','Implement a documented process for receiving and handling all data subject requests'],type:'Preventive',baseline:'ALL'},
+    {id:'g-13',fw:'gdpr',source_url:'https://gdpr-info.eu/art-13-gdpr/',cross_refs:[],domain:'Data Subject Rights',code:'Art.13',title:'Privacy Notice (Direct Collection)',desc:'Where personal data is collected directly from the data subject, the controller shall provide specified information at the time of collection.',reqs:['Publish a privacy notice containing all Art.13 mandatory elements','Provide the notice at the point of data collection','Include controller identity, DPO contact, purposes, legal bases, recipients, retention periods and all data subject rights','Update the privacy notice within 30 days of any material change','Conduct an annual review of the privacy notice'],type:'Preventive',baseline:'ALL'},
+    {id:'g-15',fw:'gdpr',source_url:'https://gdpr-info.eu/art-15-gdpr/',cross_refs:[],domain:'Data Subject Rights',code:'Art.15',title:'Right of Access (DSAR)',desc:'The data subject shall have the right to obtain confirmation of whether personal data concerning them is being processed, and where that is the case, access to the data.',reqs:['Implement a formal Subject Access Request (SAR) handling procedure','Respond to SARs within 1 calendar month of receipt','Provide a copy of the personal data in a commonly used electronic format','Implement identity verification to prevent third-party data disclosures','Log all SARs received, response dates and data provided'],type:'Preventive',baseline:'ALL'},
+    {id:'g-16',fw:'gdpr',source_url:'https://gdpr-info.eu/art-16-gdpr/',cross_refs:[],domain:'Data Subject Rights',code:'Art.16',title:'Right to Rectification',desc:'The data subject shall have the right to obtain rectification of inaccurate personal data without undue delay.',reqs:['Implement a process to receive and action rectification requests within 1 month','Update data across all systems when rectifying','Notify third parties to whom data was disclosed of any rectification','Document rectification requests and outcomes in a request register'],type:'Preventive',baseline:'ALL'},
+    {id:'g-17',fw:'gdpr',source_url:'https://gdpr-info.eu/art-17-gdpr/',cross_refs:['nist-800-53-MP-6'],domain:'Data Subject Rights',code:'Art.17',title:'Right to Erasure',desc:'The data subject shall have the right to erasure where consent is withdrawn, data is no longer necessary, processing was unlawful, or legal obligation requires erasure.',reqs:['Implement a technical process to delete personal data on request across all systems','Document grounds for refusing erasure requests where exceptions apply','Complete erasure within 1 month of request','Implement data mapping sufficient to identify all locations where data is held','Test erasure procedures annually to verify completeness'],type:'Corrective',baseline:'ALL'},
+    {id:'g-18',fw:'gdpr',source_url:'https://gdpr-info.eu/art-18-gdpr/',cross_refs:[],domain:'Data Subject Rights',code:'Art.18',title:'Right to Restriction',desc:'The data subject has the right to restriction of processing where accuracy is contested, processing is unlawful, or objection is pending.',reqs:['Implement a technical mechanism to restrict processing such as flagging records','Stop all processing except storage when restriction is applied','Notify data subject before lifting restriction','Process restriction requests within 1 month'],type:'Preventive',baseline:'ALL'},
+    {id:'g-20',fw:'gdpr',source_url:'https://gdpr-info.eu/art-20-gdpr/',cross_refs:[],domain:'Data Subject Rights',code:'Art.20',title:'Right to Data Portability',desc:'Where processing is based on consent or contract and carried out by automated means, the data subject has the right to receive their data in a structured, machine-readable format.',reqs:['Identify all processing activities where Art.20 applies','Implement technical capability to export personal data in JSON or CSV format','Enable direct transmission to another controller where technically feasible','Respond to portability requests within 1 month'],type:'Preventive',baseline:'ALL'},
+    {id:'g-21',fw:'gdpr',source_url:'https://gdpr-info.eu/art-21-gdpr/',cross_refs:[],domain:'Data Subject Rights',code:'Art.21',title:'Right to Object',desc:'The data subject has the right to object at any time to processing based on legitimate interests. For direct marketing, the right to object is absolute.',reqs:['Implement a clear and accessible mechanism to object to processing','Cease processing immediately on receipt of objection to direct marketing','For other objections, assess whether compelling legitimate grounds override','Inform data subjects of their right to object in privacy notice','Maintain a suppression list to prevent re-marketing to those who have objected'],type:'Preventive',baseline:'ALL'},
+    {id:'g-22',fw:'gdpr',source_url:'https://gdpr-info.eu/art-22-gdpr/',cross_refs:['nist-ai-rmf'],domain:'Data Subject Rights',code:'Art.22',title:'Automated Decision-Making',desc:'Data subjects have the right not to be subject to decisions based solely on automated processing which produce legal or similarly significant effects.',reqs:['Identify all automated decision-making processes producing significant effects','Implement human review capability for automated decisions','Disclose use of automated decision-making in the privacy notice','Implement right to request human review and right to contest decisions','Conduct regular bias audits on automated decision systems'],type:'Preventive',baseline:'ALL'},
+    {id:'g-24',fw:'gdpr',source_url:'https://gdpr-info.eu/art-24-gdpr/',cross_refs:['nist-800-53-PM-1','iso-27001-A.5.2'],domain:'Controller Obligations',code:'Art.24',title:'Responsibility of the Controller',desc:'The controller shall implement appropriate technical and organisational measures to ensure processing is performed in accordance with GDPR.',reqs:['Implement a Data Protection Management System with documented policies','Assign clear data protection responsibilities to named individuals','Implement data protection training for all staff with annual refreshers','Conduct annual compliance reviews and document outcomes','Establish board-level accountability for data protection'],type:'Preventive',baseline:'ALL'},
+    {id:'g-25',fw:'gdpr',source_url:'https://gdpr-info.eu/art-25-gdpr/',cross_refs:['nist-800-53-SA-8'],domain:'Controller Obligations',code:'Art.25',title:'Data Protection by Design and Default',desc:'The controller shall implement data protection principles at the time of determining the means of processing and at the time of processing itself.',reqs:['Integrate privacy review into the design phase of all new systems','Implement data minimisation as the default','Conduct Privacy Impact Screening for all new projects involving personal data','Default system settings must be privacy-protective','Document privacy design decisions for each system'],type:'Preventive',baseline:'ALL'},
+    {id:'g-28',fw:'gdpr',source_url:'https://gdpr-info.eu/art-28-gdpr/',cross_refs:['iso-27001-A.5.19'],domain:'Controller Obligations',code:'Art.28',title:'Data Processing Agreements',desc:'Processing by a processor shall be governed by a binding contract containing the mandatory clauses specified in Art.28(3).',reqs:['Execute a Data Processing Agreement with every data processor before commencing processing','Ensure DPAs contain all Art.28(3) mandatory clauses','Conduct due diligence on processor security capabilities','Audit or review processor compliance at least annually','Maintain a register of all processors with DPA references'],type:'Preventive',baseline:'ALL'},
+    {id:'g-30',fw:'gdpr',source_url:'https://gdpr-info.eu/art-30-gdpr/',cross_refs:['nist-800-53-PM-5'],domain:'Controller Obligations',code:'Art.30',title:'Records of Processing Activities (RoPA)',desc:'Each controller shall maintain a record of processing activities containing specified information, available to supervisory authorities on request.',reqs:['Maintain a RoPA containing all Art.30(1) mandatory fields for every processing activity','Update the RoPA within 30 days of any new or changed processing activity','Include purposes, data categories, recipients, transfers, retention periods and security measures','Review and validate the RoPA at least annually','Make the RoPA available to the supervisory authority on request'],type:'Preventive',baseline:'ALL'},
+    {id:'g-32',fw:'gdpr',source_url:'https://gdpr-info.eu/art-32-gdpr/',cross_refs:['nist-800-53-SC-28','nist-800-53-SI-2','iso-27001-A.8.24','soc2-CC6.1'],domain:'Controller Obligations',code:'Art.32',title:'Security of Processing',desc:'The controller and processor shall implement appropriate technical and organisational measures ensuring a level of security appropriate to the risk.',reqs:['Implement pseudonymisation and encryption of personal data at rest and in transit','Implement measures ensuring ongoing confidentiality, integrity, availability and resilience','Implement ability to restore availability and access following an incident','Establish a process for regularly testing security measure effectiveness','Conduct annual risk assessment to determine appropriate security measures'],type:'Preventive',baseline:'ALL'},
+    {id:'g-33',fw:'gdpr',source_url:'https://gdpr-info.eu/art-33-gdpr/',cross_refs:['nist-800-53-IR-6'],domain:'Breach Notification',code:'Art.33',title:'Breach Notification to Supervisory Authority',desc:'In the case of a personal data breach, the controller shall notify the competent supervisory authority within 72 hours of becoming aware.',reqs:['Implement a documented personal data breach response procedure with 72-hour escalation','Establish a breach register to log all breaches','Train all staff to report personal data breaches internally within 4 hours','Implement a decision tree to assess whether 72-hour notification is required','Ensure processors are contractually required to notify you within 24 hours','Test breach response through annual tabletop exercise'],type:'Corrective',baseline:'ALL'},
+    {id:'g-34',fw:'gdpr',source_url:'https://gdpr-info.eu/art-34-gdpr/',cross_refs:['nist-800-53-IR-7'],domain:'Breach Notification',code:'Art.34',title:'Communication of Breach to Data Subjects',desc:'Where a personal data breach is likely to result in a high risk to individuals, the controller shall communicate the breach to affected data subjects without undue delay.',reqs:['Assess whether each notifiable breach requires communication to data subjects','Communicate in clear and plain language without undue delay','Include nature of breach, DPO contact, likely consequences and measures taken','Prepare template data subject breach communications for common scenarios'],type:'Corrective',baseline:'ALL'},
+    {id:'g-35',fw:'gdpr',source_url:'https://gdpr-info.eu/art-35-gdpr/',cross_refs:['nist-800-53-RA-3'],domain:'Controller Obligations',code:'Art.35',title:'Data Protection Impact Assessment (DPIA)',desc:'Where processing is likely to result in high risk to individuals, the controller shall carry out a DPIA prior to processing.',reqs:['Implement a DPIA screening process for all new and changed processing activities','Conduct a full DPIA where screening indicates high risk','Include systematic description, necessity assessment, risk assessment and mitigation measures','Consult the supervisory authority prior to processing where residual high risk remains','Document all DPIAs and review when processing changes'],type:'Preventive',baseline:'ALL'},
+    {id:'g-37',fw:'gdpr',source_url:'https://gdpr-info.eu/art-37-gdpr/',cross_refs:[],domain:'Controller Obligations',code:'Art.37',title:'Data Protection Officer (DPO)',desc:'The controller shall designate a DPO where processing is carried out by a public authority, where core activities require large-scale systematic monitoring, or involve large-scale special category processing.',reqs:['Assess whether mandatory DPO designation applies to your organisation','Appoint a DPO with expert knowledge of data protection law and practice','Register DPO contact details with the relevant supervisory authority','Publish DPO contact details in all privacy notices','Ensure DPO has access to resources and operates independently'],type:'Preventive',baseline:'ALL'},
+    {id:'g-44',fw:'gdpr',source_url:'https://gdpr-info.eu/art-44-gdpr/',cross_refs:[],domain:'International Transfers',code:'Art.44',title:'General Principle for International Transfers',desc:'Any transfer of personal data to a third country shall only take place if the conditions of Chapter V are complied with.',reqs:['Map all transfers of personal data to third countries in the RoPA','Identify the appropriate safeguard or derogation for each transfer','Implement technical controls to prevent unauthorised transfers to third countries','Conduct Transfer Impact Assessments for transfers to non-adequate countries'],type:'Preventive',baseline:'ALL'},
+    {id:'g-46',fw:'gdpr',source_url:'https://gdpr-info.eu/art-46-gdpr/',cross_refs:[],domain:'International Transfers',code:'Art.46',title:'Standard Contractual Clauses',desc:'In the absence of an adequacy decision, transfers may proceed subject to appropriate safeguards including Standard Contractual Clauses.',reqs:['Execute current EU SCCs (2021 version) for all transfers to non-adequate countries','Conduct a Transfer Impact Assessment before executing SCCs','Document SCCs in the RoPA with the specific module used','Do not modify the SCCs — use as published by the Commission','Review SCCs with each processor or controller annually'],type:'Preventive',baseline:'ALL'},
+    {id:'g-83',fw:'gdpr',source_url:'https://gdpr-info.eu/art-83-gdpr/',cross_refs:[],domain:'Enforcement',code:'Art.83',title:'Administrative Fines',desc:'Supervisory authorities shall impose administrative fines that are effective, proportionate and dissuasive. Tier 1 up to 10M EUR/2%, Tier 2 up to 20M EUR/4%.',reqs:['Understand the two-tier fine structure and which violations fall in each tier','Implement controls proportionate to your organisation turnover','Monitor EDPB enforcement tracker and DPA decisions affecting your sector','Ensure board-level awareness of maximum fine exposure'],type:'Detective',baseline:'ALL'},
   ],
   'soc2':[
     {id:'s-CC1.1',fw:'soc2',domain:'Control Environment',code:'CC1.1',title:'Commitment to Integrity and Ethical Values',desc:'The entity demonstrates a commitment to integrity and ethical values.',reqs:['Establish code of conduct','Communicate to all personnel','Train on ethics','Monitor compliance','Address violations promptly'],type:'Preventive',baseline:'ALL'},
@@ -2402,6 +2431,18 @@ window.setCtrlView = function(v){
 };
 
 // ── DRAWER ────────────────────────────────────────────────
+var CMP_OP_MAP=[
+  {id:'dsar',     icon:'👤', label:'DSAR Requests',    kw:['art.15','subject access','right of access','dsar']},
+  {id:'erasure',  icon:'🗑️', label:'Erasure Requests', kw:['art.17','erasure','forgotten','right to erase']},
+  {id:'portability',icon:'📦',label:'Portability',     kw:['art.20','portability','machine-readable']},
+  {id:'breach',   icon:'🚨', label:'Breach Log',       kw:['art.33','art.34','breach','72 hour','notification']},
+  {id:'consent',  icon:'✅', label:'Consent Log',      kw:['consent','art.6(1)(a)','withdrawal','freely given']},
+  {id:'rights',   icon:'⚖️', label:'Rights Request',   kw:['art.21','art.18','art.16','objection','restriction','rectification']},
+  {id:'dpia',     icon:'🔍', label:'DPIA Notes',       kw:['art.25','art.35','dpia','privacy by design','impact assessment']},
+  {id:'ropa',     icon:'📋', label:'RoPA Entry',       kw:['art.30','records of processing','ropa']},
+  {id:'vendor',   icon:'🤝', label:'Vendor Register',  kw:['art.28','processor','data processing agreement']},
+];
+
 window.openCtrlDrawer = function(ctrlId){
   var allC=[];
   CMP_FWS.forEach(function(id){allC=allC.concat(cmpGetCtrls(id));});
@@ -2411,6 +2452,20 @@ window.openCtrlDrawer = function(ctrlId){
   document.getElementById('dr-code').textContent=CMP_CTRL.code+(fw.name?' · '+fw.name:'');
   document.getElementById('dr-code').style.color=fw.color||'var(--brand)';
   document.getElementById('dr-title').textContent=CMP_CTRL.title;
+  var txt=((CMP_CTRL.code||'')+'|'+(CMP_CTRL.title||'')+'|'+(CMP_CTRL.desc||'')).toLowerCase();
+  var bar=document.getElementById('dr-tabs-bar');
+  if(bar){
+    var html='<button class="dr-tab active" onclick="drTab('overview',this)">Overview</button>'+
+      '<button class="dr-tab" onclick="drTab('checklist',this)">Checklist</button>'+
+      '<button class="dr-tab" onclick="drTab('tracking',this)">Tracking</button>'+
+      '<button class="dr-tab" onclick="drTab('evidence',this)">Evidence</button>';
+    CMP_OP_MAP.forEach(function(op){
+      if(op.kw.some(function(kw){return txt.indexOf(kw)!==-1;})){
+        html+='<button class="dr-tab" style="color:var(--brand)" onclick="drTab('op-'+op.id+'',this)">'+op.icon+' '+op.label+'</button>';
+      }
+    });
+    bar.innerHTML=html;
+  }
   drTab('overview',document.querySelector('.dr-tab'));
   document.getElementById('cmp-mask').style.display='flex';
 };
@@ -2481,23 +2536,144 @@ window.drTab=function(tab,btn){
       '<button class="btn btn-primary btn-sm" onclick="saveCtrlTrk()">Save Changes</button>';
   }
   else if(tab==='evidence'){
+    var evIcons={PDF:'📄',Word:'📝',Excel:'📊',CSV:'📋',Image:'🖼️',ZIP:'📦',Other:'📎'};
     body.innerHTML=
       '<div id="ev-list">'+
-      (!ev.length?'<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">No evidence attached yet</div>':
+      (!ev.length?'<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:13px">No evidence yet</div>':
         ev.map(function(e,i){
-          return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:8px">'+
-            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5c93f5" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'+
-            '<div style="flex:1"><div style="font-size:12.5px;font-weight:600;color:var(--text-primary)">'+e.title+'</div>'+
-            (e.url?'<a href="'+e.url+'" target="_blank" style="font-size:11px;color:var(--text-link)">'+e.url+'</a>':'')+
-            '</div><button class="btn btn-ghost btn-xs" onclick="removeEv('+i+')">×</button></div>';
+          var icon=evIcons[e.fileType||'Other']||'📎';
+          return '<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:6px">'+
+            '<span style="font-size:18px;flex-shrink:0">'+icon+'</span>'+
+            '<div style="flex:1;min-width:0"><div style="font-size:12.5px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+e.title+'</div>'+
+            '<div style="font-size:11px;color:var(--text-muted)">'+(e.evType||'Document')+(e.fileSize?' · '+e.fileSize:'')+(e.addedAt?' · '+new Date(e.addedAt).toLocaleDateString():'')+'</div>'+
+            (e.url?'<a href="'+e.url+'" target="_blank" style="font-size:11px;color:var(--text-link)">View</a>':'')+
+            '</div><button onclick="removeEv('+i+')" style="color:var(--critical);background:none;border:none;cursor:pointer;font-size:18px;flex-shrink:0">&times;</button></div>';
         }).join(''))+
       '</div>'+
-      '<div style="margin-top:12px;padding:14px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px">'+
-      '<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:10px">Add Evidence</div>'+
-      '<input id="ev-title" class="input" placeholder="Document title" style="margin-bottom:8px"/>'+
-      '<input id="ev-url" class="input" placeholder="URL or reference (optional)" style="margin-bottom:10px"/>'+
-      '<button class="btn btn-primary btn-sm" onclick="addEv()">Add</button></div>';
+      '<div style="margin-top:10px;padding:14px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px">'+
+      '<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:8px">Add Evidence</div>'+
+      '<input id="ev-title" class="input" placeholder="Document title" style="margin-bottom:7px"/>'+
+      '<select id="ev-type-sel" class="select" style="width:100%;margin-bottom:7px"><option value="">Select type (optional)</option><option>Policy Document</option><option>DPIA Report</option><option>DPA Agreement</option><option>Pentest Report</option><option>Training Record</option><option>Audit Report</option><option>Screenshot</option><option>Certificate</option><option>Legal Opinion</option></select>'+
+      '<div id="ev-drop" style="border:2px dashed var(--border);border-radius:8px;padding:12px;text-align:center;margin-bottom:7px;cursor:pointer;transition:border-color .15s" ondragover="event.preventDefault();this.style.borderColor=\'var(--brand)\'" ondragleave="this.style.borderColor=\'var(--border)\'" ondrop="evDrop(event)">'+
+      '<div style="font-size:12.5px;color:var(--text-muted);margin-bottom:3px">&#128193; Drag &amp; drop file</div>'+
+      '<div style="font-size:11px;color:var(--text-muted)">PDF · Word · Excel · CSV · Image · ZIP</div>'+
+      '<input type="file" id="ev-file-inp" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.zip,.txt" style="display:none" onchange="evFileIn(this)"/>'+
+      '<button class="btn btn-secondary btn-sm" style="margin-top:7px" onclick="document.getElementById(\'ev-file-inp\').click()">Browse</button>'+
+      '<div id="ev-fname" style="font-size:12px;color:var(--brand);margin-top:4px"></div></div>'+
+      '<input id="ev-url" class="input" placeholder="Or paste URL / reference link" style="margin-bottom:8px"/>'+
+      '<button class="btn btn-primary btn-sm" onclick="addEv()">Add Evidence</button></div>';
   }
+  else if(tab.startsWith('op-')){
+    var opId=tab.replace('op-','');
+    renderOpTab(opId,c);
+  }
+};
+
+var OP_CFGS={
+  dsar:{title:'DSAR / Subject Access Requests',sub:'GDPR 30d · CCPA 45d · PIPL 15d',
+    fields:[{id:'subject',l:'Subject Ref',ph:'e.g. John Smith'},{id:'regulation',l:'Regulation',sel:['GDPR','UK GDPR','CCPA','PIPL','LGPD','PDPA SG']},{id:'received',l:'Date Received',t:'date'},{id:'notes',l:'Notes',ta:true,ph:'Details...'}],
+    sla:{GDPR:30,'UK GDPR':30,CCPA:45,PIPL:15,LGPD:15,'PDPA SG':30},
+    st:['Received','Identity Verified','Processing','Fulfilled','Rejected']},
+  erasure:{title:'Erasure / Right to be Forgotten',sub:'Document scope and grounds for each request',
+    fields:[{id:'subject',l:'Subject Ref',ph:'REF-001'},{id:'regulation',l:'Regulation',sel:['GDPR Art.17','UK GDPR','CCPA','LGPD']},{id:'received',l:'Date Received',t:'date'},{id:'grounds',l:'Grounds',sel:['Consent withdrawn','No longer necessary','Objection upheld','Unlawful processing']},{id:'notes',l:'Notes',ta:true,ph:'Scope...'}],
+    sla:{'GDPR Art.17':30,'UK GDPR':30,CCPA:45,LGPD:15},
+    st:['Received','Verified','In Progress','Completed','Refused']},
+  portability:{title:'Data Portability Requests',sub:'GDPR Art.20 — structured machine-readable format',
+    fields:[{id:'subject',l:'Subject Ref',ph:'Customer ID'},{id:'format',l:'Format',sel:['JSON','CSV','XML','PDF']},{id:'received',l:'Date Received',t:'date'}],
+    sla:{GDPR:30,'UK GDPR':30},st:['Received','Processing','Export Ready','Delivered']},
+  breach:{title:'Breach Incidents',sub:'GDPR/PDPL 72h · NIS2 24h · HIPAA 60 days',
+    fields:[{id:'title',l:'Incident',ph:'e.g. Unauthorised DB access'},{id:'detected',l:'Detected',t:'datetime-local'},{id:'records',l:'Records Affected',ph:'e.g. 1500'},{id:'regulation',l:'Regulation',sel:['GDPR (72h)','UK GDPR (72h)','NIS2 (24h)','HIPAA (60d)','PDPA SG (72h)','PDPL SA (72h)','LGPD (2d)','CCPA (ASAP)','PIPL (ASAP)']}],
+    sla:{'GDPR (72h)':3,'UK GDPR (72h)':3,'NIS2 (24h)':1,'PDPA SG (72h)':3,'PDPL SA (72h)':3,'LGPD (2d)':2,'HIPAA (60d)':60,'CCPA (ASAP)':3,'PIPL (ASAP)':3},
+    st:['Active','Contained','Authority Notified','Subjects Notified','Closed']},
+  consent:{title:'Consent Register',sub:'Log and track consent records for this processing activity',
+    fields:[{id:'subject',l:'Subject Ref',ph:'User ID'},{id:'purpose',l:'Purpose',ph:'e.g. Marketing'},{id:'mechanism',l:'Mechanism',sel:['Checkbox','Cookie banner','App opt-in','Written form','Verbal']},{id:'date',l:'Date',t:'date'}],
+    sla:{},st:['Active','Withdrawn','Expired','Refreshed']},
+  rights:{title:'Rights Requests (Objection / Restriction / Rectification)',sub:'Track all other data subject rights requests',
+    fields:[{id:'subject',l:'Subject Ref',ph:'REF-2025-100'},{id:'type',l:'Type',sel:['Objection (Art.21)','Restriction (Art.18)','Rectification (Art.16)','Withdraw Consent']},{id:'regulation',l:'Regulation',sel:['GDPR','UK GDPR','CCPA','LGPD','PIPL']},{id:'received',l:'Received',t:'date'},{id:'notes',l:'Details',ta:true,ph:'Describe the request...'}],
+    sla:{GDPR:30,'UK GDPR':30,CCPA:45,LGPD:15,PIPL:15},
+    st:['Received','Under Review','Upheld','Refused','Closed']},
+  dpia:{title:'DPIA Notes and Data Inventory',sub:'Record personal data processed and DPIA findings for this control',
+    fields:[{id:'data_cats',l:'Data Categories',ph:'e.g. Name, email, health data'},{id:'subjects',l:'Data Subjects',ph:'e.g. Customers, employees'},{id:'volume',l:'Volume',sel:['<1K','1K-100K','100K-1M','>1M']},{id:'dpia_req',l:'DPIA Required?',sel:['No - low risk','Yes - scheduled','Yes - completed']},{id:'notes',l:'DPIA Findings',ta:true,ph:'Risk summary...'}],
+    sla:{},st:['Documented','Under Review','DPIA Complete','Approved']},
+  ropa:{title:'RoPA Entry (Art.30 Records)',sub:'Document the processing activity covered by this control',
+    fields:[{id:'activity',l:'Activity Name',ph:'e.g. Customer order processing'},{id:'purpose',l:'Purpose',ph:'e.g. Contract fulfilment'},{id:'legal_basis',l:'Legal Basis',sel:['Art.6(1)(a) Consent','Art.6(1)(b) Contract','Art.6(1)(c) Legal obligation','Art.6(1)(f) Legitimate interests']},{id:'recipients',l:'Recipients',ph:'e.g. Payment processor'},{id:'retention',l:'Retention Period',ph:'e.g. 7 years then delete'}],
+    sla:{},st:['Draft','Complete','Reviewed','Approved']},
+  vendor:{title:'Vendor / Processor Register (Art.28)',sub:'Track processors and DPAs linked to this control',
+    fields:[{id:'vendor',l:'Vendor Name',ph:'e.g. AWS Europe'},{id:'service',l:'Service',ph:'e.g. Cloud hosting'},{id:'country',l:'Country',ph:'e.g. Ireland'},{id:'dpa_date',l:'DPA Signed',t:'date'},{id:'review_date',l:'Next Review',t:'date'}],
+    sla:{},st:['DPA Pending','DPA Signed','Under Review','Terminated']},
+};
+
+var _opCtx={};
+window.renderOpTab=function(opId,ctrl){
+  var cfg=OP_CFGS[opId];
+  var body=document.getElementById('dr-body');
+  if(!cfg||!body)return;
+  var storeKey='te_op_'+ctrl.id+'_'+opId;
+  _opCtx={key:storeKey,opId:opId,fieldIds:cfg.fields.map(function(f){return f.id;})};
+  var opData=JSON.parse(localStorage.getItem(storeKey)||'[]');
+  var today=new Date().toISOString().split('T')[0];
+  var existHtml=!opData.length?
+    '<div style="text-align:center;padding:14px;color:var(--text-muted);font-size:13px">No entries yet — add one below</div>':
+    opData.map(function(entry,ei){
+      var deadline='';
+      var regVal=entry.regulation||'';
+      if(cfg.sla&&cfg.sla[regVal]){
+        var base=entry.received||entry.detected||entry.date||today;
+        var dl=new Date(base).getTime()+cfg.sla[regVal]*86400000;
+        var rem=dl-Date.now();
+        var d=Math.ceil(rem/86400000);
+        var isOver=rem<0;
+        var tc=isOver?'var(--critical)':d<=3?'var(--medium)':'var(--low)';
+        deadline=' <span style="font-size:11px;font-weight:700;color:'+tc+';font-family:'IBM Plex Mono',monospace">'+(isOver?'OVERDUE':d+'d left')+'</span>';
+      }
+      var vals=Object.entries(entry).filter(function(e){return e[0]!=='status'&&e[0]!=='addedAt';}).slice(0,3).map(function(e){return'<b>'+e[0]+':</b> '+e[1];}).join(' · ');
+      return '<div style="padding:9px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:6px">'+
+        '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px">'+
+        '<select onchange="opUpdSt(''+storeKey+'','+ei+',this.value)" style="font-size:11px;background:var(--bg-surface);border:1px solid var(--border);color:var(--brand);padding:2px 6px;border-radius:4px;cursor:pointer;font-family:inherit;font-weight:600">'+
+        cfg.st.map(function(s){return'<option value="'+s+'"'+(entry.status===s?' selected':'')+'>'+s+'</option>';}).join('')+'</select>'+
+        deadline+
+        '<button onclick="opDel(''+storeKey+'','+ei+',''+opId+'')" style="font-size:16px;color:var(--critical);background:none;border:none;cursor:pointer;margin-left:auto;line-height:1">&times;</button></div>'+
+        '<div style="font-size:11.5px;color:var(--text-secondary)">'+vals+'</div></div>';
+    }).join('');
+  var formHtml=cfg.fields.map(function(f){
+    var inp='';
+    if(f.sel) inp='<select id="opf-'+f.id+'" class="select" style="width:100%">'+f.sel.map(function(o){return'<option>'+o+'</option>';}).join('')+'</select>';
+    else if(f.t==='date') inp='<input id="opf-'+f.id+'" class="input" type="date" value="'+today+'"/>';
+    else if(f.t==='datetime-local') inp='<input id="opf-'+f.id+'" class="input" type="datetime-local" value="'+new Date().toISOString().slice(0,16)+'"/>';
+    else if(f.ta) inp='<textarea id="opf-'+f.id+'" class="input" rows="2" placeholder="'+(f.ph||'')+'" style="width:100%;resize:none"></textarea>';
+    else inp='<input id="opf-'+f.id+'" class="input" placeholder="'+(f.ph||'')+'"/>';
+    return '<div style="flex:1;min-width:150px"><label style="font-size:10.5px;color:var(--text-muted);font-weight:600;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+f.l+'</label>'+inp+'</div>';
+  }).join('');
+  body.innerHTML=
+    '<div style="margin-bottom:10px"><div style="font-size:13px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif">'+cfg.title+'</div>'+
+    '<div style="font-size:11.5px;color:var(--text-muted);margin-top:2px">'+cfg.sub+'</div></div>'+
+    existHtml+
+    '<div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:10px">'+
+    '<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:8px">Add Entry</div>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">'+formHtml+'</div>'+
+    '<button class="btn btn-primary btn-sm" onclick="opSave()">Save</button></div>';
+};
+
+window.opSave=function(){
+  if(!_opCtx.key)return;
+  var entry={addedAt:new Date().toISOString(),status:'Received'};
+  _opCtx.fieldIds.forEach(function(fid){var el=document.getElementById('opf-'+fid);if(el)entry[fid]=el.value||'';});
+  var data=JSON.parse(localStorage.getItem(_opCtx.key)||'[]');
+  data.unshift(entry);
+  localStorage.setItem(_opCtx.key,JSON.stringify(data));
+  renderOpTab(_opCtx.opId,CMP_CTRL);
+  if(typeof toast==='function')toast('Entry saved','success');
+};
+window.opUpdSt=function(key,idx,status){
+  var data=JSON.parse(localStorage.getItem(key)||'[]');
+  if(data[idx])data[idx].status=status;
+  localStorage.setItem(key,JSON.stringify(data));
+};
+window.opDel=function(key,idx,opId){
+  var data=JSON.parse(localStorage.getItem(key)||'[]');
+  data.splice(idx,1);
+  localStorage.setItem(key,JSON.stringify(data));
+  renderOpTab(opId,CMP_CTRL);
 };
 
 window.quickStat=function(v){
@@ -2541,13 +2717,34 @@ window.saveCtrlTrk=function(){
   renderCtrlCards(); renderCmpOverview();
 };
 
+var _evMeta={};
+window.evFileIn=function(inp){
+  if(!inp||!inp.files||!inp.files[0])return;
+  var f=inp.files[0];
+  var ext=f.name.split('.').pop().toUpperCase();
+  var tm={PDF:'PDF',DOC:'Word',DOCX:'Word',XLS:'Excel',XLSX:'Excel',CSV:'CSV',PNG:'Image',JPG:'Image',JPEG:'Image',ZIP:'ZIP'};
+  var sz=f.size>1048576?(f.size/1048576).toFixed(1)+'MB':Math.round(f.size/1024)+'KB';
+  _evMeta={fileType:tm[ext]||'Other',fileSize:sz};
+  var el=document.getElementById('ev-fname');
+  if(el)el.textContent='✓ '+f.name+' ('+sz+')';
+  var tEl=document.getElementById('ev-title');
+  if(tEl&&!tEl.value)tEl.value=f.name.replace(/\.[^.]+$/,'');
+};
+window.evDrop=function(e){
+  e.preventDefault();
+  var dz=document.getElementById('ev-drop');
+  if(dz)dz.style.borderColor='var(--border)';
+  if(e.dataTransfer&&e.dataTransfer.files[0])evFileIn({files:e.dataTransfer.files});
+};
 window.addEv=function(){
   if(!CMP_CTRL)return;
   var t=document.getElementById('ev-title');
   if(!t||!t.value.trim()){toast('Enter a title','warning');return;}
   var u=document.getElementById('ev-url');
+  var ts=(document.getElementById('ev-type-sel')||{}).value||'';
   if(!CMP_EV[CMP_CTRL.id])CMP_EV[CMP_CTRL.id]=[];
-  CMP_EV[CMP_CTRL.id].push({title:t.value.trim(),url:(u?u.value.trim():''),addedAt:new Date().toISOString()});
+  CMP_EV[CMP_CTRL.id].push({title:t.value.trim(),url:(u?u.value.trim():''),evType:ts,fileType:_evMeta.fileType||'',fileSize:_evMeta.fileSize||'',addedAt:new Date().toISOString()});
+  _evMeta={};
   cmpSave();
   drTab('evidence',document.querySelectorAll('.dr-tab')[3]);
   toast('Evidence added','success');
