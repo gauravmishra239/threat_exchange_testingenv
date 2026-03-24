@@ -171,6 +171,13 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 .rq-cb{width:17px;height:17px;border:1.5px solid var(--border-strong);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:all .15s;margin-top:1px;}
 .rq-cb.on{background:var(--brand);border-color:var(--brand);}
 
+
+/* ── Control popup modal ────────────────────────────────── */
+@keyframes popIn{from{opacity:0;transform:translate(-50%,-50%) scale(.94);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+@keyframes maskIn{from{opacity:0;}to{opacity:1;}}
+#cmp-mask.open{display:flex!important;animation:maskIn .15s ease forwards;}
+#cmp-drawer.open{animation:popIn .2s cubic-bezier(.34,1.3,.64,1) forwards;}
+#cmp-drawer{top:50%;left:50%;}
 </style>
 </head>
 <body>
@@ -744,7 +751,7 @@ body{display:flex;flex-direction:column;height:100vh;overflow:hidden;}
 
 <!-- ══ CONTROL DRAWER ══ -->
 <div id="cmp-mask" style="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;display:none;align-items:center;justify-content:center" onclick="if(event.target===this)closeCmpDrawer()"></div>
-<div id="cmp-drawer" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-60%) scale(.95);opacity:0;width:820px;max-width:96vw;max-height:88vh;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;z-index:401;display:flex;flex-direction:column;overflow:hidden;transition:none">
+<div id="cmp-drawer" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(.94);opacity:0;width:860px;max-width:96vw;max-height:90vh;background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;z-index:401;display:flex;flex-direction:column;overflow:hidden;transition:none;pointer-events:none">
   <div style="padding:16px 20px 12px;border-bottom:1px solid var(--border);flex-shrink:0">
     <div style="font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;margin-bottom:3px" id="dr-code"></div>
     <div style="font-size:16px;font-weight:700;color:var(--text-primary);font-family:'Syne',sans-serif;padding-right:32px;line-height:1.3" id="dr-title"></div>
@@ -2473,21 +2480,29 @@ window.openCtrlDrawer = function(ctrlId){
     bhtml+="<button class=\"dr-tab\" onclick=\"drTab('checklist',this)\">Checklist</button>";
     bhtml+="<button class=\"dr-tab\" onclick=\"drTab('tracking',this)\">Tracking</button>";
     bhtml+="<button class=\"dr-tab\" onclick=\"drTab('evidence',this)\">Evidence</button>";
+    var _seenOps={};
     CMP_OP_MAP.forEach(function(op){
-      if(op.kw.some(function(kw){return txt.indexOf(kw)!==-1;})){
+      if(!_seenOps[op.id+op.label] && op.kw.some(function(kw){return txt.indexOf(kw)!==-1;})){
+        _seenOps[op.id+op.label]=1;
         bhtml+="<button class=\"dr-tab\" style=\"color:var(--brand)\" onclick=\"drTab('op-"+op.id+"',this)\">"+op.icon+" "+op.label+"</button>";
       }
     });
     bar.innerHTML=bhtml;
   }
   drTab('overview',document.querySelector('.dr-tab'));
-  document.getElementById('cmp-drawer').classList.add('open');
-  document.getElementById('cmp-mask').classList.add('open');
+  var _d=document.getElementById('cmp-drawer');
+  var _m=document.getElementById('cmp-mask');
+  _d.classList.add('open');
+  _d.style.pointerEvents='all';
+  _m.classList.add('open');
 };
 
 window.closeCmpDrawer=function(){
-  document.getElementById('cmp-drawer').classList.remove('open');
-  document.getElementById('cmp-mask').classList.remove('open');
+  var _d=document.getElementById('cmp-drawer');
+  var _m=document.getElementById('cmp-mask');
+  _d.classList.remove('open');
+  _d.style.pointerEvents='none';
+  _m.classList.remove('open');
 };
 
 window.drTab=function(tab,btn){
@@ -2513,10 +2528,9 @@ window.drTab=function(tab,btn){
     var xrefMap={'nist-800-53-SC-28':'NIST SC-28','nist-800-53-SC-8':'NIST SC-8','nist-800-53-AC-1':'NIST AC-1','nist-800-53-AC-3':'NIST AC-3','nist-800-53-SA-8':'NIST SA-8','nist-800-53-SI-12':'NIST SI-12','nist-800-53-SI-2':'NIST SI-2','nist-800-53-PM-1':'NIST PM-1','nist-800-53-PM-5':'NIST PM-5','nist-800-53-RA-3':'NIST RA-3','nist-800-53-MP-6':'NIST MP-6','nist-800-53-IR-6':'NIST IR-6','nist-800-53-IR-7':'NIST IR-7','nist-800-61':'NIST 800-61','nist-ai-rmf':'NIST AI RMF','iso-27001-A.5.1':'ISO A.5.1','iso-27001-A.5.2':'ISO A.5.2','iso-27001-A.5.19':'ISO A.5.19','iso-27001-A.8.24':'ISO A.8.24','soc2-CC6.1':'SOC 2 CC6.1'};
     var xrefs=c.cross_refs||[];
     var xrefHtml=xrefs.length?'<div style="margin-bottom:12px"><div style="font-size:10px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Maps to</div><div style="display:flex;flex-wrap:wrap;gap:5px">'+xrefs.map(function(x){return'<span style="font-size:10.5px;padding:2px 8px;border-radius:4px;background:var(--brand-subtle);border:1px solid var(--brand-muted);color:var(--brand);font-family:\'IBM Plex Mono\',monospace">'+(xrefMap[x]||x)+'</span>';}).join('')+'</div></div>':'';
-    var penaltyHtml=c.penalty?'<div style="padding:9px 12px;background:rgba(248,79,79,.08);border:1px solid rgba(248,79,79,.25);border-radius:6px;margin-bottom:10px;display:flex;align-items:center;gap:8px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--critical)" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg><span style="font-size:12px;color:var(--critical);font-weight:600">Max penalty: '+c.penalty+'</span></div>':'';
-    var sourceHtml=c.source_url?'<a href="'+c.source_url+'" target="_blank" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:10px;text-decoration:none"><span style="font-size:11.5px;color:var(--text-secondary)">Official Source — EUR-Lex</span><span style="font-size:11.5px;color:var(--brand);font-weight:600">View ↗</span></a>':'';
+    var penaltyHtml='';
+    var sourceHtml='';
     body.innerHTML=
-      penaltyHtml+sourceHtml+
       '<div style="margin-bottom:12px"><div style="font-size:10px;font-weight:700;font-family:\'IBM Plex Mono\',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px">Description</div>'+
       '<div style="font-size:13px;color:var(--text-secondary);line-height:1.7">'+(c.desc||'—')+'</div></div>'+
       xrefHtml+
@@ -2567,41 +2581,48 @@ window.drTab=function(tab,btn){
       '<button class="btn btn-primary btn-sm" onclick="saveCtrlTrk()">Save Changes</button>';
   }
   else if(tab==='evidence'){
-    var evHtml='<div id="ev-list">';
+    var evHtml='';
+    // File list
+    evHtml+='<div id="ev-list" style="margin-bottom:14px">';
     if(!ev.length){
-      evHtml+='<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:13px">No evidence attached yet</div>';
+      evHtml+='<div style="text-align:center;padding:20px 0;color:var(--text-muted);font-size:13px">No evidence attached yet</div>';
     } else {
-      var icons={'pdf':'📄','doc':'📝','docx':'📝','xls':'📊','xlsx':'📊','csv':'📋','png':'🖼️','jpg':'🖼️','jpeg':'🖼️','zip':'📦'};
+      var EV_ICONS={'pdf':'📄','doc':'📝','docx':'📝','xls':'📊','xlsx':'📊','csv':'📋','txt':'📃','png':'🖼️','jpg':'🖼️','jpeg':'🖼️','gif':'🖼️','webp':'🖼️','zip':'📦','rar':'📦','7z':'📦','mp4':'🎬','mov':'🎬','ppt':'📊','pptx':'📊','eml':'📧','msg':'📧'};
       ev.forEach(function(e,i){
         var ext=(e.name||e.title||'').split('.').pop().toLowerCase();
-        var ico=icons[ext]||'📎';
-        var sz=e.size?(' · '+(e.size>1048576?(e.size/1048576).toFixed(1)+'MB':(e.size>1024?(e.size/1024).toFixed(0)+'KB':e.size+'B'))):'';
-        evHtml+='<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:8px">'+
-          '<span style="font-size:18px">'+ico+'</span>'+
-          '<div style="flex:1;min-width:0">'+
-            '<div style="font-size:12.5px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+e.title+'</div>'+
-            '<div style="font-size:11px;color:var(--text-muted)">'+
-              (e.type?e.type+' · ':'')+new Date(e.addedAt).toLocaleDateString()+sz+
-            '</div>'+
-            (e.url?'<a href="'+e.url+'" target="_blank" style="font-size:11px;color:var(--brand)">'+e.url+'</a>':'')+
-          '</div>'+
-          '<button onclick="removeEv('+i+')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px;padding:2px 6px">×</button>'+
-        '</div>';
+        var ico=EV_ICONS[ext]||'📎';
+        var sz=e.size?(e.size>1048576?(e.size/1048576).toFixed(1)+'MB':e.size>1024?(e.size/1024).toFixed(0)+'KB':e.size+'B'):'';
+        evHtml+='<div style="display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:6px;margin-bottom:6px">';
+        evHtml+='<span style="font-size:20px;flex-shrink:0">'+ico+'</span>';
+        evHtml+='<div style="flex:1;min-width:0">';
+        evHtml+='<div style="font-size:12.5px;font-weight:600;color:var(--text-primary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+e.title+'</div>';
+        evHtml+='<div style="font-size:11px;color:var(--text-muted)">';
+        if(e.type) evHtml+=e.type+' · ';
+        evHtml+=new Date(e.addedAt).toLocaleDateString();
+        if(sz) evHtml+=' · '+sz;
+        evHtml+='</div>';
+        if(e.url) evHtml+='<a href="'+e.url+'" target="_blank" style="font-size:11px;color:var(--brand);word-break:break-all">'+e.url+'</a>';
+        evHtml+='</div>';
+        evHtml+='<button onclick="removeEv('+i+')" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:18px;padding:2px 6px;flex-shrink:0;line-height:1">×</button>';
+        evHtml+='</div>';
       });
     }
     evHtml+='</div>';
-    evHtml+="<div id=\"ev-drop\" ondragover=\"evDrag(event)\" ondrop=\"evDrop(event)\" style=\"margin-top:12px;border:2px dashed var(--border);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:border-color .15s\" onclick=\"document.getElementById('ev-file-in').click()\">";
-    evHtml+='<input type="file" id="ev-file-in" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.png,.jpg,.jpeg,.zip" style="display:none" onchange="evFileIn(this)">';
-    evHtml+='<div style="font-size:13px;color:var(--text-muted)">📎 Drop files here or <span style="color:var(--brand);font-weight:600">browse</span></div>';
-    evHtml+='<div style="font-size:11px;color:var(--text-muted);margin-top:4px">PDF · Word · Excel · CSV · Image · ZIP</div>';
+    // Drag-drop upload zone
+    evHtml+="<div id=\"ev-drop-zone\" ondragover=\"evDragOver(event)\" ondragleave=\"evDragLeave(event)\" ondrop=\"evDropFiles(event)\" onclick=\"document.getElementById('ev-file-inp').click()\" style=\"border:2px dashed var(--border);border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:all .15s;margin-bottom:12px\">";
+    evHtml+='<input type="file" id="ev-file-inp" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.txt,.png,.jpg,.jpeg,.gif,.webp,.zip,.rar,.7z,.ppt,.pptx,.eml,.msg,.mp4,.mov" style="display:none" onchange="evFileIn(this)">';
+    evHtml+='<div style="font-size:22px;margin-bottom:4px">📎</div>';
+    evHtml+='<div style="font-size:13px;font-weight:600;color:var(--text-primary)">Drop files or <span style="color:var(--brand)">browse</span></div>';
+    evHtml+='<div style="font-size:11px;color:var(--text-muted);margin-top:3px">PDF · Word · Excel · CSV · Image · ZIP · PPT · Email · Video</div>';
     evHtml+='</div>';
-    evHtml+='<div style="margin-top:12px;padding:14px;background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px">';
-    evHtml+='<div style="font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:8px">Add Link / Reference</div>';
-    evHtml+='<select id="ev-type" class="select" style="margin-bottom:8px"><option value="">Evidence Type</option><option>Policy Document</option><option>Audit Report</option><option>Screenshot</option><option>Test Result</option><option>Certificate</option><option>Procedure</option><option>Other</option></select>';
-    evHtml+='<input id="ev-title" class="input" placeholder="Document title" style="margin-bottom:8px"/>';
-    evHtml+='<input id="ev-url" class="input" placeholder="URL or reference (optional)" style="margin-bottom:10px"/>';
+    // Manual link / reference
+    evHtml+='<details style="margin-bottom:0"><summary style="font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;padding:8px 0;user-select:none">+ Add link / reference manually</summary>';
+    evHtml+='<div style="background:var(--bg-sunken);border:1px solid var(--border);border-radius:8px;padding:12px;margin-top:8px">';
+    evHtml+='<select id="ev-type-sel" class="select" style="margin-bottom:8px"><option value="">Evidence Type</option><option>Policy Document</option><option>Audit Report</option><option>Screenshot</option><option>Test Result</option><option>Certificate</option><option>Contract / DPA</option><option>Training Record</option><option>Procedure</option><option>Other</option></select>';
+    evHtml+='<input id="ev-title-inp" class="input" placeholder="Document title *" style="margin-bottom:8px"/>';
+    evHtml+='<input id="ev-url-inp" class="input" placeholder="URL or path (optional)" style="margin-bottom:10px"/>';
     evHtml+='<button class="btn btn-primary btn-sm" onclick="addEv()">Add</button>';
-    evHtml+='</div>';
+    evHtml+='</div></details>';
     body.innerHTML=evHtml;
   }
 };
@@ -2649,13 +2670,15 @@ window.saveCtrlTrk=function(){
 
 window.addEv=function(){
   if(!CMP_CTRL)return;
-  var t=document.getElementById('ev-title');
+  var t=document.getElementById('ev-title-inp');
   if(!t||!t.value.trim()){toast('Enter a title','warning');return;}
-  var u=document.getElementById('ev-url');
+  var u=document.getElementById('ev-url-inp');
+  var ty=document.getElementById('ev-type-sel');
   if(!CMP_EV[CMP_CTRL.id])CMP_EV[CMP_CTRL.id]=[];
-  CMP_EV[CMP_CTRL.id].push({title:t.value.trim(),url:(u?u.value.trim():''),addedAt:new Date().toISOString()});
+  CMP_EV[CMP_CTRL.id].push({title:t.value.trim(),url:(u?u.value.trim():''),type:(ty?ty.value:''),addedAt:new Date().toISOString()});
   cmpSave();
-  drTab('evidence',document.querySelectorAll('.dr-tab')[3]);
+  var evTab=Array.from(document.querySelectorAll('.dr-tab')).find(function(b){return b.textContent.trim()==='Evidence';});
+  drTab('evidence',evTab);
   toast('Evidence added','success');
 };
 
@@ -2874,54 +2897,33 @@ window.finishWizard = function() {
   loadTeamMembers();
 };
 
-var _evMeta = {};
 
-window.evDrag = function(e){ e.preventDefault(); document.getElementById('ev-drop').style.borderColor='var(--brand)'; };
 
-window.evDrop = function(e){
-  e.preventDefault();
-  document.getElementById('ev-drop').style.borderColor='var(--border)';
-  evProcessFiles(e.dataTransfer.files);
-};
 
-window.evFileIn = function(inp){
-  if(inp.files && inp.files.length) evProcessFiles(inp.files);
-};
 
-window.evProcessFiles = function(files){
-  if(!CMP_CTRL) return;
-  if(!CMP_EV[CMP_CTRL.id]) CMP_EV[CMP_CTRL.id]=[];
-  Array.from(files).forEach(function(file){
-    var ext = file.name.split('.').pop().toLowerCase();
-    var types = {pdf:'Policy Document',doc:'Procedure',docx:'Procedure',xls:'Test Result',xlsx:'Test Result',csv:'Test Result',png:'Screenshot',jpg:'Screenshot',jpeg:'Screenshot',zip:'Audit Report'};
-    CMP_EV[CMP_CTRL.id].push({
-      title: file.name,
-      name: file.name,
-      size: file.size,
-      type: types[ext]||'Other',
-      url: '',
-      addedAt: new Date().toISOString()
-    });
-  });
-  cmpSave();
-  drTab('evidence', document.querySelector('.dr-tab.active'));
-  if(typeof toast==='function') toast(files.length+' file(s) added','success');
-};
+
 
 // ══════════════════════════════════════════════════════════
 // OPERATIONAL TABS — contextual per-control operations
 // ══════════════════════════════════════════════════════════
 
 var CMP_OP_MAP = [
-  {id:'dsar',      label:'DSAR Requests',   icon:'👤', kw:['art.15','subject access','dsar','right of access']},
-  {id:'erasure',   label:'Erasure Requests',icon:'🗑️', kw:['art.17','erasure','right to be forgotten','deletion']},
-  {id:'portab',    label:'Portability',     icon:'📦', kw:['art.20','portability','data portability']},
-  {id:'breach',    label:'Breach Log',      icon:'🚨', kw:['art.33','art.34','breach','72 hour','72h','incident','notification']},
-  {id:'consent',   label:'Consent Log',     icon:'✅',       kw:['consent','art.6(1)(a)','withdrawal','opt-in']},
-  {id:'rights',    label:'Rights Request',  icon:'⚖️', kw:['art.21','art.18','art.16','objection','restriction','rectification']},
-  {id:'dpia',      label:'DPIA Notes',      icon:'🔍', kw:['art.25','art.35','dpia','impact assessment','privacy by design']},
-  {id:'ropa',      label:'RoPA Entry',      icon:'📋', kw:['art.30','records of processing','ropa','processing activities']},
-  {id:'vendor',    label:'Vendor Register', icon:'🤝', kw:['art.28','processor','data processing agreement','dpa','third party','vendor']}
+  // Privacy / GDPR ops
+  {id:'dsar',    label:'Rights Queue',     icon:'👤', kw:['art.15','subject access','dsar','right of access','art.16','art.17','art.18','art.20','art.21','art.22','data subject right','individual right','rectification','erasure','portability','objection','restriction']},
+  {id:'breach',  label:'Breach Tracker',   icon:'🚨', kw:['art.33','art.34','breach','72 hour','72h','incident notification','personal data breach','breach notification','ir-6','ir-7','incident response','security incident','au-6','si-5','800-61']},
+  {id:'pii',     label:'PII Scanner',      icon:'🗂️', kw:['art.30','records of processing','ropa','processing activities','data inventory','personal data','pii','personally identifiable','data mapping','art.5','data minimis','purpose limitation','storage limitation','data flow']},
+  {id:'consent', label:'Consent Log',      icon:'✅', kw:['consent','art.6(1)(a)','withdrawal','opt-in','lawful basis','legal basis','legitimate interest','art.6','art.7','art.8']},
+  {id:'vendor',  label:'Vendor Register',  icon:'🤝', kw:['art.28','processor','data processing agreement','third party','vendor','supply chain','sc-sr','sa-9','sa-12','800-161','scrm','third-party','subprocessor','controller','outsourc']},
+  {id:'dpia',    label:'DPIA Log',         icon:'🔍', kw:['art.25','art.35','dpia','impact assessment','privacy by design','privacy by default','ra-3','ra-7','risk assessment','threat model','a04:2021','insecure design']},
+  {id:'ropa',    label:'RoPA',             icon:'📋', kw:['art.30','records of processing','ropa','processing register','data register','accountability','art.5(2)','art.24']},
+  // Security / NIST / ISO ops  
+  {id:'dsar',    label:'Access Review',    icon:'👥', kw:['access control','ac-1','ac-2','ac-3','ac-6','privileged access','a.5.2','a.8.2','cc6.1','iam','identity','least privilege','role-based','rbac','access management','user account','account management']},
+  {id:'breach',  label:'Incident Log',     icon:'🔥', kw:['incident','rs.ma','de.cm','rc.rp','csf-rs','csf-rc','contingency','800-34','800-61','drp','bcp','disaster recovery','business continuity','availability']},
+  {id:'vendor',  label:'Asset Register',   icon:'📱', kw:['asset','inventory','csc-1','csc-2','id.am','configuration','cm-8','hardware','software asset','endpoint','device','a.8.1']},
+  {id:'dpia',    label:'Risk Register',    icon:'⚠️', kw:['risk','ra-1','ra-2','ra-3','ra-5','vulnerability','threat','nist-800-30','nist-800-39','risk management','risk assessment','risk treatment','iso-31000','csc-7','continuous vulnerability']},
+  {id:'consent', label:'Audit Log',        icon:'📜', kw:['audit','logging','log','au-2','au-3','au-6','au-9','csc-8','de.cm','monitoring','event log','siem','audit trail','access log','accountability']},
+  {id:'pii',     label:'Data Inventory',   icon:'🗃️', kw:['data classification','data protection','encryption','sc-28','sc-8','a02:2021','cryptograph','sensitive data','data at rest','data in transit','key management','nist-800-57','fips-197']},
+  {id:'ropa',    label:'Policy Register',  icon:'📁', kw:['policy','procedure','governance','pm-1','gv.oc','a.5.1','a.5.2','cc1.1','documentation','standard','guideline','program','oversight','management commitment']}
 ];
 
 var OP_CFGS = {
@@ -3418,6 +3420,43 @@ window.opsDelete = function(btn) {
   renderOpsPage();
 };
 
+
+window.evDragOver = function(e){
+  e.preventDefault();
+  var z=document.getElementById('ev-drop-zone');
+  if(z){z.style.borderColor='var(--brand)';z.style.background='var(--brand-subtle)';}
+};
+
+window.evDragLeave = function(e){
+  var z=document.getElementById('ev-drop-zone');
+  if(z){z.style.borderColor='var(--border)';z.style.background='';}
+};
+
+window.evDropFiles = function(e){
+  e.preventDefault();
+  var z=document.getElementById('ev-drop-zone');
+  if(z){z.style.borderColor='var(--border)';z.style.background='';}
+  if(e.dataTransfer && e.dataTransfer.files) evProcessFiles(e.dataTransfer.files);
+};
+
+window.evFileIn = function(inp){
+  if(inp.files && inp.files.length) evProcessFiles(inp.files);
+  inp.value='';
+};
+
+window.evProcessFiles = function(files){
+  if(!CMP_CTRL) return;
+  if(!CMP_EV[CMP_CTRL.id]) CMP_EV[CMP_CTRL.id]=[];
+  var EV_TYPES={'pdf':'Policy Document','doc':'Procedure','docx':'Procedure','xls':'Test Result','xlsx':'Test Result','csv':'Test Result','txt':'Other','png':'Screenshot','jpg':'Screenshot','jpeg':'Screenshot','gif':'Screenshot','webp':'Screenshot','zip':'Audit Report','ppt':'Presentation','pptx':'Presentation','eml':'Email Record','msg':'Email Record','mp4':'Video Evidence','mov':'Video Evidence'};
+  Array.from(files).forEach(function(file){
+    var ext=file.name.split('.').pop().toLowerCase();
+    CMP_EV[CMP_CTRL.id].push({title:file.name,name:file.name,size:file.size,type:EV_TYPES[ext]||'Other',url:'',addedAt:new Date().toISOString()});
+  });
+  cmpSave();
+  var evTab=Array.from(document.querySelectorAll('.dr-tab')).find(function(b){return b.textContent.trim()==='Evidence';});
+  drTab('evidence',evTab);
+  if(typeof toast==='function') toast(files.length+' file'+(files.length>1?'s':'')+' added','success');
+};
 </script>
 </body>
 </html>
